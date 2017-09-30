@@ -5,16 +5,15 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import logger from 'redux-logger';
 
-import { StoreState } from './types/index';
+import { RootState } from './types/index';
 import reducer from './reducers/index';
-// import App from './containers/App';
-import Hello from './containers/Hello';
+import App from './containers/App';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store: Redux.Store<StoreState> = createStore(
+const store: Redux.Store<RootState> = createStore(
   reducer,
   composeEnhancers(
     applyMiddleware(logger)
@@ -23,8 +22,12 @@ const store: Redux.Store<StoreState> = createStore(
 
 ReactDOM.render(
   <Provider store={store}>
-    <Hello />
+    <div>
+      <App />
+    </div>
   </Provider>,
   document.getElementById('root') as HTMLElement
 );
+const s = store.getState();
+console.log(`store state: ${s}`);
 registerServiceWorker();

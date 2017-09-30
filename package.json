@@ -3,19 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "immutable": "^3.8.1",
+    "normalizr": "^3.2.3",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
     "react-scripts-ts": "2.7.0",
     "redux": "^3.7.2",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "uuid": "^3.1.0"
   },
   "scripts": {
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}' && tsc",
-    "fix": "tslint -c tslint.json 'src/**/*.{ts,tsx}' --fix",
+    "burn": "watchman watch-del-all; rm -rf node_modules; rm -fr $TMPDIR/react-native-packager-cache-*; rm -rf `yarn cache dir`; yarn install",
+    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}' -t stylish && tsc",
+    "fix": "tslint -c tslint.json 'src/**/*.{ts,tsx}' -t stylish --fix",
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
@@ -24,6 +28,7 @@
     "@types/react": "^16.0.7",
     "@types/react-dom": "^15.5.5",
     "@types/react-redux": "^5.0.9",
-    "@types/redux-logger": "^3.0.4"
+    "@types/redux-logger": "^3.0.4",
+    "@types/uuid": "^3.4.2"
   }
 }

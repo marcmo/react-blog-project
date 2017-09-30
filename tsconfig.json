@@ -16,7 +16,7 @@
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "newLine": "LF",
-    "noUnusedLocals": true
+    "noUnusedLocals": false
   },
   "exclude": [
     "node_modules",

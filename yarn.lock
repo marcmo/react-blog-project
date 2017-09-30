@@ -6,6 +6,10 @@
   version "21.1.1"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-21.1.1.tgz#70008ecce439774a45c7d0b543d879ec58a1b332"
 
+"@types/node@*":
+  version "8.0.32"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.32.tgz#869a716538b6eec65ab3893f183d557be3cda206"
+
 "@types/node@^8.0.31":
   version "8.0.31"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.31.tgz#d9af61093cf4bfc9f066ca34de0175012cfb0ce9"
@@ -32,6 +36,12 @@
   resolved "https://registry.yarnpkg.com/@types/redux-logger/-/redux-logger-3.0.4.tgz#90fdca7a2af5fb3523b840648cfedc63486e116e"
   dependencies:
     redux "^3.6.0"
+
+"@types/uuid@^3.4.2":
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-3.4.2.tgz#b8cde3c32c273d3fc658b96f810e8ff091e1b723"
+  dependencies:
+    "@types/node" "*"
 
 abab@^1.0.3:
   version "1.0.4"
@@ -2363,6 +2373,10 @@ ieee754@^1.1.4:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.8.tgz#be33d40ac10ef1926701f6f08a2d86fbfd1ad3e4"
 
+immutable@^3.8.1:
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.1.tgz#200807f11ab0f72710ea485542de088075f68cd2"
+
 imurmurhash@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
@@ -3522,6 +3536,10 @@ normalize-url@^1.4.0:
     prepend-http "^1.0.0"
     query-string "^4.1.0"
     sort-keys "^1.0.0"
+
+normalizr@^3.2.3:
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/normalizr/-/normalizr-3.2.3.tgz#88755c64de418b040fa6ad1329b2de5c3250ac49"
 
 npm-run-path@^2.0.0:
   version "2.0.2"
