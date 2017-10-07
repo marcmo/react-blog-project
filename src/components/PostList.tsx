@@ -51,7 +51,7 @@ const PostList = ({ postsAsIds, addPost, removePost, onUpdateCategory }: Props) 
     <StoriesHeader columns={COLUMNS} />
     <button
       className="shopping-list"
-      onClick={(e) => addPost('new stuff', `${Date.now()}`)}
+      onClick={(e) => addPost('new stuff', 'Chuck')}
     >
       Add Post
     </button>
@@ -83,10 +83,13 @@ const VISIBILITY_FILTERS = {
 
 // selectors
 function getPostsAsIds(state: RootState): string[] {
-  return state.postState.ids
+  const res = state.postState.ids
     .map((id: string) => state.postState.entities[id])
     .filter(VISIBILITY_FILTERS[state.filterState.filter])
-    .map((post: Post) => post.id);
+    .map((post: Post) => {
+      return post.id;
+    });
+  return res;
 }
 
 function mapStateToPropsList(state: RootState) {

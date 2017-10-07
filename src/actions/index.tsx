@@ -1,3 +1,5 @@
+import { Post } from '../types';
+
 export enum PostUpdateActionType {
   INCREMENT_POPULARITY = 'INCREMENT_POPULARITY',
   DECREMENT_POPULARITY = 'DECREMENT_POPULARITY',
@@ -47,15 +49,21 @@ export const changeContent = (id: string, content: string): ChangePostContent =>
 // post list actions
 export enum UpdatePostListActionType {
   ADD_POST = 'ADD_POST',
+  ADD_REMOTE_POSTS = 'ADD_REMOTE_POSTS',
   ADD_POST_WITH_NOTIFICATION = 'ADD_POST_WITH_NOTIFICATION',
   REMOVE_POST = 'REMOVE_POST',
   FETCH_POSTS = 'FETCH_POSTS',
+  FETCH_POSTS_ERROR = 'FETCH_POSTS_ERROR',
 }
 
+export interface AddRemotePosts {
+  type: UpdatePostListActionType.ADD_REMOTE_POSTS;
+  posts: Array<Post>;
+}
 export interface AddPost {
   type: UpdatePostListActionType.ADD_POST;
   title: string;
-  id: string;
+  author: string;
 }
 export interface RemovePost {
   type: UpdatePostListActionType.REMOVE_POST;
@@ -65,19 +73,33 @@ export interface FetchPosts {
   type: UpdatePostListActionType.FETCH_POSTS;
   query: string;
 }
+export interface FetchPostsError {
+  type: UpdatePostListActionType.FETCH_POSTS_ERROR;
+  error: string;
+}
 export type PostListAction =
   RemovePost |
   FetchPosts |
+  FetchPostsError |
+  AddRemotePosts |
   AddPost;
 
-export const addPost = (title: string, id: string): AddPost => ({
+export const addPost = (title: string, author: string): AddPost => ({
   type: UpdatePostListActionType.ADD_POST,
   title,
-  id
+  author
+});
+export const addRemotePosts = (posts: Array<Post>): AddRemotePosts => ({
+  type: UpdatePostListActionType.ADD_REMOTE_POSTS,
+  posts
 });
 export const fetchPosts = (query: string): FetchPosts => ({
   type: UpdatePostListActionType.FETCH_POSTS,
   query
+});
+export const fetchPostsError = (error: string): FetchPostsError => ({
+  type: UpdatePostListActionType.FETCH_POSTS_ERROR,
+  error
 });
 export const doAddPostWithNotification = (title: string, id: string) => ({
   type: UpdatePostListActionType.ADD_POST_WITH_NOTIFICATION,

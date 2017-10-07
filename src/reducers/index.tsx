@@ -31,18 +31,6 @@ const posts: Array<Post> = [
   createPost('Man request adapted spirits set pressed', 'Joey'),
   createPost('Up to denoting subjects sensible feelings it indulged directly', 'Joey'),
   createPost('We dwelling elegance do shutters appetite yourself diverted', 'Joey'),
-  createPost('Our next drew much you with rank', 'Joey'),
-  createPost('Tore many held age hold rose than our', 'Joey'),
-  createPost('She literature sentiments any contrasted', 'Joey'),
-  createPost('Set aware joy sense young now tears china shy', 'Joey'),
-  createPost('Game of as rest time eyes with of this it', 'Joey'),
-  createPost('Add was music merry any truth since going', 'Joey'),
-  createPost('Happiness she ham but instantly put departure propriety', 'Joey'),
-  createPost('She amiable all without say spirits shy clothes morning', 'Joey'),
-  createPost('Frankness in extensive to belonging improving so certainty', 'Joey'),
-  createPost('Explain ten man uncivil engaged conduct', 'Joey'),
-  createPost('Am likewise betrayed as declared absolute do', 'Joey'),
-  createPost('Taste oh spoke about no solid of hills up shade', 'Joey'),
 ];
 
 const normalizedPosts = normalize(posts, [postSchema]);
@@ -68,17 +56,37 @@ function updatePost(state: number = 0, action: actions.PostUpdateAction): number
 
 // Connecting React and Redux
 type PostReducer = Redux.Reducer<PostState>;
-const postReducer: PostReducer = (state = initialPostsState, action) => {
+const postReducer: PostReducer = (state = initialPostsState, action: actions.PostListAction) => {
   switch (action.type) {
     case actions.UpdatePostListActionType.ADD_POST:
-      const newPost = createPost(action.title, action.author);
-      const entities = { ...state.entities, [newPost.id]: newPost };
-      const ids = [...state.ids, action.id];
-      return { ...state, entities, ids };
+      {
+        const newPost = createPost(action.title, action.author);
+        const entities = { ...state.entities, [newPost.id]: newPost };
+        const ids = [...state.ids, newPost.id];
+        return { ...state, entities, ids };
+      }
     case actions.UpdatePostListActionType.REMOVE_POST:
       delete state[action.postId];
       return state;
+    case actions.UpdatePostListActionType.ADD_REMOTE_POSTS:
+      return action.posts.reduce(
+        (acc: PostState, newPost: Post) => {
+          if (state.ids.includes(newPost.id)) {
+            return acc;
+          }
+          const entities = { ...acc.entities, [newPost.id]: newPost };
+          const ids = [...acc.ids, newPost.id];
+          const res = {
+            ...acc,
+            entities,
+            ids
+          };
+          return res;
+        },
+        state
+      );
     default:
+      console.warn(`unhandled action ${action.type}`);
       return state;
   }
 };
