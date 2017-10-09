@@ -1,16 +1,8 @@
 import { Post } from '../types';
 
 export enum PostUpdateActionType {
-  INCREMENT_POPULARITY = 'INCREMENT_POPULARITY',
-  DECREMENT_POPULARITY = 'DECREMENT_POPULARITY',
   CHANGE_POST_CONTENT = 'CHANGE_POST_CONTENT',
   UPDATE_CATEGORY = 'UPDATE_CATEGORY',
-}
-export interface IncrementPopularity {
-  type: PostUpdateActionType.INCREMENT_POPULARITY;
-}
-export interface DecrementPopularity {
-  type: PostUpdateActionType.DECREMENT_POPULARITY;
 }
 export interface ChangePostContent {
   type: PostUpdateActionType.CHANGE_POST_CONTENT;
@@ -24,17 +16,9 @@ export interface UpdateCategory {
 }
 
 export type PostUpdateAction =
-  IncrementPopularity
-  | DecrementPopularity
-  | ChangePostContent
+  ChangePostContent
   | UpdateCategory;
 
-export const decrementPopularity = (): DecrementPopularity => ({
-  type: PostUpdateActionType.DECREMENT_POPULARITY
-});
-export const incrementPopularity = (): IncrementPopularity => ({
-  type: PostUpdateActionType.INCREMENT_POPULARITY
-});
 export const updateCategory = (id: string, category: string): UpdateCategory => ({
   type: PostUpdateActionType.UPDATE_CATEGORY,
   newCategory: category,
@@ -54,6 +38,8 @@ export enum UpdatePostListActionType {
   REMOVE_POST = 'REMOVE_POST',
   FETCH_POSTS = 'FETCH_POSTS',
   FETCH_POSTS_ERROR = 'FETCH_POSTS_ERROR',
+  INCREMENT_POPULARITY = 'INCREMENT_POPULARITY',
+  DECREMENT_POPULARITY = 'DECREMENT_POPULARITY',
 }
 
 export interface AddRemotePosts {
@@ -77,12 +63,30 @@ export interface FetchPostsError {
   type: UpdatePostListActionType.FETCH_POSTS_ERROR;
   error: string;
 }
+export interface IncrementPopularity {
+  type: UpdatePostListActionType.INCREMENT_POPULARITY;
+  id: string;
+}
+export interface DecrementPopularity {
+  type: UpdatePostListActionType.DECREMENT_POPULARITY;
+  id: string;
+}
+export const decrementPopularity = (id: string): DecrementPopularity => ({
+  type: UpdatePostListActionType.DECREMENT_POPULARITY,
+  id
+});
+export const incrementPopularity = (id: string): IncrementPopularity => ({
+  type: UpdatePostListActionType.INCREMENT_POPULARITY,
+  id
+});
 export type PostListAction =
   RemovePost |
   FetchPosts |
   FetchPostsError |
   AddRemotePosts |
-  AddPost;
+  AddPost |
+  IncrementPopularity |
+  DecrementPopularity;
 
 export const addPost = (title: string, author: string): AddPost => ({
   type: UpdatePostListActionType.ADD_POST,

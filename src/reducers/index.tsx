@@ -4,9 +4,6 @@ import { schema, normalize } from 'normalizr';
 import * as actions from '../actions';
 import { v4 as uuid } from 'uuid';
 import { Post, PostState, RootState, FilterState } from '../types';
-// import { Map } from 'immutable';
-
-// schemas
 
 const postSchema = new schema.Entity('post');
 
@@ -43,20 +40,9 @@ const initialFilterState: FilterState = {
   filter: 'SHOW_ALL',
 };
 
-function updatePost(state: number = 0, action: actions.PostUpdateAction): number {
-  switch (action.type) {
-    case actions.PostUpdateActionType.INCREMENT_POPULARITY:
-      return state + 1;
-    case actions.PostUpdateActionType.DECREMENT_POPULARITY:
-      return state - 1;
-    default:
-      return state;
-  }
-}
-
 // Connecting React and Redux
-type PostReducer = Redux.Reducer<PostState>;
-const postReducer: PostReducer = (state = initialPostsState, action: actions.PostListAction) => {
+type PostListReducer = Redux.Reducer<PostState>;
+const postListReducer: PostListReducer = (state = initialPostsState, action: actions.PostListAction) => {
   switch (action.type) {
     case actions.UpdatePostListActionType.ADD_POST:
       {
@@ -85,10 +71,27 @@ const postReducer: PostReducer = (state = initialPostsState, action: actions.Pos
         },
         state
       );
+    case actions.UpdatePostListActionType.INCREMENT_POPULARITY:
+      return changeVote((vote: number): number => vote + 1, state, action.id);
+    case actions.UpdatePostListActionType.DECREMENT_POPULARITY:
+      return changeVote((vote: number): number => vote - 1, state, action.id);
     default:
       console.warn(`unhandled action ${action.type}`);
       return state;
   }
+};
+
+const changeVote = (
+  changer: (n: number) => number,
+  state: PostState,
+  id: string): PostState => {
+  const post: Post = state.entities[id];
+  const updatedPost: Post = {
+    ...post,
+    voteScore: changer(post.voteScore)
+  };
+  const entities = { ...state.entities, [post.id]: updatedPost };
+  return { ...state, entities };
 };
 
 function filterReducer(state: FilterState = initialFilterState, action: actions.FilterListAction) {
@@ -103,8 +106,7 @@ function applySetFilter(state: FilterState, action: actions.ApplyFilter) {
   return action.filter;
 }
 const rootReducer: Redux.Reducer<RootState> = combineReducers({
-  postState: postReducer,
+  postState: postListReducer,
   filterState: filterReducer,
 });
 export default rootReducer;
-// export default postReducer;

@@ -1,3 +1,4 @@
+@import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic);
 .story {
   display: flex;
   line-height: 24px;
@@ -12,4 +13,74 @@
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0 5px;
+}
+
+/* try 50% */
+.circle .up {
+  border-radius: 2rem 2rem 0 0;
+}
+.circle .down {
+  border-radius: 0 0 2rem 2rem;
+}
+.circle .count {
+  border-radius: 50%;
+}
+
+.vote {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  font-family: "Noto Sans";
+  position: relative;
+  width: 2rem;
+  height: 2rem;
+  margin: 0.1rem;
+}
+
+.increment {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 0;
+          flex: 1 0 0;
+  text-align: center;
+  opacity: .7;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.increment.up {
+  background: #3498db;
+  height: 50%;
+  margin-bottom: 0.075rem;
+}
+.increment.down {
+  background: #2c3e50;
+  height: 50%;
+}
+.increment:hover {
+  opacity: 1;
+}
+
+.count {
+  position: absolute;
+  top: 0;
+  border-radius: 0.05rem;
+  margin: 0.5rem;
+  background: #FFFFFF;
+  width: 1rem;
+  font-size: 0.7rem;
+  font-weight: bold;
+  line-height: 1rem;
+  text-align: center;
+  box-shadow: 0 0 0 0.15rem #F6F3E4;
+  pointer-events: none;
+}
+.count.upvoted {
+  color: #4BC35F;
+}
+.count.downvoted {
+  color: #C15044;
 }

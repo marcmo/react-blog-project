@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { PostState, Post, RootState } from '../types';
+import { PostState, Post, RootState, Columns } from '../types';
 import * as actions from '../actions';
 import ConnectedPostItem from './ListItem';
 import './PostList.css';
@@ -12,24 +12,24 @@ export interface Props {
   onUpdateCategory: (id: string, s: string) => void;
 }
 
-const COLUMNS = {
+const COLUMNS: Columns = {
   title: {
     label: 'Title',
     width: '40%',
   },
   author: {
     label: 'Author',
-    width: '30%',
+    width: '15%',
   },
   comments: {
     label: 'Comments',
     width: '10%',
   },
-  points: {
-    label: 'Points',
-    width: '10%',
+  date: {
+    label: 'Date',
+    width: '25%',
   },
-  archive: {
+  votes: {
     width: '10%',
   },
 };
@@ -62,7 +62,6 @@ const PostList = ({ postsAsIds, addPost, removePost, onUpdateCategory }: Props) 
         columns={COLUMNS}
       />)}
     </div>
-    <h3>the footer</h3>
   </div>
 );
 
@@ -74,18 +73,11 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.PostListAction>) {
   };
 }
 
-// filters
-const VISIBILITY_FILTERS = {
-  SHOW_CURRENT: (post: Post) => !post.deleted,
-  SHOW_DELETED: (post: Post) => post.deleted,
-  SHOW_ALL: (post: Post) => true,
-};
-
 // selectors
 function getPostsAsIds(state: RootState): string[] {
   const res = state.postState.ids
     .map((id: string) => state.postState.entities[id])
-    .filter(VISIBILITY_FILTERS[state.filterState.filter])
+    // .filter(VISIBILITY_FILTERS[state.filterState.filter])
     .map((post: Post) => {
       return post.id;
     });

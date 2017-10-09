@@ -1,18 +1,23 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { PostState, Post, RootState } from '../types';
+import { PostState, Post, RootState, Columns } from '../types';
 import { ButtonInline } from './Button';
+import * as fns from 'date-fns';
 import * as actions from '../actions';
 import './ListItem.css';
 
 export interface Props {
   key: string;
   post: Post;
-  onTogglePost: (id: string) => any;
-  columns: any;
+  incrementVote: (id: string) => any;
+  decrementVote: (id: string) => any;
+  columns: Columns;
 }
-
-const PostItem = ({ columns, post, onTogglePost }: Props) => {
+const formatTimestamp = (unixtime: number): string => {
+  const d: Date = new Date(unixtime / 1000);
+  return `${fns.format(d, 'MM/DD/YY')} (${fns.distanceInWordsToNow(d)})`;
+};
+const PostItem = ({ columns, post, incrementVote, decrementVote }: Props) => {
   const { title, id, author, deleted, comments, voteScore } = post;
   return (
     <div className="story">
@@ -25,13 +30,15 @@ const PostItem = ({ columns, post, onTogglePost }: Props) => {
       <span style={{ width: columns.comments.width }}>
         {comments.length}
       </span>
-      <span style={{ width: columns.points.width }}>
-        {voteScore}
+      <span style={{ width: columns.date.width }}>
+        {formatTimestamp(post.timestamp * 1000)}
       </span>
-      <span style={{ width: columns.archive.width }}>
-        <ButtonInline onClick={() => onTogglePost(id)}>
-          Archive
-        </ButtonInline>
+      <span style={{ width: columns.votes.width }}>
+        <div className="vote circle">
+          <div className="increment up" onClick={() => incrementVote(id)} />
+          <div className="increment down" onClick={() => decrementVote(id)} />
+          <div className="count">{voteScore}</div>
+        </div>
       </span>
     </div>
   );
@@ -47,7 +54,8 @@ const mapStateToProps = (state: RootState, props: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({
-  onTogglePost: (id: string) => dispatch(actions.removePost(id)),
+  incrementVote: (id: string) => dispatch(actions.incrementPopularity(id)),
+  decrementVote: (id: string) => dispatch(actions.decrementPopularity(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostItem);

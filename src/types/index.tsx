@@ -1,12 +1,14 @@
-// import { Map } from 'immutable';
-
 export interface RootState {
-  postState: PostState;
-  filterState: FilterState;
+  readonly postState: PostState;
+  readonly filterState: FilterState;
+}
+interface Entity {
+  readonly id: string;
+  readonly post: Post;
 }
 export interface PostState {
-  readonly entities: any;
-  readonly ids: any;
+  readonly entities: Array<Entity>;
+  readonly ids: Array<string>;
 }
 export interface FilterState {
   readonly filter: string;
@@ -33,4 +35,16 @@ export interface Comment {
   voteScore: number; // Net votes the comment has received (default: 1)
   deleted: boolean; // Flag if comment has been 'deleted' (inaccessible by the front end), (default: false)
   parentDeleted: boolean; // Flag for when the the parent post was deleted, but the comment itself was not.
+}
+
+export interface LabeledColumn {
+  label?: string;
+  width: string;
+}
+export interface Columns {
+  title: LabeledColumn;
+  author: LabeledColumn;
+  comments: LabeledColumn;
+  date: LabeledColumn;
+  votes: LabeledColumn;
 }
