@@ -12,6 +12,7 @@ interface Props {
 }
 interface State {
   query: string;
+  hasError: boolean;
 }
 
 class SearchStories extends React.Component<Props, State> {
@@ -20,7 +21,14 @@ class SearchStories extends React.Component<Props, State> {
 
     this.state = {
       query: '',
+      hasError: false,
     };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    this.setState({ hasError: true });
+    console.error(error, errorInfo);
+    // logErrorToMyService(error, info);
   }
 
   onSubmit = (event: any) => {
@@ -38,6 +46,13 @@ class SearchStories extends React.Component<Props, State> {
   }
 
   render() {
+    if (this.state.hasError) {
+      return (
+        <div>
+        <h1>Something went wrong in SearchPost</h1>
+        </div>
+      );
+    }
     return (
       <form onSubmit={this.onSubmit}>
         <input
