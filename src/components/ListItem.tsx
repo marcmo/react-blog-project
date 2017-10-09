@@ -48,7 +48,11 @@ function getPost(state: RootState, postId: string) {
   return state.postState.entities[postId];
 }
 
-const mapStateToProps = (state: RootState, props: any) => ({
+interface OwnProps {
+  postId: string;
+  columns: Columns;
+}
+const mapStateToProps = (state: RootState, props: OwnProps) => ({
   post: getPost(state, props.postId),
   columns: props.columns,
 });

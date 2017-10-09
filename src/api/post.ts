@@ -8,12 +8,16 @@ const doGetRequest = (endpoint: string) =>
     }
   });
 
-const fetchPosts = () =>
+const fetchPosts = (): Promise<string> =>
   doGetRequest('posts')
+    .then((response) => response.json());
+const fetchCategories = (): Promise<string> =>
+  doGetRequest('categories')
     .then((response) => response.json());
 
 export {
   fetchPosts,
+  fetchCategories,
 };
 // GET /categories      Get all of the categories available for the app.
 //                      List is found in categories.js. Feel free to extend this list as you desire.

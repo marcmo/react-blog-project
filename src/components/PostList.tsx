@@ -49,12 +49,6 @@ const StoriesHeader = ({ columns }: any) => (
 const PostList = ({ postsAsIds, addPost, removePost, onUpdateCategory }: Props) => (
   <div className="stories">
     <StoriesHeader columns={COLUMNS} />
-    <button
-      className="shopping-list"
-      onClick={(e) => addPost('new stuff', 'Chuck')}
-    >
-      Add Post
-    </button>
     <div>
       {postsAsIds.map((postId: string) => <ConnectedPostItem
         key={postId}
@@ -62,6 +56,12 @@ const PostList = ({ postsAsIds, addPost, removePost, onUpdateCategory }: Props) 
         columns={COLUMNS}
       />)}
     </div>
+    <button
+      className="button"
+      onClick={(e) => addPost('new stuff', 'Chuck')}
+    >
+      Add Post
+    </button>
   </div>
 );
 
@@ -73,11 +73,16 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.PostListAction>) {
   };
 }
 
+const matchFilter = (filter: string) => ( (post: Post) => {
+  console.log(`filter: ${filter}, post-category: ${post.category}`);
+  return 'SHOW_ALL' === filter || post.category === filter;
+});
 // selectors
 function getPostsAsIds(state: RootState): string[] {
+  const filter = state.categoryState.filter;
   const res = state.postState.ids
     .map((id: string) => state.postState.entities[id])
-    // .filter(VISIBILITY_FILTERS[state.filterState.filter])
+    .filter(matchFilter(filter))
     .map((post: Post) => {
       return post.id;
     });

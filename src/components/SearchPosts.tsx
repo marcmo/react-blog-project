@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import Button from './Button';
+import './SearchPosts.css';
 
 const applyQueryState = (query: string) => () => ({
   query
@@ -9,6 +10,7 @@ const applyQueryState = (query: string) => () => ({
 
 interface Props {
   onFetchPosts(query: string): any;
+  onFetchCategories: () => any;
 }
 interface State {
   query: string;
@@ -63,6 +65,9 @@ class SearchStories extends React.Component<Props, State> {
         <Button type="submit" className="button" onClick={this.onSubmit}>
           Search
         </Button>
+        <Button type="submit" className="button" onClick={this.props.onFetchCategories}>
+          Fetch Categories
+        </Button>
       </form>
     );
   }
@@ -70,6 +75,7 @@ class SearchStories extends React.Component<Props, State> {
 
 const mapDispatchToProps = (dispatch: any) => ({
   onFetchPosts: (query: string) => dispatch(actions.fetchPosts(query)),
+  onFetchCategories: () => dispatch(actions.fetchCategories()),
 });
 
 export default connect(

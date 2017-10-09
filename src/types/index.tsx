@@ -1,6 +1,6 @@
 export interface RootState {
   readonly postState: PostState;
-  readonly filterState: FilterState;
+  readonly categoryState: CategoryState;
 }
 interface Entity {
   readonly id: string;
@@ -10,8 +10,10 @@ export interface PostState {
   readonly entities: Array<Entity>;
   readonly ids: Array<string>;
 }
-export interface FilterState {
+export interface CategoryState {
   readonly filter: string;
+  readonly categories: Array<string>;
+  readonly onlyDeleted: boolean;
 }
 
 export interface Post {

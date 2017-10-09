@@ -37,7 +37,8 @@ export enum UpdatePostListActionType {
   ADD_POST_WITH_NOTIFICATION = 'ADD_POST_WITH_NOTIFICATION',
   REMOVE_POST = 'REMOVE_POST',
   FETCH_POSTS = 'FETCH_POSTS',
-  FETCH_POSTS_ERROR = 'FETCH_POSTS_ERROR',
+  FETCH_CATEGORIES = 'FETCH_CATEGORIES',
+  FETCH_ERROR = 'FETCH_ERROR',
   INCREMENT_POPULARITY = 'INCREMENT_POPULARITY',
   DECREMENT_POPULARITY = 'DECREMENT_POPULARITY',
 }
@@ -59,8 +60,11 @@ export interface FetchPosts {
   type: UpdatePostListActionType.FETCH_POSTS;
   query: string;
 }
-export interface FetchPostsError {
-  type: UpdatePostListActionType.FETCH_POSTS_ERROR;
+export interface FetchCategories {
+  type: UpdatePostListActionType.FETCH_CATEGORIES;
+}
+export interface FetchError {
+  type: UpdatePostListActionType.FETCH_ERROR;
   error: string;
 }
 export interface IncrementPopularity {
@@ -82,7 +86,8 @@ export const incrementPopularity = (id: string): IncrementPopularity => ({
 export type PostListAction =
   RemovePost |
   FetchPosts |
-  FetchPostsError |
+  FetchCategories |
+  FetchError |
   AddRemotePosts |
   AddPost |
   IncrementPopularity |
@@ -101,8 +106,11 @@ export const fetchPosts = (query: string): FetchPosts => ({
   type: UpdatePostListActionType.FETCH_POSTS,
   query
 });
-export const fetchPostsError = (error: string): FetchPostsError => ({
-  type: UpdatePostListActionType.FETCH_POSTS_ERROR,
+export const fetchCategories = (): FetchCategories => ({
+  type: UpdatePostListActionType.FETCH_CATEGORIES,
+});
+export const fetchError = (error: string): FetchError => ({
+  type: UpdatePostListActionType.FETCH_ERROR,
   error
 });
 export const doAddPostWithNotification = (title: string, id: string) => ({
@@ -117,22 +125,39 @@ export const removePost = (id: string): RemovePost => ({
 export enum FilterActionType {
   SHOW_CURRENT = 'SHOW_CURRENT',
   SHOW_DELETED = 'SHOW_DELETED',
-  SHOW_ALL = 'SHOW_DELETED',
+  SHOW_ALL = 'SHOW_ALL',
+  ADD_REMOTE_CATEGORIES = 'ADD_REMOTE_CATEGORIES',
 }
 export interface ApplyFilter {
   type: FilterActionType.SHOW_CURRENT;
   filter: string;
 }
 export interface RemoveFilter {
+  type: FilterActionType.SHOW_ALL;
+}
+export interface DeletedFilter {
   type: FilterActionType.SHOW_DELETED;
+}
+export interface AddRemoteCategories {
+  type: FilterActionType.ADD_REMOTE_CATEGORIES;
+  categories: Array<string>;
 }
 export const applyFilter = (f: string): ApplyFilter => ({
   type: FilterActionType.SHOW_CURRENT,
   filter: f,
 });
 export const removeFilter = (): RemoveFilter => ({
+  type: FilterActionType.SHOW_ALL
+});
+export const deletedFilter = (): DeletedFilter => ({
   type: FilterActionType.SHOW_DELETED
+});
+export const addRemoteCategories = (cats: Array<string>): AddRemoteCategories => ({
+  type: FilterActionType.ADD_REMOTE_CATEGORIES,
+  categories: cats,
 });
 export type FilterListAction =
   ApplyFilter |
+  AddRemoteCategories |
+  DeletedFilter |
   RemoveFilter;

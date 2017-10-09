@@ -14,7 +14,11 @@ it('renders without crashing', () => {
       entities: [],
       ids: [],
     },
-    filterState: { filter: '' }
+    categoryState: {
+      filter: '',
+      categories: [],
+      onlyDeleted: false,
+    }
   };
   const store = mockStore(initialState);
   const div = document.createElement('div');
