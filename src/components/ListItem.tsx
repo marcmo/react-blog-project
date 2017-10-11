@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { PostState, Post, RootState, Columns } from '../types';
-import { ButtonInline } from './Button';
+import Button from './Button';
 import * as fns from 'date-fns';
 import * as actions from '../actions';
 import './styles/ListItem.css';
@@ -19,6 +19,9 @@ const formatTimestamp = (unixtime: number): string => {
 };
 const PostItem = ({ columns, post, incrementVote, decrementVote }: Props) => {
   const { title, id, author, deleted, comments, voteScore } = post;
+  const onSubmit = () => {
+    console.log('editing...');
+  };
   return (
     <div className="story">
       <span style={{ width: columns.title.width }}>
@@ -39,6 +42,11 @@ const PostItem = ({ columns, post, incrementVote, decrementVote }: Props) => {
           <div className="increment down" onClick={() => decrementVote(id)} />
           <div className="count">{voteScore}</div>
         </div>
+      </span>
+      <span style={{ width: columns.edit.width }}>
+        <Button type="submit" className="button" onClick={onSubmit}>
+          Edit
+        </Button>
       </span>
     </div>
   );

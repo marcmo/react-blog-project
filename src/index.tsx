@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as Redux from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import './index.css';
 import createSagaMiddleware from 'redux-saga';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';

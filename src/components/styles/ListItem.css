@@ -1,4 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic);
+.button {
+  margin: 5px;
+}
 .story {
   display: flex;
   line-height: 24px;

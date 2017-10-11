@@ -19,7 +19,7 @@ const COLUMNS: Columns = {
   },
   author: {
     label: 'Author',
-    width: '15%',
+    width: '10%',
   },
   comments: {
     label: 'Comments',
@@ -30,6 +30,9 @@ const COLUMNS: Columns = {
     width: '25%',
   },
   votes: {
+    width: '5%',
+  },
+  edit: {
     width: '10%',
   },
 };

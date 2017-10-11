@@ -58,4 +58,5 @@ export interface Columns {
   comments: LabeledColumn;
   date: LabeledColumn;
   votes: LabeledColumn;
+  edit: LabeledColumn;
 }
