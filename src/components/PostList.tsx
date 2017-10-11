@@ -3,7 +3,7 @@ import { connect, Dispatch } from 'react-redux';
 import { PostState, Post, RootState, Columns } from '../types';
 import * as actions from '../actions';
 import ConnectedPostItem from './ListItem';
-import './PostList.css';
+import './styles/PostList.css';
 
 export interface Props {
   postsAsIds: string[];

@@ -4,7 +4,7 @@ import { PostState, Post, RootState, Columns } from '../types';
 import { ButtonInline } from './Button';
 import * as fns from 'date-fns';
 import * as actions from '../actions';
-import './ListItem.css';
+import './styles/ListItem.css';
 
 export interface Props {
   key: string;

@@ -3,7 +3,7 @@ import { connect, Dispatch } from 'react-redux';
 import * as actions from '../actions';
 import Button from './Button';
 import { RootState, Category } from '../types';
-import './SearchPosts.css';
+import './styles/SearchPosts.css';
 
 const applyQueryState = (query: string) => () => ({
   query

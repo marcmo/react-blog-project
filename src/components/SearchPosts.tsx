@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import Button from './Button';
-import './SearchPosts.css';
+import './styles/SearchPosts.css';
 
 const applyQueryState = (query: string) => () => ({
   query
