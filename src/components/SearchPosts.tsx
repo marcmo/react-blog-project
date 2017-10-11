@@ -9,7 +9,7 @@ const applyQueryState = (query: string) => () => ({
 });
 
 interface Props {
-  onFetchPosts(query: string): any;
+  onFetchPosts(): any;
   onFetchCategories: () => any;
 }
 interface State {
@@ -36,7 +36,7 @@ class SearchStories extends React.Component<Props, State> {
   onSubmit = (event: any) => {
     const { query } = this.state;
     if (query) {
-      this.props.onFetchPosts(query);
+      this.props.onFetchPosts();
       this.setState(applyQueryState(''));
     }
     event.preventDefault();
@@ -55,13 +55,13 @@ class SearchStories extends React.Component<Props, State> {
         </div>
       );
     }
+        // <input
+        //   type="text"
+        //   value={this.state.query}
+        //   onChange={this.onChange}
+        // />
     return (
       <form onSubmit={this.onSubmit}>
-        <input
-          type="text"
-          value={this.state.query}
-          onChange={this.onChange}
-        />
         <Button type="submit" className="button" onClick={this.onSubmit}>
           Search
         </Button>
@@ -74,7 +74,7 @@ class SearchStories extends React.Component<Props, State> {
 }
 
 const mapDispatchToProps = (dispatch: any) => ({
-  onFetchPosts: (query: string) => dispatch(actions.fetchPosts(query)),
+  onFetchPosts: () => dispatch(actions.fetchPosts()),
   onFetchCategories: () => dispatch(actions.fetchCategories()),
 });
 

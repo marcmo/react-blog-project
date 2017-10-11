@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import * as actions from '../actions';
-import { Post } from '../types';
+import { Post, Category } from '../types';
 import { BlogPost } from '../types/BlogPost';
 import { fetchPosts, fetchCategories } from '../api/post';
 
@@ -16,7 +16,7 @@ function* handleFetchPosts(action: actions.FetchPosts) {
 function* handleFetchCategories(action: actions.FetchPosts) {
   try {
     const result = yield call(fetchCategories);
-    const cats: Array<string> = result;
+    const cats: Array<Category> = result.categories;
     yield put(actions.addRemoteCategories(cats));
   } catch (error) {
     yield put(actions.fetchError(error));

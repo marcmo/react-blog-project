@@ -10,11 +10,20 @@ export interface PostState {
   readonly entities: Array<Entity>;
   readonly ids: Array<string>;
 }
+export interface Category {
+  readonly name: string;
+  readonly path: string;
+}
 export interface CategoryState {
   readonly filter: string;
-  readonly categories: Array<string>;
+  readonly categories: Array<Category>;
   readonly onlyDeleted: boolean;
 }
+
+export const createCategory = (name: string): Category => ({
+  name,
+  path: name,
+});
 
 export interface Post {
   id: string; // Unique identifier

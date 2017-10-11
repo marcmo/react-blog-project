@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import * as actions from '../actions';
 import Button from './Button';
-import { RootState } from '../types';
+import { RootState, Category } from '../types';
 import './SearchPosts.css';
 
 const applyQueryState = (query: string) => () => ({
@@ -34,8 +34,8 @@ const Categories = (props: Props) => {
   );
 };
 
-const mapStateToProps = (state: RootState, props: any) => ({
-  categories: state.categoryState.categories,
+const mapStateToProps = (state: RootState) => ({
+  categories: state.categoryState.categories.map((c: Category) => c.name),
 });
 const mapDispatchToProps = (dispatch: Dispatch<actions.FilterActionType>) => ({
   selectCategory: (category: string) => dispatch(actions.applyFilter(category)),

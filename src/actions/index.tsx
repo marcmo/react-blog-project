@@ -1,4 +1,4 @@
-import { Post } from '../types';
+import { Post, Category } from '../types';
 
 export enum PostUpdateActionType {
   CHANGE_POST_CONTENT = 'CHANGE_POST_CONTENT',
@@ -58,7 +58,6 @@ export interface RemovePost {
 }
 export interface FetchPosts {
   type: UpdatePostListActionType.FETCH_POSTS;
-  query: string;
 }
 export interface FetchCategories {
   type: UpdatePostListActionType.FETCH_CATEGORIES;
@@ -102,9 +101,8 @@ export const addRemotePosts = (posts: Array<Post>): AddRemotePosts => ({
   type: UpdatePostListActionType.ADD_REMOTE_POSTS,
   posts
 });
-export const fetchPosts = (query: string): FetchPosts => ({
-  type: UpdatePostListActionType.FETCH_POSTS,
-  query
+export const fetchPosts = (): FetchPosts => ({
+  type: UpdatePostListActionType.FETCH_POSTS
 });
 export const fetchCategories = (): FetchCategories => ({
   type: UpdatePostListActionType.FETCH_CATEGORIES,
@@ -140,7 +138,7 @@ export interface DeletedFilter {
 }
 export interface AddRemoteCategories {
   type: FilterActionType.ADD_REMOTE_CATEGORIES;
-  categories: Array<string>;
+  categories: Array<Category>;
 }
 export const applyFilter = (f: string): ApplyFilter => ({
   type: FilterActionType.SHOW_CURRENT,
@@ -152,7 +150,7 @@ export const removeFilter = (): RemoveFilter => ({
 export const deletedFilter = (): DeletedFilter => ({
   type: FilterActionType.SHOW_DELETED
 });
-export const addRemoteCategories = (cats: Array<string>): AddRemoteCategories => ({
+export const addRemoteCategories = (cats: Array<Category>): AddRemoteCategories => ({
   type: FilterActionType.ADD_REMOTE_CATEGORIES,
   categories: cats,
 });

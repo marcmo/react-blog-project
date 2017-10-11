@@ -3,7 +3,14 @@ import * as Redux from 'redux';
 import { schema, normalize } from 'normalizr';
 import * as actions from '../actions';
 import { v4 as uuid } from 'uuid';
-import { Post, PostState, RootState, CategoryState } from '../types';
+import {
+  Post,
+  PostState,
+  RootState,
+  CategoryState,
+  Category,
+  createCategory,
+} from '../types';
 
 const postSchema = new schema.Entity('post');
 
@@ -38,7 +45,7 @@ const initialPostsState: PostState = {
 };
 const initialFilterState: CategoryState = {
   filter: 'SHOW_ALL',
-  categories: ['myStuff', 'tech', 'SHOW_ALL'],
+  categories: ['myStuff', 'tech', 'SHOW_ALL'].map(createCategory),
   onlyDeleted: false,
 };
 
