@@ -1,40 +1,12 @@
 import { Post, Category } from '../types';
 
-export enum PostUpdateActionType {
-  CHANGE_POST_CONTENT = 'CHANGE_POST_CONTENT',
-  UPDATE_CATEGORY = 'UPDATE_CATEGORY',
-}
-export interface ChangePostContent {
-  type: PostUpdateActionType.CHANGE_POST_CONTENT;
-  newContent: string;
-  postId: string;
-}
-export interface UpdateCategory {
-  type: PostUpdateActionType.UPDATE_CATEGORY;
-  newCategory: string;
-  postId: string;
-}
-
-export type PostUpdateAction =
-  ChangePostContent
-  | UpdateCategory;
-
-export const updateCategory = (id: string, category: string): UpdateCategory => ({
-  type: PostUpdateActionType.UPDATE_CATEGORY,
-  newCategory: category,
-  postId: id,
-});
-export const changeContent = (id: string, content: string): ChangePostContent => ({
-  type: PostUpdateActionType.CHANGE_POST_CONTENT,
-  newContent: content,
-  postId: id,
-});
-
 // post list actions
 export enum UpdatePostListActionType {
   ADD_POST = 'ADD_POST',
   ADD_REMOTE_POSTS = 'ADD_REMOTE_POSTS',
-  ADD_POST_WITH_NOTIFICATION = 'ADD_POST_WITH_NOTIFICATION',
+  EDIT_POST = 'EDIT_POST',
+  POST_SELECTED = 'POST_SELECTED',
+  POST_DESELECTED = 'POST_DESELECTED',
   REMOVE_POST = 'REMOVE_POST',
   FETCH_POSTS = 'FETCH_POSTS',
   FETCH_CATEGORIES = 'FETCH_CATEGORIES',
@@ -42,7 +14,18 @@ export enum UpdatePostListActionType {
   INCREMENT_POPULARITY = 'INCREMENT_POPULARITY',
   DECREMENT_POPULARITY = 'DECREMENT_POPULARITY',
 }
-
+export type PostListAction =
+  AddPost |
+  AddRemotePosts |
+  EditPost |
+  RemovePost |
+  FetchPosts |
+  FetchCategories |
+  FetchError |
+  PostSelected |
+  PostDeselected |
+  IncrementPopularity |
+  DecrementPopularity;
 export interface AddRemotePosts {
   type: UpdatePostListActionType.ADD_REMOTE_POSTS;
   posts: Array<Post>;
@@ -51,6 +34,24 @@ export interface AddPost {
   type: UpdatePostListActionType.ADD_POST;
   title: string;
   author: string;
+}
+export interface UpdatedPostContent {
+  timestamp?: number;
+  title?: string;
+  body?: string;
+  category?: string;
+}
+export interface EditPost {
+  type: UpdatePostListActionType.EDIT_POST;
+  postId: string;
+  newContent: UpdatedPostContent;
+}
+export interface PostSelected {
+  type: UpdatePostListActionType.POST_SELECTED;
+  selectedId: string;
+}
+export interface PostDeselected {
+  type: UpdatePostListActionType.POST_DESELECTED;
 }
 export interface RemovePost {
   type: UpdatePostListActionType.REMOVE_POST;
@@ -82,20 +83,26 @@ export const incrementPopularity = (id: string): IncrementPopularity => ({
   type: UpdatePostListActionType.INCREMENT_POPULARITY,
   id
 });
-export type PostListAction =
-  RemovePost |
-  FetchPosts |
-  FetchCategories |
-  FetchError |
-  AddRemotePosts |
-  AddPost |
-  IncrementPopularity |
-  DecrementPopularity;
-
-export const addPost = (title: string, author: string): AddPost => ({
+export interface NewPostArgs {
+  title: string;
+  author: string;
+}
+export const addPost = ({title, author}: NewPostArgs): AddPost => ({
   type: UpdatePostListActionType.ADD_POST,
   title,
   author
+});
+export const editPost = (postId: string, newContent: UpdatedPostContent): EditPost => ({
+  type: UpdatePostListActionType.EDIT_POST,
+  postId,
+  newContent,
+});
+export const selectedPost = (selectedId: string): PostSelected => ({
+  type: UpdatePostListActionType.POST_SELECTED,
+  selectedId,
+});
+export const deselectedPost = (): PostDeselected => ({
+  type: UpdatePostListActionType.POST_DESELECTED,
 });
 export const addRemotePosts = (posts: Array<Post>): AddRemotePosts => ({
   type: UpdatePostListActionType.ADD_REMOTE_POSTS,
@@ -111,23 +118,24 @@ export const fetchError = (error: string): FetchError => ({
   type: UpdatePostListActionType.FETCH_ERROR,
   error
 });
-export const doAddPostWithNotification = (title: string, id: string) => ({
-  type: UpdatePostListActionType.ADD_POST_WITH_NOTIFICATION,
-  post: { id, name },
-});
 export const removePost = (id: string): RemovePost => ({
   type: UpdatePostListActionType.REMOVE_POST,
   postId: id,
 });
 // filter list actions
 export enum FilterActionType {
-  SHOW_CURRENT = 'SHOW_CURRENT',
+  APPLY_FILTER = 'APPLY_FILTER',
   SHOW_DELETED = 'SHOW_DELETED',
   SHOW_ALL = 'SHOW_ALL',
   ADD_REMOTE_CATEGORIES = 'ADD_REMOTE_CATEGORIES',
 }
+export type FilterListAction =
+  ApplyFilter |
+  DeletedFilter |
+  RemoveFilter |
+  AddRemoteCategories;
 export interface ApplyFilter {
-  type: FilterActionType.SHOW_CURRENT;
+  type: FilterActionType.APPLY_FILTER;
   filter: string;
 }
 export interface RemoveFilter {
@@ -141,7 +149,7 @@ export interface AddRemoteCategories {
   categories: Array<Category>;
 }
 export const applyFilter = (f: string): ApplyFilter => ({
-  type: FilterActionType.SHOW_CURRENT,
+  type: FilterActionType.APPLY_FILTER,
   filter: f,
 });
 export const removeFilter = (): RemoveFilter => ({
@@ -154,8 +162,3 @@ export const addRemoteCategories = (cats: Array<Category>): AddRemoteCategories 
   type: FilterActionType.ADD_REMOTE_CATEGORIES,
   categories: cats,
 });
-export type FilterListAction =
-  ApplyFilter |
-  AddRemoteCategories |
-  DeletedFilter |
-  RemoveFilter;

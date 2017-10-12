@@ -55,11 +55,6 @@ class SearchStories extends React.Component<Props, State> {
         </div>
       );
     }
-        // <input
-        //   type="text"
-        //   value={this.state.query}
-        //   onChange={this.onChange}
-        // />
     return (
       <form onSubmit={this.onSubmit}>
         <Button type="submit" className="button" onClick={this.onSubmit}>

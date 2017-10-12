@@ -9,12 +9,12 @@ import {
   RootState,
   CategoryState,
   Category,
+  Entity,
   createCategory,
 } from '../types';
 
 const postSchema = new schema.Entity('post');
 
-// const createPost = (currentPosts: Map<string, Post>, t: string): Map<string, Post> => {
 const createPost = (t: string, author: string, category: string): Post => {
   const newPost = {
     id: uuid(),
@@ -28,7 +28,6 @@ const createPost = (t: string, author: string, category: string): Post => {
     comments: []
   };
   return newPost;
-  // return currentPosts.set(newPost.id, newPost);
 };
 
 const posts: Array<Post> = [
@@ -42,6 +41,7 @@ const normalizedPosts = normalize(posts, [postSchema]);
 const initialPostsState: PostState = {
   entities: normalizedPosts.entities.post,
   ids: normalizedPosts.result,
+  selectedPostId: null,
 };
 const initialFilterState: CategoryState = {
   filter: 'SHOW_ALL',
@@ -60,9 +60,20 @@ const postListReducer: PostListReducer = (state = initialPostsState, action: act
         const ids = [...state.ids, newPost.id];
         return { ...state, entities, ids };
       }
+    case actions.UpdatePostListActionType.EDIT_POST:
+      return updatePostContent(state, action.postId, action.newContent);
+    case actions.UpdatePostListActionType.POST_SELECTED:
+      return {
+        ...state,
+        selectedPostId: action.selectedId,
+      };
+    case actions.UpdatePostListActionType.POST_DESELECTED:
+      return {
+        ...state,
+        selectedPostId: null,
+      };
     case actions.UpdatePostListActionType.REMOVE_POST:
-      delete state[action.postId];
-      return state;
+      return deletePost(state, action.postId);
     case actions.UpdatePostListActionType.ADD_REMOTE_POSTS:
       return action.posts.reduce(
         (acc: PostState, newPost: Post) => {
@@ -85,11 +96,21 @@ const postListReducer: PostListReducer = (state = initialPostsState, action: act
     case actions.UpdatePostListActionType.DECREMENT_POPULARITY:
       return changeVote((vote: number): number => vote - 1, state, action.id);
     default:
-      console.warn(`unhandled action ${action.type}`);
       return state;
   }
 };
 
+const deletePost = (
+  state: PostState,
+  postId: string): PostState => {
+  const post: Post = state.entities[postId];
+  const updatedPost: Post = {
+    ...post,
+    deleted: true,
+  };
+  const entities = { ...state.entities, [post.id]: updatedPost };
+  return { ...state, entities };
+};
 const changeVote = (
   changer: (n: number) => number,
   state: PostState,
@@ -102,10 +123,24 @@ const changeVote = (
   const entities = { ...state.entities, [post.id]: updatedPost };
   return { ...state, entities };
 };
+const updatePostContent = (
+  state: PostState,
+  postId: string,
+  newContent: actions.UpdatedPostContent): PostState => {
+  const post: Post = state.entities[postId];
+  const updatedPost: Post = {
+    ...post,
+    body: newContent.body ? newContent.body : post.body,
+    category: newContent.category ? newContent.category : post.category,
+    title: newContent.title ? newContent.title : post.title,
+  };
+  const entities = { ...state.entities, [post.id]: updatedPost };
+  return { ...state, entities };
+};
 
 function categoryReducer(state: CategoryState = initialFilterState, action: actions.FilterListAction) {
   switch (action.type) {
-    case actions.FilterActionType.SHOW_CURRENT: {
+    case actions.FilterActionType.APPLY_FILTER: {
       return applySetFilter(state, action.filter);
     }
     case actions.FilterActionType.SHOW_DELETED: {

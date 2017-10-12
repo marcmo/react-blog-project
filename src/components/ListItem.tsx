@@ -11,16 +11,21 @@ export interface Props {
   post: Post;
   incrementVote: (id: string) => any;
   decrementVote: (id: string) => any;
+  selectedPost: (selectedId: string) => any;
+  deletePost: (selectedId: string) => any;
   columns: Columns;
 }
 const formatTimestamp = (unixtime: number): string => {
   const d: Date = new Date(unixtime / 1000);
   return `${fns.format(d, 'MM/DD/YY')} (${fns.distanceInWordsToNow(d)})`;
 };
-const PostItem = ({ columns, post, incrementVote, decrementVote }: Props) => {
+const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, deletePost }: Props) => {
   const { title, id, author, deleted, comments, voteScore } = post;
   const onSubmit = () => {
-    console.log('editing...');
+    selectedPost(id);
+  };
+  const onSubmitDelete = () => {
+    deletePost(id);
   };
   return (
     <div className="story">
@@ -44,8 +49,13 @@ const PostItem = ({ columns, post, incrementVote, decrementVote }: Props) => {
         </div>
       </span>
       <span style={{ width: columns.edit.width }}>
-        <Button type="submit" className="button" onClick={onSubmit}>
+        <Button type="submit" className="btn btn-link float-left" onClick={onSubmit}>
           Edit
+        </Button>
+      </span>
+      <span style={{ width: columns.delete.width }}>
+        <Button type="submit" className="btn btn-link float-left" onClick={onSubmitDelete}>
+          Delete
         </Button>
       </span>
     </div>
@@ -68,6 +78,8 @@ const mapStateToProps = (state: RootState, props: OwnProps) => ({
 const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({
   incrementVote: (id: string) => dispatch(actions.incrementPopularity(id)),
   decrementVote: (id: string) => dispatch(actions.decrementPopularity(id)),
+  selectedPost: (selectedId: string) => dispatch(actions.selectedPost(selectedId)),
+  deletePost: (selectedId: string) => dispatch(actions.removePost(selectedId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostItem);

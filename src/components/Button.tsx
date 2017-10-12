@@ -12,7 +12,7 @@ const ButtonInline = ({
 }: Props) => (
     <Button
       type={type}
-      className="button-inline"
+      className="btn btn-link float-left"
       onClick={onClick}
     >
       {children}

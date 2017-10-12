@@ -5,11 +5,10 @@ import * as actions from '../actions';
 import ConnectedPostItem from './ListItem';
 import './styles/PostList.css';
 
-export interface Props {
-  postsAsIds: string[];
-  addPost: (t: string, id: string) => void;
+interface Props {
+  addPost: (args: actions.NewPostArgs) => void;
   removePost: (id: string) => void;
-  onUpdateCategory: (id: string, s: string) => void;
+  posts: Post[];
 }
 
 const COLUMNS: Columns = {
@@ -33,7 +32,10 @@ const COLUMNS: Columns = {
     width: '5%',
   },
   edit: {
-    width: '10%',
+    width: '5%',
+  },
+  delete: {
+    width: '5%',
   },
 };
 
@@ -49,19 +51,19 @@ const StoriesHeader = ({ columns }: any) => (
     )}
   </div>
 );
-const PostList = ({ postsAsIds, addPost, removePost, onUpdateCategory }: Props) => (
+const PostList = ({ posts, addPost, removePost }: Props) => (
   <div className="stories">
     <StoriesHeader columns={COLUMNS} />
     <div>
-      {postsAsIds.map((postId: string) => <ConnectedPostItem
-        key={postId}
-        postId={postId}
+      {posts.filter((p: Post) => !p.deleted).map((post: Post) => <ConnectedPostItem
+        key={post.id}
+        postId={post.id}
         columns={COLUMNS}
       />)}
     </div>
     <button
       className="button"
-      onClick={(e) => addPost('new stuff', 'Chuck')}
+      onClick={(e) => addPost({title: 'new stuff', author: 'Chuck'})}
     >
       Add Post
     </button>
@@ -70,33 +72,29 @@ const PostList = ({ postsAsIds, addPost, removePost, onUpdateCategory }: Props) 
 
 export function mapDispatchToProps(dispatch: Dispatch<actions.PostListAction>) {
   return {
-    addPost: (post: string, id: string) => dispatch(actions.addPost(post, id)),
+    addPost: (args: actions.NewPostArgs) => dispatch(actions.addPost(args)),
     removePost: (id: string) => dispatch(actions.removePost(id)),
-    onUpdateCategory: (id: string, cat: string) => dispatch(actions.updateCategory(id, cat)),
   };
 }
 
 const matchFilter = (filter: string) => ( (post: Post) => {
-  console.log(`filter: ${filter}, post-category: ${post.category}`);
   return 'SHOW_ALL' === filter || post.category === filter;
 });
+const deletedFilter = () => ( (post: Post) => {
+  return post.deleted;
+});
 // selectors
-function getPostsAsIds(state: RootState): string[] {
+function getPosts(state: RootState): Post[] {
   const filter = state.categoryState.filter;
   const res = state.postState.ids
     .map((id: string) => state.postState.entities[id])
-    .filter(matchFilter(filter))
-    .map((post: Post) => {
-      return post.id;
-    });
+    .filter(matchFilter(filter));
   return res;
 }
 
-function mapStateToPropsList(state: RootState) {
-  return {
-    postsAsIds: getPostsAsIds(state),
-  };
-}
+const mapStateToPropsList = (state: RootState) => ({
+  posts: getPosts(state),
+});
 
 const ConnectedTodoList = connect(mapStateToPropsList, mapDispatchToProps)(PostList);
 export default ConnectedTodoList;

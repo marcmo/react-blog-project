@@ -13,6 +13,7 @@ it('renders without crashing', () => {
     postState: {
       entities: [],
       ids: [],
+      selectedPostId: null,
     },
     categoryState: {
       filter: '',

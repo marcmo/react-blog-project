@@ -2,13 +2,14 @@ export interface RootState {
   readonly postState: PostState;
   readonly categoryState: CategoryState;
 }
-interface Entity {
+export interface Entity {
   readonly id: string;
   readonly post: Post;
 }
 export interface PostState {
   readonly entities: Array<Entity>;
   readonly ids: Array<string>;
+  readonly selectedPostId: string | null;
 }
 export interface Category {
   readonly name: string;
@@ -59,4 +60,5 @@ export interface Columns {
   date: LabeledColumn;
   votes: LabeledColumn;
   edit: LabeledColumn;
+  delete: LabeledColumn;
 }

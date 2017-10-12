@@ -14,15 +14,38 @@
   version "8.0.31"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.31.tgz#d9af61093cf4bfc9f066ca34de0175012cfb0ce9"
 
+"@types/pure-render-decorator@^0.2.28":
+  version "0.2.28"
+  resolved "https://registry.yarnpkg.com/@types/pure-render-decorator/-/pure-render-decorator-0.2.28.tgz#dc58f93b274aa65c72820470989972df3048152a"
+
 "@types/react-dom@^15.5.5":
   version "15.5.5"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-15.5.5.tgz#6b117c7697b61fe74132bfe5c72bceb3319433b8"
   dependencies:
     "@types/react" "*"
 
-"@types/react-redux@^5.0.9":
-  version "5.0.9"
-  resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-5.0.9.tgz#9bfe915356aa0b10d1b9211df0121a06aa7ec9af"
+"@types/react-icon-base@*":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@types/react-icon-base/-/react-icon-base-2.0.4.tgz#2e5f10e116ed8757fd51368c623bf01f272ef817"
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-icons@^2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@types/react-icons/-/react-icons-2.2.3.tgz#885ef7b5cb497c09410686c97e06b0a18bf7f145"
+  dependencies:
+    "@types/react" "*"
+    "@types/react-icon-base" "*"
+
+"@types/react-modal@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@types/react-modal/-/react-modal-2.2.2.tgz#651157522ba45c1ffd8831a2e7bbd8094390a925"
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-redux@^5.0.10":
+  version "5.0.10"
+  resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-5.0.10.tgz#f5c45a349f759d87d6b1f2aa096a756561a6d5c9"
   dependencies:
     "@types/react" "*"
     redux "^3.6.0"
@@ -1682,6 +1705,10 @@ execa@^0.7.0:
     p-finally "^1.0.0"
     signal-exit "^3.0.0"
     strip-eof "^1.0.0"
+
+exenv@^1.2.0:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/exenv/-/exenv-1.2.2.tgz#2ae78e85d9894158670b03d47bec1f03bd91bb9d"
 
 expand-brackets@^0.1.4:
   version "0.1.5"
@@ -4367,6 +4394,23 @@ react-error-overlay@^2.0.2:
     settle-promise "1.0.0"
     source-map "0.5.6"
 
+react-icon-base@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-icon-base/-/react-icon-base-2.1.0.tgz#a196e33fdf1e7aaa1fda3aefbb68bdad9e82a79d"
+
+react-icons@^2.2.7:
+  version "2.2.7"
+  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-2.2.7.tgz#d7860826b258557510dac10680abea5ca23cf650"
+  dependencies:
+    react-icon-base "2.1.0"
+
+react-modal@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-modal/-/react-modal-3.0.0.tgz#2d8c4e0355b610f3df3fac0d60541a81bfc04324"
+  dependencies:
+    exenv "^1.2.0"
+    prop-types "^15.5.10"
+
 react-redux@^5.0.6:
   version "5.0.6"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.6.tgz#23ed3a4f986359d68b5212eaaa681e60d6574946"
@@ -5015,6 +5059,10 @@ spdy@^3.4.1:
     safe-buffer "^5.0.1"
     select-hose "^2.0.0"
     spdy-transport "^2.0.18"
+
+spectre.css@^0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/spectre.css/-/spectre.css-0.4.4.tgz#7f1c3ca42d61c8bff906d0335f25e955b6d0fd93"
 
 sprintf-js@~1.0.2:
   version "1.0.3"

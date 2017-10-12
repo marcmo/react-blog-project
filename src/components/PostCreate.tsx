@@ -1,16 +1,20 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { v4 as uuid } from 'uuid';
-import { PostState, Post, RootState } from '../types';
+import {
+  PostState,
+  Post,
+  RootState,
+} from '../types';
 import * as actions from '../actions';
 
 interface Props {
-  onAddPost: (title: string) => any;
+  onAddPost: (data: actions.NewPostArgs) => any;
   // onAddPost: (title: string) => Dispatch<actions.PostListAction>;
 }
 
 interface State {
-  value: string;
+  value: actions.NewPostArgs;
 }
 
 class PostCreate extends React.Component<Props, State> {
@@ -18,11 +22,11 @@ class PostCreate extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      value: '',
+      value: {
+        title: '',
+        author: 'nobody',
+      }
     };
-
-    this.onCreatePost = this.onCreatePost.bind(this);
-    this.onChangeName = this.onChangeName.bind(this);
   }
 
   private onChangeName(event: any) {
@@ -31,7 +35,12 @@ class PostCreate extends React.Component<Props, State> {
 
   private onCreatePost(event: any) {
     this.props.onAddPost(this.state.value);
-    this.setState({ value: '' });
+    this.setState({
+      value: {
+        title: '',
+        author: 'nobody',
+      }
+    });
     event.preventDefault();
   }
 
@@ -42,7 +51,7 @@ class PostCreate extends React.Component<Props, State> {
           <input
             type="text"
             placeholder="Add Post..."
-            value={this.state.value}
+            value={this.state.value.title}
             onChange={this.onChangeName}
           />
           <button type="submit">Add</button>
@@ -57,7 +66,7 @@ function getPost(state: RootState, postId: string) {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({
-  onAddPost: (title: string) => dispatch(actions.doAddPostWithNotification(uuid(), name)),
+  onAddPost: (data: actions.NewPostArgs) => dispatch(actions.addPost(data)),
 });
 
 export default connect(null, mapDispatchToProps)(PostCreate);
