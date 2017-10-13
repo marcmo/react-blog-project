@@ -13,14 +13,16 @@ interface Props {
   updatePost: (postId: string, args: actions.UpdatedPostContent) => any;
   exit: () => any;
 }
-// augment inteface for our state type
-declare module '../actions' {
-  interface UpdatedPostContent {
-    doRedirect: boolean;
-  }
+interface State {
+  timestamp?: number;
+  title?: string;
+  body?: string;
+  category?: string;
+  votes?: number;
+  doRedirect: boolean;
 }
 
-class EditForm extends React.Component<Props, actions.UpdatedPostContent> {
+class EditForm extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 

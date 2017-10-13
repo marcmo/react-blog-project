@@ -9,10 +9,13 @@ export enum UpdatePostListActionType {
   POST_DESELECTED = 'POST_DESELECTED',
   REMOVE_POST = 'REMOVE_POST',
   FETCH_POSTS = 'FETCH_POSTS',
+  FETCH_POST_DETAILS = 'FETCH_POST_DETAILS',
   FETCH_CATEGORIES = 'FETCH_CATEGORIES',
   FETCH_ERROR = 'FETCH_ERROR',
   INCREMENT_POPULARITY = 'INCREMENT_POPULARITY',
   DECREMENT_POPULARITY = 'DECREMENT_POPULARITY',
+  INCREMENT_POPULARITY_REMOTE = 'INCREMENT_POPULARITY_REMOTE',
+  DECREMENT_POPULARITY_REMOTE = 'DECREMENT_POPULARITY_REMOTE',
 }
 export type PostListAction =
   AddPost |
@@ -20,11 +23,14 @@ export type PostListAction =
   EditPost |
   RemovePost |
   FetchPosts |
+  FetchPostDetails |
   FetchCategories |
   FetchError |
   PostSelected |
   PostDeselected |
   IncrementPopularity |
+  IncrementPopularityRemote |
+  DecrementPopularityRemote |
   DecrementPopularity;
 export interface AddRemotePosts {
   type: UpdatePostListActionType.ADD_REMOTE_POSTS;
@@ -40,6 +46,7 @@ export interface UpdatedPostContent {
   title?: string;
   body?: string;
   category?: string;
+  votes?: number;
 }
 export interface EditPost {
   type: UpdatePostListActionType.EDIT_POST;
@@ -60,6 +67,10 @@ export interface RemovePost {
 export interface FetchPosts {
   type: UpdatePostListActionType.FETCH_POSTS;
 }
+export interface FetchPostDetails {
+  type: UpdatePostListActionType.FETCH_POST_DETAILS;
+  postId: string;
+}
 export interface FetchCategories {
   type: UpdatePostListActionType.FETCH_CATEGORIES;
 }
@@ -71,16 +82,32 @@ export interface IncrementPopularity {
   type: UpdatePostListActionType.INCREMENT_POPULARITY;
   id: string;
 }
+export interface IncrementPopularityRemote {
+  type: UpdatePostListActionType.INCREMENT_POPULARITY_REMOTE;
+  id: string;
+}
 export interface DecrementPopularity {
   type: UpdatePostListActionType.DECREMENT_POPULARITY;
   id: string;
 }
+export interface DecrementPopularityRemote {
+  type: UpdatePostListActionType.DECREMENT_POPULARITY_REMOTE;
+  id: string;
+}
+export const decrementPopularityRemote = (id: string): DecrementPopularityRemote => ({
+  type: UpdatePostListActionType.DECREMENT_POPULARITY_REMOTE,
+  id
+});
 export const decrementPopularity = (id: string): DecrementPopularity => ({
   type: UpdatePostListActionType.DECREMENT_POPULARITY,
   id
 });
 export const incrementPopularity = (id: string): IncrementPopularity => ({
   type: UpdatePostListActionType.INCREMENT_POPULARITY,
+  id
+});
+export const incrementPopularityRemote = (id: string): IncrementPopularityRemote => ({
+  type: UpdatePostListActionType.INCREMENT_POPULARITY_REMOTE,
   id
 });
 export interface NewPostArgs {
@@ -110,6 +137,10 @@ export const addRemotePosts = (posts: Array<Post>): AddRemotePosts => ({
 });
 export const fetchPosts = (): FetchPosts => ({
   type: UpdatePostListActionType.FETCH_POSTS
+});
+export const fetchPostDetails = (postId: string): FetchPostDetails => ({
+  type: UpdatePostListActionType.FETCH_POST_DETAILS,
+  postId,
 });
 export const fetchCategories = (): FetchCategories => ({
   type: UpdatePostListActionType.FETCH_CATEGORIES,
