@@ -8,6 +8,7 @@ import {
   fetchPostDetails,
   upvote,
   downvote,
+  deletePost,
 } from '../api/post';
 
 function* handleFetchPosts(action: actions.FetchPosts) {
@@ -15,6 +16,14 @@ function* handleFetchPosts(action: actions.FetchPosts) {
     const result = yield call(fetchPosts);
     const posts: Array<Post> = result.map(BlogPost.fromJSON);
     yield put(actions.addRemotePosts(posts));
+  } catch (error) {
+    yield put(actions.fetchError(error));
+  }
+}
+function* handleDeletePost(action: actions.RemovePostRemote) {
+  try {
+    const result = yield call(deletePost, action.postId);
+    yield put(actions.removePost(action.postId));
   } catch (error) {
     yield put(actions.fetchError(error));
   }
@@ -67,4 +76,5 @@ export {
   handleFetchCategories,
   handleUpvote,
   handleDownvote,
+  handleDeletePost,
 };

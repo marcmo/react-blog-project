@@ -8,6 +8,7 @@ export enum UpdatePostListActionType {
   POST_SELECTED = 'POST_SELECTED',
   POST_DESELECTED = 'POST_DESELECTED',
   REMOVE_POST = 'REMOVE_POST',
+  REMOVE_POST_REMOTE = 'REMOVE_POST_REMOTE',
   FETCH_POSTS = 'FETCH_POSTS',
   FETCH_POST_DETAILS = 'FETCH_POST_DETAILS',
   FETCH_CATEGORIES = 'FETCH_CATEGORIES',
@@ -22,6 +23,7 @@ export type PostListAction =
   AddRemotePosts |
   EditPost |
   RemovePost |
+  RemovePostRemote |
   FetchPosts |
   FetchPostDetails |
   FetchCategories |
@@ -62,6 +64,10 @@ export interface PostDeselected {
 }
 export interface RemovePost {
   type: UpdatePostListActionType.REMOVE_POST;
+  postId: string;
+}
+export interface RemovePostRemote {
+  type: UpdatePostListActionType.REMOVE_POST_REMOTE;
   postId: string;
 }
 export interface FetchPosts {
@@ -151,6 +157,10 @@ export const fetchError = (error: string): FetchError => ({
 });
 export const removePost = (id: string): RemovePost => ({
   type: UpdatePostListActionType.REMOVE_POST,
+  postId: id,
+});
+export const removePostRemote = (id: string): RemovePostRemote => ({
+  type: UpdatePostListActionType.REMOVE_POST_REMOTE,
   postId: id,
 });
 // filter list actions

@@ -73,7 +73,7 @@ const PostList = ({ posts, addPost, removePost }: Props) => (
 export function mapDispatchToProps(dispatch: Dispatch<actions.PostListAction>) {
   return {
     addPost: (args: actions.NewPostArgs) => dispatch(actions.addPost(args)),
-    removePost: (id: string) => dispatch(actions.removePost(id)),
+    removePost: (id: string) => dispatch(actions.removePostRemote(id)),
   };
 }
 

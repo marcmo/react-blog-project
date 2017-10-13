@@ -16,14 +16,13 @@ const fetchPosts = (): Promise<string> => doGetRequest('posts');
 const fetchCategories = (): Promise<string> => doGetRequest('categories');
 const fetchPostDetails = (postId: string): Promise<string> => doGetRequest(`posts/${postId}`);
 
-axios({
-  method: 'post',
-  url: '/user/12345',
-  data: {
-    firstName: 'Fred',
-    lastName: 'Flintstone'
-  }
-});
+const deletePost = (postId: string): Promise<string> =>
+  axios({
+    method: 'delete',
+    url: `${BASE_URL}/posts/${postId}`,
+  })
+  .then((response) => response.data);
+
 const vote = (v: string, postId: string): Promise<string> =>
   axios({
     method: 'post',
@@ -43,6 +42,7 @@ export {
   fetchPostDetails,
   upvote,
   downvote,
+  deletePost,
 };
 // GET /categories      Get all of the categories available for the app.
 //                      List is found in categories.js. Feel free to extend this list as you desire.

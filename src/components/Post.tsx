@@ -73,7 +73,7 @@ const mapStateToProps = (state: RootState, props: OwnProps) => ({
 const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({
   incrementVote: (id: string) => dispatch(actions.incrementPopularity(id)),
   decrementVote: (id: string) => dispatch(actions.decrementPopularity(id)),
-  deletePost: (selectedId: string) => dispatch(actions.removePost(selectedId)),
+  deletePost: (selectedId: string) => dispatch(actions.removePostRemote(selectedId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostItem);
