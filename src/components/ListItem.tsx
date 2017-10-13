@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { PostState, Post, RootState, Columns } from '../types';
+import { withRouter, Route, Link } from 'react-router-dom';
 import Button from './Button';
-import * as fns from 'date-fns';
+import { formatTimestamp } from './Util';
 import * as actions from '../actions';
 import './styles/ListItem.css';
 
@@ -15,10 +16,6 @@ export interface Props {
   deletePost: (selectedId: string) => any;
   columns: Columns;
 }
-const formatTimestamp = (unixtime: number): string => {
-  const d: Date = new Date(unixtime / 1000);
-  return `${fns.format(d, 'MM/DD/YY')} (${fns.distanceInWordsToNow(d)})`;
-};
 const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, deletePost }: Props) => {
   const { title, id, author, deleted, comments, voteScore } = post;
   const onSubmit = () => {
@@ -27,10 +24,16 @@ const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, d
   const onSubmitDelete = () => {
     deletePost(id);
   };
+  const getEditDestination = () => {
+    return `/edit/${id}`;
+  };
+  const getDestination = () => {
+    return `/${id}`;
+  };
   return (
     <div className="story">
       <span style={{ width: columns.title.width }}>
-        {title}
+        <Link to={getDestination()}>{title}</Link>
       </span>
       <span style={{ width: columns.author.width }}>
         {author}
@@ -49,9 +52,7 @@ const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, d
         </div>
       </span>
       <span style={{ width: columns.edit.width }}>
-        <Button type="submit" className="btn btn-link float-left" onClick={onSubmit}>
-          Edit
-        </Button>
+        <Link to={getEditDestination()}>Edit</Link>
       </span>
       <span style={{ width: columns.delete.width }}>
         <Button type="submit" className="btn btn-link float-left" onClick={onSubmitDelete}>

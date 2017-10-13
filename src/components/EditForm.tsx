@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
+import { Redirect } from 'react-router';
 import { Post, Category, RootState, Entity } from '../types';
 import TextArea from '../components/TextArea';
 import Select from '../components/Select';
@@ -12,6 +13,12 @@ interface Props {
   updatePost: (postId: string, args: actions.UpdatedPostContent) => any;
   exit: () => any;
 }
+// augment inteface for our state type
+declare module '../actions' {
+  interface UpdatedPostContent {
+    doRedirect: boolean;
+  }
+}
 
 class EditForm extends React.Component<Props, actions.UpdatedPostContent> {
   constructor(props: Props) {
@@ -22,6 +29,7 @@ class EditForm extends React.Component<Props, actions.UpdatedPostContent> {
       title: props.post.title,
       body: props.post.body,
       category: props.post.category,
+      doRedirect: false,
     };
   }
 
@@ -64,6 +72,7 @@ class EditForm extends React.Component<Props, actions.UpdatedPostContent> {
 
   handleFormSubmit = (e: any) => {
     e.preventDefault();
+    this.setState({ doRedirect: true });
     this.props.updatePost(this.props.post.id, this.state);
     this.handleClearForm(e);
     this.props.exit();
@@ -71,45 +80,50 @@ class EditForm extends React.Component<Props, actions.UpdatedPostContent> {
 
   render() {
     return (
-      <form onSubmit={this.handleFormSubmit}>
-        <div>
-          <SingleInput
-            inputType={'text'}
-            title={'Title'}
-            name={'name'}
-            controlFunc={this.handleTitleChange}
-            content={this.state.title ? this.state.title : ''}
-            placeholder={'title'}
+      <div className="container">
+        <form onSubmit={this.handleFormSubmit}>
+          <div>
+            <SingleInput
+              inputType={'text'}
+              title={'Title'}
+              name={'name'}
+              controlFunc={this.handleTitleChange}
+              content={this.state.title ? this.state.title : ''}
+              placeholder={'title'}
+            />
+            <Select
+              title={'Category'}
+              name={'Category'}
+              controlFunc={this.handleCategorySelect}
+              options={this.getOptions()}
+              selectedOption={this.state.category ? this.state.category : 'Choose category'}
+            />
+            <TextArea
+              title={'Post Content'}
+              rows={5}
+              resize={false}
+              content={this.state.body ? this.state.body : ''}
+              name={'currentPetInfo'}
+              controlFunc={this.handleDescriptionChange}
+              placeholder={'...some content'}
+            />
+          </div>
+          <input
+            type="submit"
+            className="btn btn-primary float-right"
+            value="Submit"
           />
-          <Select
-            title={'Category'}
-            name={'Category'}
-            controlFunc={this.handleCategorySelect}
-            options={this.getOptions()}
-            selectedOption={this.state.category ? this.state.category : 'Choose category'}
-          />
-          <TextArea
-            title={'Post Content'}
-            rows={5}
-            resize={false}
-            content={this.state.body ? this.state.body : ''}
-            name={'currentPetInfo'}
-            controlFunc={this.handleDescriptionChange}
-            placeholder={'...some content'}
-          />
-        </div>
-        <input
-          type="submit"
-          className="btn btn-primary float-right"
-          value="Submit"
-        />
-        <button
-          className="btn btn-link float-left"
-          onClick={this.handleClearForm}
-        >
-          Clear form
-        </button>
-      </form>
+          <button
+            className="btn btn-link float-left"
+            onClick={this.handleClearForm}
+          >
+            Clear form
+          </button>
+        </form>
+        {this.state.doRedirect && (
+          <Redirect to={'/'}/>
+        )}
+      </div>
     );
   }
 }
@@ -119,9 +133,6 @@ function getPost(state: RootState, postId: string) {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  post: state.postState.selectedPostId
-    ? state.postState.entities[state.postState.selectedPostId]
-    : null,
   categories: state.categoryState.categories,
 });
 const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({

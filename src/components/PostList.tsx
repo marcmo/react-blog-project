@@ -22,7 +22,7 @@ const COLUMNS: Columns = {
   },
   comments: {
     label: 'Comments',
-    width: '10%',
+    width: '6%',
   },
   date: {
     label: 'Date',
@@ -32,10 +32,10 @@ const COLUMNS: Columns = {
     width: '5%',
   },
   edit: {
-    width: '5%',
+    width: '7%',
   },
   delete: {
-    width: '5%',
+    width: '7%',
   },
 };
 
