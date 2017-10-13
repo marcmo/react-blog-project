@@ -2,11 +2,12 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { PostState, Post, RootState, Columns } from '../types';
 import * as actions from '../actions';
+import { postTemplate } from '../components/Util';
 import ConnectedPostItem from './ListItem';
 import './styles/PostList.css';
 
 interface Props {
-  addPost: (args: actions.NewPostArgs) => void;
+  createNewPost: (args: actions.NewPostArgs) => void;
   removePost: (id: string) => void;
   posts: Post[];
 }
@@ -51,7 +52,7 @@ const StoriesHeader = ({ columns }: any) => (
     )}
   </div>
 );
-const PostList = ({ posts, addPost, removePost }: Props) => (
+const PostList = ({ posts, createNewPost, removePost }: Props) => (
   <div className="stories">
     <StoriesHeader columns={COLUMNS} />
     <div>
@@ -63,7 +64,7 @@ const PostList = ({ posts, addPost, removePost }: Props) => (
     </div>
     <button
       className="button"
-      onClick={(e) => addPost({title: 'new stuff', author: 'Chuck'})}
+      onClick={(e) => createNewPost({title: 'new stuff', author: 'Chuck'})}
     >
       Add Post
     </button>
@@ -72,7 +73,9 @@ const PostList = ({ posts, addPost, removePost }: Props) => (
 
 export function mapDispatchToProps(dispatch: Dispatch<actions.PostListAction>) {
   return {
-    addPost: (args: actions.NewPostArgs) => dispatch(actions.addPost(args)),
+    // TODO make udacity configurable
+    createNewPost: (args: actions.NewPostArgs) => dispatch(
+      actions.addPostToRemote(postTemplate(args.title, args.author, 'udacity'))),
     removePost: (id: string) => dispatch(actions.removePostRemote(id)),
   };
 }

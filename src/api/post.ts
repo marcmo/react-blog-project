@@ -23,6 +23,21 @@ const deletePost = (postId: string): Promise<string> =>
   })
   .then((response) => response.data);
 
+const createPost = (post: Post): Promise<string> =>
+  axios({
+    method: 'post',
+    url: `${BASE_URL}/posts`,
+    data: {
+      id: post.id,
+      timestamp: post.timestamp,
+      title: post.title,
+      body: post.body,
+      author: post.author,
+      category: post.category,
+    }
+  })
+  .then((response) => response.data);
+
 const vote = (v: string, postId: string): Promise<string> =>
   axios({
     method: 'post',
@@ -43,6 +58,7 @@ export {
   upvote,
   downvote,
   deletePost,
+  createPost,
 };
 // GET /categories      Get all of the categories available for the app.
 //                      List is found in categories.js. Feel free to extend this list as you desire.

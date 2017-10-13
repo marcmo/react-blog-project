@@ -2,7 +2,8 @@ import { Post, Category } from '../types';
 
 // post list actions
 export enum UpdatePostListActionType {
-  ADD_POST = 'ADD_POST',
+  CREATE_POST = 'CREATE_POST',
+  ADD_POST_REMOTE = 'ADD_POST_REMOTE',
   ADD_REMOTE_POSTS = 'ADD_REMOTE_POSTS',
   EDIT_POST = 'EDIT_POST',
   POST_SELECTED = 'POST_SELECTED',
@@ -19,8 +20,9 @@ export enum UpdatePostListActionType {
   DECREMENT_POPULARITY_REMOTE = 'DECREMENT_POPULARITY_REMOTE',
 }
 export type PostListAction =
-  AddPost |
+  CreatePost |
   AddRemotePosts |
+  AddPostToRemote |
   EditPost |
   RemovePost |
   RemovePostRemote |
@@ -38,10 +40,13 @@ export interface AddRemotePosts {
   type: UpdatePostListActionType.ADD_REMOTE_POSTS;
   posts: Array<Post>;
 }
-export interface AddPost {
-  type: UpdatePostListActionType.ADD_POST;
-  title: string;
-  author: string;
+export interface CreatePost {
+  type: UpdatePostListActionType.CREATE_POST;
+  post: Post;
+}
+export interface AddPostToRemote {
+  type: UpdatePostListActionType.ADD_POST_REMOTE;
+  post: Post;
 }
 export interface UpdatedPostContent {
   timestamp?: number;
@@ -120,10 +125,9 @@ export interface NewPostArgs {
   title: string;
   author: string;
 }
-export const addPost = ({title, author}: NewPostArgs): AddPost => ({
-  type: UpdatePostListActionType.ADD_POST,
-  title,
-  author
+export const createLocalPost = (post: Post): CreatePost => ({
+  type: UpdatePostListActionType.CREATE_POST,
+  post,
 });
 export const editPost = (postId: string, newContent: UpdatedPostContent): EditPost => ({
   type: UpdatePostListActionType.EDIT_POST,
@@ -140,6 +144,10 @@ export const deselectedPost = (): PostDeselected => ({
 export const addRemotePosts = (posts: Array<Post>): AddRemotePosts => ({
   type: UpdatePostListActionType.ADD_REMOTE_POSTS,
   posts
+});
+export const addPostToRemote = (post: Post): AddPostToRemote => ({
+  type: UpdatePostListActionType.ADD_POST_REMOTE,
+  post
 });
 export const fetchPosts = (): FetchPosts => ({
   type: UpdatePostListActionType.FETCH_POSTS

@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import * as Redux from 'redux';
 import { schema, normalize } from 'normalizr';
 import * as actions from '../actions';
-import { v4 as uuid } from 'uuid';
+import { postTemplate } from '../components/Util';
 import {
   Post,
   PostState,
@@ -15,27 +15,7 @@ import {
 
 const postSchema = new schema.Entity('post');
 
-const createPost = (t: string, author: string, category: string): Post => {
-  const newPost = {
-    id: uuid(),
-    timestamp: Date.now(),
-    title: t,
-    body: '',
-    author,
-    category,
-    voteScore: 0,
-    deleted: false,
-    comments: []
-  };
-  return newPost;
-};
-
-const posts: Array<Post> = [
-  createPost('Man request adapted spirits set pressed', 'Joey', 'myStuff'),
-  createPost('Up to denoting subjects sensible feelings it indulged directly', 'Joey', 'tech'),
-  createPost('We dwelling elegance do shutters appetite yourself diverted', 'Joey', 'myStuff'),
-];
-
+const posts: Array<Post> = [];
 const normalizedPosts = normalize(posts, [postSchema]);
 
 const initialPostsState: PostState = {
@@ -53,11 +33,10 @@ const initialFilterState: CategoryState = {
 type PostListReducer = Redux.Reducer<PostState>;
 const postListReducer: PostListReducer = (state = initialPostsState, action: actions.PostListAction) => {
   switch (action.type) {
-    case actions.UpdatePostListActionType.ADD_POST:
+    case actions.UpdatePostListActionType.CREATE_POST:
       {
-        const newPost = createPost(action.title, action.author, '');
-        const entities = { ...state.entities, [newPost.id]: newPost };
-        const ids = [...state.ids, newPost.id];
+        const entities = { ...state.entities, [action.post.id]: action.post };
+        const ids = [...state.ids, action.post.id];
         return { ...state, entities, ids };
       }
     case actions.UpdatePostListActionType.EDIT_POST:
