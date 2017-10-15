@@ -8,7 +8,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
     yarn install
 
-### Run the dev server
+### Run the dev web server
 
     yarn start
 
@@ -17,4 +17,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 running linter
 
     yarn lint
+
+## Test backend
+
+### Run the dev API backend service
+
+example server taken from [readable-starter](https://github.com/udacity/reactnd-project-readable-starter)
+
+    cd api-server & yarn install & node server
 
