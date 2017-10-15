@@ -55,6 +55,7 @@
         "no-switch-case-fall-through": true,
         "no-trailing-whitespace": false,
         "no-unused-expression": true,
+        "no-unused-variable": [true, {"severity": "warning"}],
         "one-line": [
             true,
             "check-catch",

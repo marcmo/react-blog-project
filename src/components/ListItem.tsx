@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { PostState, Post, RootState, Columns } from '../types';
-import { withRouter, Route, Link } from 'react-router-dom';
+import { Post, RootState, Columns } from '../types';
+import { Link } from 'react-router-dom';
 import Button from './Button';
 import { formatTimestamp } from './Util';
 import * as actions from '../actions';
@@ -17,10 +17,7 @@ export interface Props {
   columns: Columns;
 }
 const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, deletePost }: Props) => {
-  const { title, id, author, deleted, comments, voteScore } = post;
-  const onSubmit = () => {
-    selectedPost(id);
-  };
+  const { title, id, author, comments, voteScore } = post;
   const onSubmitDelete = () => {
     deletePost(id);
   };

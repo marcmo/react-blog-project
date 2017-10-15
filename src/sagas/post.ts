@@ -23,7 +23,7 @@ function* handleFetchPosts(action: actions.FetchPosts) {
 }
 function* handleDeletePost(action: actions.RemovePostRemote) {
   try {
-    const result = yield call(deletePost, action.postId);
+    yield call(deletePost, action.postId);
     yield put(actions.removePost(action.postId));
   } catch (error) {
     yield put(actions.fetchError(error));
@@ -31,7 +31,7 @@ function* handleDeletePost(action: actions.RemovePostRemote) {
 }
 function* handleCreatePost(action: actions.AddPostToRemote) {
   try {
-    const result = yield call(createPost, action.post);
+    yield call(createPost, action.post);
     yield put(actions.createLocalPost(action.post));
   } catch (error) {
     yield put(actions.fetchError(error));
@@ -41,9 +41,6 @@ function* handleFetchPostDetails(action: actions.FetchPostDetails) {
   try {
     const result = yield call(fetchPostDetails, action.postId);
     const post: Post = BlogPost.fromJSON(result);
-    const updated: actions.UpdatedPostContent = {
-      votes: post.voteScore,
-    };
     yield put(actions.editPost(
       post.id,
       {
@@ -87,4 +84,5 @@ export {
   handleDownvote,
   handleDeletePost,
   handleCreatePost,
+  handleFetchPostDetails,
 };

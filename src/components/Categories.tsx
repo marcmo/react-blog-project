@@ -1,13 +1,10 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import * as actions from '../actions';
+import { FilterActionType } from '../actions/types';
 import Button from './Button';
 import { RootState, Category } from '../types';
 import './styles/SearchPosts.css';
-
-const applyQueryState = (query: string) => () => ({
-  query
-});
 
 interface VehicleProps {
   name: string;
@@ -37,7 +34,7 @@ const Categories = (props: Props) => {
 const mapStateToProps = (state: RootState) => ({
   categories: state.categoryState.categories.map((c: Category) => c.name),
 });
-const mapDispatchToProps = (dispatch: Dispatch<actions.FilterActionType>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<FilterActionType>) => ({
   selectCategory: (category: string) => dispatch(actions.applyFilter(category)),
 });
 

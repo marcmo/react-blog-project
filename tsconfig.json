@@ -19,6 +19,7 @@
     "noUnusedLocals": false
   },
   "exclude": [
+    "api-server",
     "node_modules",
     "build",
     "scripts",

@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { PostState, Post, RootState, Columns } from '../types';
+import {
+  Post,
+  RootState,
+  Columns,
+} from '../types';
 import * as actions from '../actions';
 import { postTemplate } from '../components/Util';
 import ConnectedPostItem from './ListItem';
@@ -82,9 +86,6 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.PostListAction>) {
 
 const matchFilter = (filter: string) => ( (post: Post) => {
   return 'SHOW_ALL' === filter || post.category === filter;
-});
-const deletedFilter = () => ( (post: Post) => {
-  return post.deleted;
 });
 // selectors
 function getPosts(state: RootState): Post[] {

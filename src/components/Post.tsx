@@ -3,7 +3,7 @@ import { connect, Dispatch } from 'react-redux';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import { formatTimestamp } from './Util';
-import { PostState, Post, RootState, Columns } from '../types';
+import { Post, RootState } from '../types';
 import * as actions from '../actions';
 
 export interface Props {
@@ -12,9 +12,6 @@ export interface Props {
   decrementVote: (id: string) => any;
   deletePost: (selectedId: string) => any;
 }
-const handleChange = (event: any) => {
-  return;
-};
 interface State {
   doRedirect: boolean;
 }
@@ -32,12 +29,12 @@ class PostItem extends React.Component<Props, State> {
   }
 
   render() {
-    const { title, id, author, deleted, comments, voteScore } = this.props.post;
+    const { title } = this.props.post;
     return (
       <div className="container">
         <div className="columns">
           <div className="column col-xs-6">
-            <span className="h4">{this.props.post.title}</span>
+            <span className="h4">{title}</span>
           </div>
           <div className="column col-xs-6">
             {formatTimestamp(this.props.post.timestamp * 1000)}
@@ -57,10 +54,6 @@ class PostItem extends React.Component<Props, State> {
       </div>
     );
   }
-}
-
-function getPost(state: RootState, postId: string) {
-  return state.postState.entities[postId];
 }
 
 interface OwnProps {

@@ -1,5 +1,5 @@
 import { takeEvery, all } from 'redux-saga/effects';
-import * as actions from '../actions';
+import { UpdatePostListActionType } from '../actions/types';
 import {
   handleFetchPosts,
   handleFetchCategories,
@@ -11,12 +11,12 @@ import {
 
 function *watchAll() {
   yield all([
-    takeEvery(actions.UpdatePostListActionType.FETCH_POSTS, handleFetchPosts),
-    takeEvery(actions.UpdatePostListActionType.FETCH_CATEGORIES, handleFetchCategories),
-    takeEvery(actions.UpdatePostListActionType.INCREMENT_POPULARITY_REMOTE, handleUpvote),
-    takeEvery(actions.UpdatePostListActionType.DECREMENT_POPULARITY_REMOTE, handleDownvote),
-    takeEvery(actions.UpdatePostListActionType.REMOVE_POST_REMOTE, handleDeletePost),
-    takeEvery(actions.UpdatePostListActionType.ADD_POST_REMOTE, handleCreatePost),
+    takeEvery(UpdatePostListActionType.FETCH_POSTS, handleFetchPosts),
+    takeEvery(UpdatePostListActionType.FETCH_CATEGORIES, handleFetchCategories),
+    takeEvery(UpdatePostListActionType.INCREMENT_POPULARITY_REMOTE, handleUpvote),
+    takeEvery(UpdatePostListActionType.DECREMENT_POPULARITY_REMOTE, handleDownvote),
+    takeEvery(UpdatePostListActionType.REMOVE_POST_REMOTE, handleDeletePost),
+    takeEvery(UpdatePostListActionType.ADD_POST_REMOTE, handleCreatePost),
   ]);
 }
 

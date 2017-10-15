@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Redirect } from 'react-router';
-import { Post, Category, RootState, Entity } from '../types';
+import { Post, Category, RootState } from '../types';
 import TextArea from '../components/TextArea';
 import Select from '../components/Select';
 import SingleInput from '../components/SingleInput';
@@ -128,10 +128,6 @@ class EditForm extends React.Component<Props, State> {
       </div>
     );
   }
-}
-
-function getPost(state: RootState, postId: string) {
-  return state.postState.entities[postId];
 }
 
 const mapStateToProps = (state: RootState) => ({
