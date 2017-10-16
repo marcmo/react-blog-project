@@ -4,6 +4,7 @@ import { Post, Category } from '../types';
 import { BlogPost } from '../types/BlogPost';
 import {
   fetchPosts,
+  editPost,
   fetchCategories,
   fetchPostDetails,
   upvote,
@@ -41,11 +42,27 @@ function* handleFetchPostDetails(action: actions.FetchPostDetails) {
   try {
     const result = yield call(fetchPostDetails, action.postId);
     const post: Post = BlogPost.fromJSON(result);
-    yield put(actions.editPost(
+    yield put(actions.updatePost(
       post.id,
-      {
-        votes: post.voteScore,
-      }
+      post.timestamp,
+      post.title,
+      post.body,
+      post.author,
+      post.category,
+      post.voteScore,
+      post.deleted,
+    ));
+  } catch (error) {
+    yield put(actions.fetchError(error));
+  }
+}
+function* handleEditPost(action: actions.EditRemotePost) {
+  try {
+    yield call(editPost, action.postId, action.newTitle, action.newBody);
+    yield put(actions.editPost(
+      action.postId,
+      action.newTitle,
+      action.newBody,
     ));
   } catch (error) {
     yield put(actions.fetchError(error));
@@ -85,4 +102,5 @@ export {
   handleDeletePost,
   handleCreatePost,
   handleFetchPostDetails,
+  handleEditPost,
 };

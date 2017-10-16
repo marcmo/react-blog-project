@@ -20,11 +20,17 @@ const deletePost = (postId: string): Promise<string> =>
   axios({
     method: 'delete',
     url: `${BASE_URL}/posts/${postId}`,
+    headers: {
+      Authorization: 'Basic ' + btoa('username:password'),
+    }
   })
   .then((response) => response.data);
 
 const createPost = (post: Post): Promise<string> =>
   axios({
+    headers: {
+      Authorization: 'Basic ' + btoa('username:password'),
+    },
     method: 'post',
     url: `${BASE_URL}/posts`,
     data: {
@@ -40,10 +46,26 @@ const createPost = (post: Post): Promise<string> =>
 
 const vote = (v: string, postId: string): Promise<string> =>
   axios({
+    headers: {
+      Authorization: 'Basic ' + btoa('username:password'),
+    },
     method: 'post',
     url: `${BASE_URL}/posts/${postId}`,
     data: {
       option: v,
+    }
+  })
+  .then((response) => response.data);
+const editPost = (postId: string, newTitle: string, newBody: string): Promise<string> =>
+  axios({
+    headers: {
+      Authorization: 'Basic ' + btoa('username:password'),
+    },
+    method: 'put',
+    url: `${BASE_URL}/posts/${postId}`,
+    data: {
+      title: newTitle,
+      body: newBody,
     }
   })
   .then((response) => response.data);
@@ -59,4 +81,5 @@ export {
   downvote,
   deletePost,
   createPost,
+  editPost,
 };

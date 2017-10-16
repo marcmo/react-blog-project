@@ -28,7 +28,9 @@ export const postListReducer: PostListReducer = (state = initialPostsState, acti
         return { ...state, entities, ids };
       }
     case UpdatePostListActionType.EDIT_POST:
-      return updatePostContent(state, action.postId, action.newContent);
+      return updateTitleAndBody(state, action.postId, action.newTitle, action.newBody);
+    case UpdatePostListActionType.UPDATE_POST:
+      return updatePostContent(state, action.id, action.info);
     case UpdatePostListActionType.POST_SELECTED:
       return {
         ...state,
@@ -90,16 +92,35 @@ const changeVote = (
   const entities = { ...state.entities, [post.id]: updatedPost };
   return { ...state, entities };
 };
-const updatePostContent = (
+const updateTitleAndBody = (
   state: PostState,
   postId: string,
-  newContent: actions.UpdatedPostContent): PostState => {
+  newTitle: string,
+  newBody: string): PostState => {
   const post: Post = state.entities[postId];
   const updatedPost: Post = {
     ...post,
-    body: newContent.body ? newContent.body : post.body,
-    category: newContent.category ? newContent.category : post.category,
-    title: newContent.title ? newContent.title : post.title,
+    body: newBody,
+    title: newTitle,
+  };
+  const entities = { ...state.entities, [post.id]: updatedPost };
+  return { ...state, entities };
+};
+const updatePostContent = (
+  state: PostState,
+  postId: string,
+  info: actions.UpdatePostInfo
+  ): PostState => {
+  const post: Post = state.entities[postId];
+  const updatedPost: Post = {
+    ...post,
+    timestamp: info.timestamp ? info.timestamp : post.timestamp,
+    title: info.title ? info.title : post.title,
+    body: info.body ? info.body : post.body,
+    author: info.author ? info.author : post.author,
+    category: info.category ? info.category : post.category,
+    voteScore: info.voteScore ? info.voteScore : post.voteScore,
+    deleted: info.deleted ? info.deleted : post.deleted,
   };
   const entities = { ...state.entities, [post.id]: updatedPost };
   return { ...state, entities };

@@ -10,7 +10,7 @@ import * as actions from '../actions';
 interface Props {
   post: Post;
   categories: Array<Category>;
-  updatePost: (postId: string, args: actions.UpdatedPostContent) => any;
+  updatePost: (postId: string, args: actions.UpdatePostInfo) => any;
   exit: () => any;
 }
 interface State {
@@ -134,7 +134,8 @@ const mapStateToProps = (state: RootState) => ({
   categories: state.categoryState.categories,
 });
 const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({
-  updatePost: (id: string, args: actions.UpdatedPostContent) => dispatch(actions.editPost(id, args)),
+  updatePost: (id: string, args: actions.UpdatePostInfo) =>
+    dispatch(actions.editRemotePost(id, args.title ? args.title : '', args.body ? args.body : '')),
   exit: () => dispatch(actions.deselectedPost()),
 });
 

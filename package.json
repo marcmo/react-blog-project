@@ -29,6 +29,7 @@
     "test": "react-scripts-ts test --env=jsdom",
     "burn": "watchman watch-del-all; rm -rf node_modules; rm -fr $TMPDIR/react-native-packager-cache-*; rm -rf `yarn cache dir`; yarn install",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}' -t stylish && tsc",
+    "unused": "tslint --type-check --project tsconfig.json -c tslint.json 'src/**/*.{ts,tsx}' -t stylish",
     "fix": "tslint -c tslint.json 'src/**/*.{ts,tsx}' -t stylish --fix",
     "eject": "react-scripts-ts eject"
   },

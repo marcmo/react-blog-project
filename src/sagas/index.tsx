@@ -7,6 +7,7 @@ import {
   handleDownvote,
   handleDeletePost,
   handleCreatePost,
+  handleEditPost,
 } from './post';
 
 function *watchAll() {
@@ -17,6 +18,7 @@ function *watchAll() {
     takeEvery(UpdatePostListActionType.DECREMENT_POPULARITY_REMOTE, handleDownvote),
     takeEvery(UpdatePostListActionType.REMOVE_POST_REMOTE, handleDeletePost),
     takeEvery(UpdatePostListActionType.ADD_POST_REMOTE, handleCreatePost),
+    takeEvery(UpdatePostListActionType.EDIT_REMOTE_POST, handleEditPost),
   ]);
 }
 

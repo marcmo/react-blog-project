@@ -8,7 +8,9 @@ export type PostListAction =
   CreatePost |
   AddRemotePosts |
   AddPostToRemote |
+  EditRemotePost |
   EditPost |
+  UpdatePost |
   RemovePost |
   RemovePostRemote |
   FetchPosts |
@@ -33,17 +35,31 @@ export interface AddPostToRemote {
   type: UpdatePostListActionType.ADD_POST_REMOTE;
   post: Post;
 }
-export interface UpdatedPostContent {
-  timestamp?: number;
-  title?: string;
-  body?: string;
-  category?: string;
-  votes?: number;
-}
 export interface EditPost {
   type: UpdatePostListActionType.EDIT_POST;
   postId: string;
-  newContent: UpdatedPostContent;
+  newTitle: string;
+  newBody: string;
+}
+export interface UpdatePostInfo {
+  timestamp?: number;
+  title?: string;
+  body?: string;
+  author?: string;
+  category?: string;
+  voteScore?: number;
+  deleted?: boolean;
+}
+export interface UpdatePost {
+  type: UpdatePostListActionType.UPDATE_POST;
+  id: string;
+  info: UpdatePostInfo;
+}
+export interface EditRemotePost {
+  type: UpdatePostListActionType.EDIT_REMOTE_POST;
+  postId: string;
+  newTitle: string;
+  newBody: string;
 }
 export interface PostSelected {
   type: UpdatePostListActionType.POST_SELECTED;
@@ -114,10 +130,39 @@ export const createLocalPost = (post: Post): CreatePost => ({
   type: UpdatePostListActionType.CREATE_POST,
   post,
 });
-export const editPost = (postId: string, newContent: UpdatedPostContent): EditPost => ({
+export const editPost = (postId: string, newTitle: string, newBody: string): EditPost => ({
   type: UpdatePostListActionType.EDIT_POST,
   postId,
-  newContent,
+  newTitle,
+  newBody,
+});
+export const updatePost = (
+  postId: string,
+  timestamp: number,
+  title: string,
+  body: string,
+  author: string,
+  category: string,
+  voteScore: number,
+  deleted: boolean
+): UpdatePost => ({
+  type: UpdatePostListActionType.UPDATE_POST,
+  id: postId,
+  info: {
+    timestamp,
+    title,
+    body,
+    author,
+    category,
+    voteScore,
+    deleted,
+  }
+});
+export const editRemotePost = (postId: string, newTitle: string, newBody: string): EditRemotePost => ({
+  type: UpdatePostListActionType.EDIT_REMOTE_POST,
+  postId,
+  newTitle,
+  newBody,
 });
 export const selectedPost = (selectedId: string): PostSelected => ({
   type: UpdatePostListActionType.POST_SELECTED,

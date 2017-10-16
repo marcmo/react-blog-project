@@ -29,12 +29,13 @@ function getData (token) {
   let data = db[token]
   if (data == null) {
     data = db[token] = clone(defaultData)
+    console.warn(`[${token}] start new session`);
   }
   return data
 }
 
 function getByCategory (token, category) {
-  console.warn('getByCategory:' + category);
+  console.warn(`[${token}] getByCategory: ${category}`);
   return new Promise((res) => {
     let posts = getData(token)
     let keys = Object.keys(posts)
@@ -44,7 +45,7 @@ function getByCategory (token, category) {
 }
 
 function get (token, id) {
-  console.warn('get id:' + id);
+  console.warn(`[${token}] get id:` + id);
   return new Promise((res) => {
     const posts = getData(token)
     res(
@@ -56,18 +57,20 @@ function get (token, id) {
 }
 
 function getAll (token) {
-  console.warn('get all');
+  console.warn(`[${token}] get all`);
   return new Promise((res) => {
     const posts = getData(token)
     let keys = Object.keys(posts)
+    console.warn(`[${token}] get all (${keys.length} posts)`);
     let filtered_keys = keys.filter(key => !posts[key].deleted)
+    console.warn(`[${token}] get all (${filtered_keys.length} posts)`);
     res(filtered_keys.map(key => posts[key]))
   })
 }
 
 function add (token, post) {
-  console.warn('adding post with id ' + post.id);
-  console.warn('title ' + post.title);
+  console.warn(`[${token}] adding post with id ` + post.id);
+  console.warn('.......title ' + post.title);
   return new Promise((res) => {
     let posts = getData(token)
 
@@ -81,13 +84,17 @@ function add (token, post) {
       voteScore: 1,
       deleted: false
     }
+    var keys = [];
+    for(var k in posts) keys.push(k);
+
+    console.warn(`[${token}] added post, we now have ${keys.length} items`)
 
     res(posts[post.id])
   })
 }
 
 function vote (token, id, option) {
-  console.warn("voting on post id:" + id)
+  console.warn(`[${token}] voting on post id:` + id)
   return new Promise((res) => {
     let posts = getData(token)
     post = posts[id]
@@ -101,13 +108,13 @@ function vote (token, id, option) {
         default:
             console.log(`posts.vote received incorrect parameter: ${option}`)
     }
-    console.warn("---> vote is now " + post.voteScore)
+    console.warn(`[${token}] --> vote is now ` + post.voteScore)
     res(post)
   })
 }
 
 function disable (token, id) {
-    console.warn('setting post to deleted, id:' + id);
+    console.warn(`[token:${token}] setting post to deleted, id:` + id);
     return new Promise((res) => {
       let posts = getData(token)
       posts[id].deleted = true
@@ -116,7 +123,7 @@ function disable (token, id) {
 }
 
 function edit (token, id, post) {
-    console.warn('editing post with id:' + id);
+    console.warn(`[${token}] editing post with id:` + id);
     return new Promise((res) => {
         let posts = getData(token)
         for (prop in post) {
