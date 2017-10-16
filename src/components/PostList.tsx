@@ -19,40 +19,40 @@ interface Props {
 const COLUMNS: Columns = {
   title: {
     label: 'Title',
-    width: '40%',
+    className: 'column col-4 story',
   },
   author: {
     label: 'Author',
-    width: '10%',
+    className: 'column col-1 story',
   },
   comments: {
     label: 'Comments',
-    width: '6%',
+    className: 'column col-1 story',
   },
   date: {
     label: 'Date',
-    width: '25%',
+    className: 'column col-3 story',
   },
   votes: {
-    width: '5%',
+    className: 'column col-1 story',
   },
   edit: {
-    width: '7%',
+    className: 'column col-1 story',
   },
   delete: {
-    width: '7%',
+    className: 'column col-1 story',
   },
 };
 
 const StoriesHeader = ({ columns }: any) => (
   <div className="stories-header">
     {Object.keys(columns).map((key) =>
-      <span
+      <div
         key={key}
-        style={{ width: columns[key].width }}
+        className={columns[key].className}
       >
         {columns[key].label}
-      </span>
+      </div>
     )}
   </div>
 );

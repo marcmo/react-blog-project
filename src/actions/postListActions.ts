@@ -15,6 +15,7 @@ export type PostListAction =
   RemovePostRemote |
   FetchPosts |
   FetchPostDetails |
+  FetchPostComments |
   FetchCategories |
   FetchError |
   PostSelected |
@@ -81,6 +82,10 @@ export interface FetchPosts {
 }
 export interface FetchPostDetails {
   type: UpdatePostListActionType.FETCH_POST_DETAILS;
+  postId: string;
+}
+export interface FetchPostComments {
+  type: UpdatePostListActionType.FETCH_POST_COMMENTS;
   postId: string;
 }
 export interface FetchCategories {
@@ -168,7 +173,7 @@ export const selectedPost = (selectedId: string): PostSelected => ({
   type: UpdatePostListActionType.POST_SELECTED,
   selectedId,
 });
-export const deselectedPost = (): PostDeselected => ({
+export const createDeselectedPostAction = (): PostDeselected => ({
   type: UpdatePostListActionType.POST_DESELECTED,
 });
 export const addRemotePosts = (posts: Array<Post>): AddRemotePosts => ({
@@ -179,14 +184,18 @@ export const addPostToRemote = (post: Post): AddPostToRemote => ({
   type: UpdatePostListActionType.ADD_POST_REMOTE,
   post
 });
-export const fetchPosts = (): FetchPosts => ({
+export const createFetchPostsAction = (): FetchPosts => ({
   type: UpdatePostListActionType.FETCH_POSTS
 });
-export const fetchPostDetails = (postId: string): FetchPostDetails => ({
+export const fetchCommentsAction = (postId: string): FetchPostComments => ({
+  type: UpdatePostListActionType.FETCH_POST_COMMENTS,
+  postId,
+});
+export const fetchDetailsAction = (postId: string): FetchPostDetails => ({
   type: UpdatePostListActionType.FETCH_POST_DETAILS,
   postId,
 });
-export const fetchCategories = (): FetchCategories => ({
+export const createFetchCategoriesAction = (): FetchCategories => ({
   type: UpdatePostListActionType.FETCH_CATEGORIES,
 });
 export const fetchError = (error: string): FetchError => ({

@@ -51,7 +51,7 @@ export interface Comment {
 
 export interface LabeledColumn {
   label?: string;
-  width: string;
+  className: string;
 }
 export interface Columns {
   title: LabeledColumn;

@@ -1,4 +1,5 @@
 const clone = require('clone')
+const logging = require('./logging')
 
 let db = {}
 
@@ -29,13 +30,13 @@ function getData (token) {
   let data = db[token]
   if (data == null) {
     data = db[token] = clone(defaultData)
-    console.warn(`[${token}] start new session`);
+    logging.log.w(`[${token}] start new session`)
   }
   return data
 }
 
 function getByCategory (token, category) {
-  console.warn(`[${token}] getByCategory: ${category}`);
+  logging.log.w(`[${token}] getByCategory: ${category}`);
   return new Promise((res) => {
     let posts = getData(token)
     let keys = Object.keys(posts)
@@ -45,7 +46,7 @@ function getByCategory (token, category) {
 }
 
 function get (token, id) {
-  console.warn(`[${token}] get id:` + id);
+  logging.log.w(`[${token}] get id:` + id);
   return new Promise((res) => {
     const posts = getData(token)
     res(
@@ -57,20 +58,18 @@ function get (token, id) {
 }
 
 function getAll (token) {
-  console.warn(`[${token}] get all`);
   return new Promise((res) => {
     const posts = getData(token)
     let keys = Object.keys(posts)
-    console.warn(`[${token}] get all (${keys.length} posts)`);
     let filtered_keys = keys.filter(key => !posts[key].deleted)
-    console.warn(`[${token}] get all (${filtered_keys.length} posts)`);
+    logging.log.w(`[${token}] get all (${filtered_keys.length} from ${keys.length} posts) posts)`);
     res(filtered_keys.map(key => posts[key]))
   })
 }
 
 function add (token, post) {
-  console.warn(`[${token}] adding post with id ` + post.id);
-  console.warn('.......title ' + post.title);
+  logging.log.w(`[${token}] adding post with id ` + post.id);
+  logging.log.w('.......title ' + post.title);
   return new Promise((res) => {
     let posts = getData(token)
 
@@ -87,14 +86,14 @@ function add (token, post) {
     var keys = [];
     for(var k in posts) keys.push(k);
 
-    console.warn(`[${token}] added post, we now have ${keys.length} items`)
+    logging.log.w(`[${token}] added post, we now have ${keys.length} items`)
 
     res(posts[post.id])
   })
 }
 
 function vote (token, id, option) {
-  console.warn(`[${token}] voting on post id:` + id)
+  logging.log.w(`[${token}] voting on post id:` + id)
   return new Promise((res) => {
     let posts = getData(token)
     post = posts[id]
@@ -106,15 +105,15 @@ function vote (token, id, option) {
             post.voteScore = post.voteScore - 1
             break
         default:
-            console.log(`posts.vote received incorrect parameter: ${option}`)
+            logging.log.d(`posts.vote received incorrect parameter: ${option}`)
     }
-    console.warn(`[${token}] --> vote is now ` + post.voteScore)
+    logging.log.w(`[${token}] --> vote is now ` + post.voteScore)
     res(post)
   })
 }
 
 function disable (token, id) {
-    console.warn(`[token:${token}] setting post to deleted, id:` + id);
+    logging.log.w(`[token:${token}] setting post to deleted, id:` + id);
     return new Promise((res) => {
       let posts = getData(token)
       posts[id].deleted = true
@@ -123,7 +122,7 @@ function disable (token, id) {
 }
 
 function edit (token, id, post) {
-    console.warn(`[${token}] editing post with id:` + id);
+    logging.log.w(`"token:[${token}]" editing post with id: ${id}`, post);
     return new Promise((res) => {
         let posts = getData(token)
         for (prop in post) {

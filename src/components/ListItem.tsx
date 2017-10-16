@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Post, RootState, Columns } from '../types';
 import { Link } from 'react-router-dom';
-import Trash from 'react-icons/lib/fa/trash-o';
+import Trash from 'react-icons/lib/ti/trash';
 import Pencile from 'react-icons/lib/ti/pencil';
 import Button from './Button';
 import { formatTimestamp } from './Util';
@@ -30,38 +30,40 @@ const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, d
     return `/${id}`;
   };
   return (
-    <div className="story">
-      <span style={{ width: columns.title.width }}>
-        <Link to={getDestination()}>{title}</Link>
-      </span>
-      <span style={{ width: columns.author.width }}>
-        {author}
-      </span>
-      <span style={{ width: columns.comments.width }}>
-        {comments.length}
-      </span>
-      <span style={{ width: columns.date.width }}>
-        {formatTimestamp(post.timestamp * 1000)}
-      </span>
-      <span style={{ width: columns.votes.width }}>
-        <div className="vote circle">
-          <div className="increment up" onClick={() => incrementVote(id)} />
-          <div className="increment down" onClick={() => decrementVote(id)} />
-          <div className="count">{voteScore}</div>
+    <div className="container">
+      <div className="columns">
+        <div className={columns.title.className}>
+          <Link to={getDestination()}>{title}</Link>
         </div>
-      </span>
-      <span style={{ width: columns.edit.width }}>
-        <Link to={getEditDestination()}>
-          <button type="submit" className="btn-icon">
-            <Pencile size={25} />
+        <div className={columns.author.className}>
+          {author}
+        </div>
+        <div className={columns.comments.className}>
+          {comments.length}
+        </div>
+        <div className={columns.date.className}>
+          {formatTimestamp(post.timestamp * 1000)}
+        </div>
+        <div className={columns.votes.className}>
+          <div className="vote circle">
+            <div className="increment up" onClick={() => incrementVote(id)} />
+            <div className="increment down" onClick={() => decrementVote(id)} />
+            <div className="count">{voteScore}</div>
+          </div>
+        </div>
+        <div className={columns.edit.className}>
+          <Link to={getEditDestination()}>
+            <button type="submit" className="btn-icon">
+              <Pencile size={25} />
+            </button>
+          </Link>
+        </div>
+        <div className={columns.delete.className}>
+          <button type="submit" className="btn-icon" onClick={onSubmitDelete}>
+            <Trash size={25} />
           </button>
-        </Link>
-      </span>
-      <span style={{ width: columns.delete.width }}>
-        <button type="submit" className="btn-icon" onClick={onSubmitDelete}>
-          <Trash size={25} />
-        </button>
-      </span>
+        </div>
+      </div>
     </div>
   );
 };

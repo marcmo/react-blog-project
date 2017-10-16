@@ -2,20 +2,11 @@ import { call, put } from 'redux-saga/effects';
 import * as actions from '../actions';
 import { Post, Category } from '../types';
 import { BlogPost } from '../types/BlogPost';
-import {
-  fetchPosts,
-  editPost,
-  fetchCategories,
-  fetchPostDetails,
-  upvote,
-  downvote,
-  deletePost,
-  createPost,
-} from '../api/post';
+import * as Api from '../api';
 
 function* handleFetchPosts(action: actions.FetchPosts) {
   try {
-    const result = yield call(fetchPosts);
+    const result = yield call(Api.fetchPosts);
     const posts: Array<Post> = result.map(BlogPost.fromJSON);
     yield put(actions.addRemotePosts(posts));
   } catch (error) {
@@ -24,7 +15,7 @@ function* handleFetchPosts(action: actions.FetchPosts) {
 }
 function* handleDeletePost(action: actions.RemovePostRemote) {
   try {
-    yield call(deletePost, action.postId);
+    yield call(Api.deletePost, action.postId);
     yield put(actions.removePost(action.postId));
   } catch (error) {
     yield put(actions.fetchError(error));
@@ -32,7 +23,7 @@ function* handleDeletePost(action: actions.RemovePostRemote) {
 }
 function* handleCreatePost(action: actions.AddPostToRemote) {
   try {
-    yield call(createPost, action.post);
+    yield call(Api.createPost, action.post);
     yield put(actions.createLocalPost(action.post));
   } catch (error) {
     yield put(actions.fetchError(error));
@@ -40,7 +31,25 @@ function* handleCreatePost(action: actions.AddPostToRemote) {
 }
 function* handleFetchPostDetails(action: actions.FetchPostDetails) {
   try {
-    const result = yield call(fetchPostDetails, action.postId);
+    const result = yield call(Api.fetchPostDetails, action.postId);
+    const post: Post = BlogPost.fromJSON(result);
+    yield put(actions.updatePost(
+      post.id,
+      post.timestamp,
+      post.title,
+      post.body,
+      post.author,
+      post.category,
+      post.voteScore,
+      post.deleted,
+    ));
+  } catch (error) {
+    yield put(actions.fetchError(error));
+  }
+}
+function* handleFetchPostComments(action: actions.FetchPostDetails) {
+  try {
+    const result = yield call(Api.fetchPostDetails, action.postId);
     const post: Post = BlogPost.fromJSON(result);
     yield put(actions.updatePost(
       post.id,
@@ -58,7 +67,7 @@ function* handleFetchPostDetails(action: actions.FetchPostDetails) {
 }
 function* handleEditPost(action: actions.EditRemotePost) {
   try {
-    yield call(editPost, action.postId, action.newTitle, action.newBody);
+    yield call(Api.editPost, action.postId, action.newTitle, action.newBody);
     yield put(actions.editPost(
       action.postId,
       action.newTitle,
@@ -70,7 +79,7 @@ function* handleEditPost(action: actions.EditRemotePost) {
 }
 function* handleFetchCategories(action: actions.FetchPosts) {
   try {
-    const result = yield call(fetchCategories);
+    const result = yield call(Api.fetchCategories);
     const cats: Array<Category> = result.categories;
     yield put(actions.addRemoteCategories(cats));
   } catch (error) {
@@ -79,7 +88,7 @@ function* handleFetchCategories(action: actions.FetchPosts) {
 }
 function* handleUpvote(action: actions.IncrementPopularityRemote) {
   try {
-    yield call(upvote, action.id);
+    yield call(Api.upvote, action.id);
     yield put(actions.incrementPopularity(action.id));
   } catch (error) {
     yield put(actions.fetchError(error));
@@ -87,7 +96,7 @@ function* handleUpvote(action: actions.IncrementPopularityRemote) {
 }
 function* handleDownvote(action: actions.IncrementPopularityRemote) {
   try {
-    yield call(downvote, action.id);
+    yield call(Api.downvote, action.id);
     yield put(actions.decrementPopularity(action.id));
   } catch (error) {
     yield put(actions.fetchError(error));

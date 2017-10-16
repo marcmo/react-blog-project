@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import { postListReducer } from './postList';
-import { categoryReducer } from './category';
+import { postListReducer } from './postListReducer';
+import { categoryReducer } from './categoryReducer';
 import * as Redux from 'redux';
 import {
   RootState,

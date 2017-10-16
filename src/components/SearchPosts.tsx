@@ -69,8 +69,8 @@ class SearchStories extends React.Component<Props, State> {
 }
 
 const mapDispatchToProps = (dispatch: any) => ({
-  onFetchPosts: () => dispatch(actions.fetchPosts()),
-  onFetchCategories: () => dispatch(actions.fetchCategories()),
+  onFetchPosts: () => dispatch(actions.createFetchPostsAction()),
+  onFetchCategories: () => dispatch(actions.createFetchCategoriesAction()),
 });
 
 export default connect(

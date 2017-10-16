@@ -1,2 +1,2 @@
-export * from './postList';
-export * from './category';
+export * from './postListActions';
+export * from './categoryActions';

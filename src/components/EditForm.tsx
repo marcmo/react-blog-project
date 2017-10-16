@@ -136,7 +136,7 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({
   updatePost: (id: string, args: actions.UpdatePostInfo) =>
     dispatch(actions.editRemotePost(id, args.title ? args.title : '', args.body ? args.body : '')),
-  exit: () => dispatch(actions.deselectedPost()),
+  exit: () => dispatch(actions.createDeselectedPostAction()),
 });
 
 export default connect(

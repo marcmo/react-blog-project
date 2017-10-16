@@ -99,10 +99,10 @@ const mapStateToProps = (state: RootState) => ({
 });
 const mapDispatchToProps = (dispatch: Dispatch<UpdatePostListActionType>) => ({
   initialFetchPostsAndCategories: () => {
-    dispatch(actions.fetchPosts());
-    dispatch(actions.fetchCategories());
+    dispatch(actions.createFetchPostsAction());
+    dispatch(actions.createFetchCategoriesAction());
   },
-  deselectedPost: () => dispatch(actions.deselectedPost()),
+  deselectedPost: () => dispatch(actions.createDeselectedPostAction()),
 });
 
 export default withRouter(connect(
