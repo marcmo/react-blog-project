@@ -2,6 +2,8 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Post, RootState, Columns } from '../types';
 import { Link } from 'react-router-dom';
+import Trash from 'react-icons/lib/fa/trash-o';
+import Pencile from 'react-icons/lib/ti/pencil';
 import Button from './Button';
 import { formatTimestamp } from './Util';
 import * as actions from '../actions';
@@ -49,12 +51,16 @@ const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, d
         </div>
       </span>
       <span style={{ width: columns.edit.width }}>
-        <Link to={getEditDestination()}>Edit</Link>
+        <Link to={getEditDestination()}>
+          <button type="submit" className="btn-icon">
+            <Pencile size={25} />
+          </button>
+        </Link>
       </span>
       <span style={{ width: columns.delete.width }}>
-        <Button type="submit" className="btn btn-link float-left" onClick={onSubmitDelete}>
-          Delete
-        </Button>
+        <button type="submit" className="btn-icon" onClick={onSubmitDelete}>
+          <Trash size={25} />
+        </button>
       </span>
     </div>
   );

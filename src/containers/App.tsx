@@ -73,10 +73,10 @@ class App extends React.Component<Props, State> {
           path="/"
           render={() =>
             <div>
-              <PostList />
               <div className="interactions">
                 <Categories />
               </div>
+              <PostList />
             </div>
           }
         />
