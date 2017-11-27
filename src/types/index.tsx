@@ -1,3 +1,5 @@
+import { v4 as uuid } from 'uuid';
+
 export interface RootState {
   readonly postState: PostState;
   readonly categoryState: CategoryState;
@@ -8,6 +10,7 @@ export interface Entity {
 }
 export interface PostState {
   readonly entities: Array<Entity>;
+  readonly comments: Array<Comment>;
   readonly ids: Array<string>;
   readonly selectedPostId: string | null;
 }
@@ -38,6 +41,16 @@ export interface Post {
   comments: Comment[];
 }
 
+export const createComment = (postId: string, content: string) => ({
+  id: uuid(),
+  parentId: postId,
+  timestamp: Date.now(),
+  body: content,
+  author: 'someauthor',
+  voteScore: 1,
+  deleted: false,
+  parentDeleted: false,
+});
 export interface Comment {
   id: string; // Unique identifier
   parentId: string; // id of the parent post
@@ -55,6 +68,15 @@ export interface LabeledColumn {
 }
 export interface Columns {
   title: LabeledColumn;
+  author: LabeledColumn;
+  comments: LabeledColumn;
+  date: LabeledColumn;
+  votes: LabeledColumn;
+  edit: LabeledColumn;
+  delete: LabeledColumn;
+}
+export interface CommentColumns {
+  id: LabeledColumn;
   author: LabeledColumn;
   comments: LabeledColumn;
   date: LabeledColumn;

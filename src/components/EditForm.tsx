@@ -141,5 +141,5 @@ const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(EditForm);

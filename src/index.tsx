@@ -23,8 +23,8 @@ const saga = createSagaMiddleware();
 const store: Redux.Store<RootState> = createStore(
   reducer,
   composeEnhancers(
-    applyMiddleware(logger, saga)
-  )
+    applyMiddleware(logger, saga),
+  ),
 );
 saga.run(rootSaga);
 ReactDOM.render(
@@ -33,6 +33,6 @@ ReactDOM.render(
       <App />
     </BrowserRouter>
   </Provider>,
-  document.getElementById('root') as HTMLElement
+  document.getElementById('root') as HTMLElement,
 );
 registerServiceWorker();

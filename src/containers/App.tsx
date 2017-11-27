@@ -107,5 +107,5 @@ const mapDispatchToProps = (dispatch: Dispatch<UpdatePostListActionType>) => ({
 
 export default withRouter(connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(App));

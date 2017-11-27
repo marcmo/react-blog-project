@@ -2,6 +2,7 @@ import * as Redux from 'redux';
 import { schema, normalize } from 'normalizr';
 import { UpdatePostListActionType } from '../actions/types';
 import * as actions from '../actions';
+// import * as R from 'ramda';
 import {
   Post,
   PostState,
@@ -14,6 +15,7 @@ const normalizedPosts = normalize(posts, [postSchema]);
 
 const initialPostsState: PostState = {
   entities: normalizedPosts.entities.post,
+  comments: [],
   ids: normalizedPosts.result,
   selectedPostId: null,
 };
@@ -21,6 +23,11 @@ const initialPostsState: PostState = {
 export type PostListReducer = Redux.Reducer<PostState>;
 export const postListReducer: PostListReducer = (state = initialPostsState, action: actions.PostListAction) => {
   switch (action.type) {
+    case UpdatePostListActionType.ADD_COMMENT:
+      {
+        const comments = [...state.comments, action.payload.comment];
+        return { ...state, comments };
+      }
     case UpdatePostListActionType.CREATE_POST:
       {
         const entities = { ...state.entities, [action.post.id]: action.post };
@@ -43,7 +50,7 @@ export const postListReducer: PostListReducer = (state = initialPostsState, acti
       };
     case UpdatePostListActionType.REMOVE_POST:
       return deletePost(state, action.postId);
-    case UpdatePostListActionType.ADD_REMOTE_POSTS:
+    case UpdatePostListActionType.ADD_FETCHED_POSTS:
       return action.posts.reduce(
         (acc: PostState, newPost: Post) => {
           if (state.ids.includes(newPost.id)) {
@@ -54,11 +61,11 @@ export const postListReducer: PostListReducer = (state = initialPostsState, acti
           const res = {
             ...acc,
             entities,
-            ids
+            ids,
           };
           return res;
         },
-        state
+        state,
       );
     case UpdatePostListActionType.INCREMENT_POPULARITY:
       return changeVote((vote: number): number => vote + 1, state, action.id);
@@ -87,7 +94,7 @@ const changeVote = (
   const post: Post = state.entities[id];
   const updatedPost: Post = {
     ...post,
-    voteScore: changer(post.voteScore)
+    voteScore: changer(post.voteScore),
   };
   const entities = { ...state.entities, [post.id]: updatedPost };
   return { ...state, entities };
@@ -109,7 +116,7 @@ const updateTitleAndBody = (
 const updatePostContent = (
   state: PostState,
   postId: string,
-  info: actions.UpdatePostInfo
+  info: actions.UpdatePostInfo,
   ): PostState => {
   const post: Post = state.entities[postId];
   const updatedPost: Post = {

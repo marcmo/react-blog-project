@@ -29,10 +29,10 @@ export const applyFilter = (f: string): ApplyFilter => ({
   filter: f,
 });
 export const removeFilter = (): RemoveFilter => ({
-  type: FilterActionType.SHOW_ALL
+  type: FilterActionType.SHOW_ALL,
 });
 export const deletedFilter = (): DeletedFilter => ({
-  type: FilterActionType.SHOW_DELETED
+  type: FilterActionType.SHOW_DELETED,
 });
 export const addRemoteCategories = (cats: Array<Category>): AddRemoteCategories => ({
   type: FilterActionType.ADD_REMOTE_CATEGORIES,

@@ -49,5 +49,5 @@ const applySetFilter = (state: CategoryState, filter: string) => (
 const applyNewCategories = (state: CategoryState, action: actions.AddRemoteCategories) => ({
   ...state,
   categories: state.categories.concat(action.categories)
-    .filter((elem, index, self) => (index === self.indexOf(elem)))
+    .filter((elem, index, self) => (index === self.indexOf(elem))),
 });

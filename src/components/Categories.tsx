@@ -15,7 +15,7 @@ interface Props {
   selectCategory: (category: string) => void;
 }
 
-const Vehicle = (props: VehicleProps) => (
+const Cat = (props: VehicleProps) => (
   <Button type="submit" className="button" onClick={() => props.selectCategory(props.name)}>
     {props.name}
   </Button>
@@ -26,7 +26,7 @@ const Categories = (props: Props) => {
     <div style={{ flex: 1, backgroundColor: 'white' }}>
       Categories:
         {props.categories.map((cat) =>
-        <Vehicle key={cat} name={cat} selectCategory={props.selectCategory} />)}
+        <Cat key={cat} name={cat} selectCategory={props.selectCategory} />)}
     </div>
   );
 };
@@ -40,5 +40,5 @@ const mapDispatchToProps = (dispatch: Dispatch<FilterActionType>) => ({
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Categories);

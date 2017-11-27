@@ -12,6 +12,7 @@ it('renders without crashing', () => {
   const initialState: RootState = {
     postState: {
       entities: [],
+      comments: [],
       ids: [],
       selectedPostId: null,
     },
@@ -19,7 +20,7 @@ it('renders without crashing', () => {
       filter: '',
       categories: [],
       onlyDeleted: false,
-    }
+    },
   };
   const store = mockStore(initialState);
   const div = document.createElement('div');

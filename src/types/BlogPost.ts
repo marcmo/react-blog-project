@@ -21,7 +21,7 @@ export class BlogPost implements Post {
     category: string,
     voteScore: number,
     deleted: boolean,
-    comments: Comment[]
+    comments: Comment[],
   ) {
     this.id = id;
     this.timestamp = timestamp;
@@ -61,7 +61,7 @@ export class BlogPost implements Post {
         category: json.category || '',
         voteScore: json.voteScore || 0,
         deleted: json.deleted || false,
-        comments: json.comments || []
+        comments: json.comments || [],
       });
     }
   }

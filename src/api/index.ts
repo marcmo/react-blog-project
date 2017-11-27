@@ -67,7 +67,7 @@ export const deleteComment = (commentId: string): Promise<string> =>
 //   USAGE:
 //     Used for voting on a comment.
 const voteComment = (v: string, commentId: string): Promise<string> =>
-  doPostRequest(`comments/${commentId}`, { option: v, });
+  doPostRequest(`comments/${commentId}`, { option: v });
 export const upvoteComment = (postId: string): Promise<string> => voteComment('upVote', postId);
 export const downvoteComment = (postId: string): Promise<string> => voteComment('downVote', postId);
 
@@ -146,6 +146,6 @@ export const createPost = (post: Post): Promise<string> =>
 //   PARAMS:
 //     option - String: Either "upVote" or "downVote"
 const vote = (v: string, postId: string): Promise<string> =>
-  doPostRequest(`posts/${postId}`, { option: v, });
+  doPostRequest(`posts/${postId}`, { option: v });
 export const upvote = (postId: string): Promise<string> => vote('upVote', postId);
 export const downvote = (postId: string): Promise<string> => vote('downVote', postId);

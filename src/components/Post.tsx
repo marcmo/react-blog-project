@@ -3,7 +3,9 @@ import { connect, Dispatch } from 'react-redux';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import { formatTimestamp } from './Util';
-import { Post, RootState } from '../types';
+import { Post, RootState, Comment, createComment } from '../types';
+import CommentList from '../components/CommentList';
+import Button from './Button';
 import * as actions from '../actions';
 
 export interface Props {
@@ -11,6 +13,7 @@ export interface Props {
   incrementVote: (id: string) => any;
   decrementVote: (id: string) => any;
   deletePost: (selectedId: string) => any;
+  addComment: (comment: Comment) => any;
 }
 interface State {
   doRedirect: boolean;
@@ -51,6 +54,13 @@ class PostItem extends React.Component<Props, State> {
         {this.state.doRedirect && (
           <Redirect to={'/'} />
         )}
+        <div className="divider"/>
+        <div>
+          <CommentList post={this.props.post} />
+        </div>
+        <Button type="submit" className="button" onClick={() => this.props.addComment(createComment(this.props.post.id, 'uuhu'))}>
+          Add Comment
+        </Button>
       </div>
     );
   }
@@ -67,6 +77,7 @@ const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({
   incrementVote: (id: string) => dispatch(actions.incrementPopularity(id)),
   decrementVote: (id: string) => dispatch(actions.decrementPopularity(id)),
   deletePost: (selectedId: string) => dispatch(actions.removePostRemote(selectedId)),
+  addComment: (comment: Comment) => dispatch(actions.createAddCommentAction(comment)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostItem);

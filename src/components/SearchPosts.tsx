@@ -5,7 +5,7 @@ import Button from './Button';
 import './styles/SearchPosts.css';
 
 const applyQueryState = (query: string) => () => ({
-  query
+  query,
 });
 
 interface Props {
@@ -75,5 +75,5 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(SearchStories);

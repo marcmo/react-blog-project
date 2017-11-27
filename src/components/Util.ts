@@ -17,7 +17,7 @@ export const postTemplate = (t: string, author: string, category: string): Post 
     category,
     voteScore: 0,
     deleted: false,
-    comments: []
+    comments: [],
   };
   return newPost;
 };

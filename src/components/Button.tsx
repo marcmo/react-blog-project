@@ -8,7 +8,7 @@ interface Props {
 const ButtonInline = ({
   onClick,
   type = 'button',
-  children
+  children,
 }: Props) => (
     <Button
       type={type}
@@ -29,7 +29,7 @@ const Button = ({
   onClick,
   className,
   type = 'button',
-  children
+  children,
 }: ButtonProps) => (
     <button
       type={type}
@@ -43,5 +43,5 @@ const Button = ({
 export default Button;
 
 export {
-  ButtonInline
+  ButtonInline,
 };

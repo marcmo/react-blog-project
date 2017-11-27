@@ -8,7 +8,7 @@ function* handleFetchPosts(action: actions.FetchPosts) {
   try {
     const result = yield call(Api.fetchPosts);
     const posts: Array<Post> = result.map(BlogPost.fromJSON);
-    yield put(actions.addRemotePosts(posts));
+    yield put(actions.addFetchedPosts(posts));
   } catch (error) {
     yield put(actions.fetchError(error));
   }

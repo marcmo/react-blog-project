@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Post, RootState, Columns } from '../types';
+import { Comment, RootState, CommentColumns } from '../types';
 import { Link } from 'react-router-dom';
-import FaSearch from 'react-icons/lib/fa/search';
-import Trash from 'react-icons/lib/ti/trash';
 import Pencile from 'react-icons/lib/ti/pencil';
 import Button from './Button';
 import { formatTimestamp } from './Util';
@@ -12,18 +10,13 @@ import './styles/ListItem.css';
 
 export interface Props {
   key: string;
-  post: Post;
+  comment: Comment;
   incrementVote: (id: string) => any;
   decrementVote: (id: string) => any;
-  selectedPost: (selectedId: string) => any;
-  deletePost: (selectedId: string) => any;
-  columns: Columns;
+  columns: CommentColumns;
 }
-const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, deletePost }: Props) => {
-  const { title, id, author, comments, voteScore } = post;
-  const onSubmitDelete = () => {
-    deletePost(id);
-  };
+const CommentItem = ({ columns, comment, incrementVote, decrementVote }: Props) => {
+  const { id, author, voteScore } = comment;
   const getEditDestination = () => {
     return `/edit/${id}`;
   };
@@ -33,17 +26,14 @@ const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, d
   return (
     <div className="container">
       <div className="columns">
-        <div className={columns.title.className}>
-          <Link to={getDestination()}>{title}</Link>
+        <div className={columns.id.className}>
+          <Link to={getDestination()}>{id}</Link>
         </div>
         <div className={columns.author.className}>
           {author}
         </div>
-        <div className={columns.comments.className}>
-          {comments.length}
-        </div>
         <div className={columns.date.className}>
-          {formatTimestamp(post.timestamp * 1000)}
+          {formatTimestamp(comment.timestamp * 1000)}
         </div>
         <div className={columns.votes.className}>
           <div className="vote circle">
@@ -59,34 +49,23 @@ const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, d
             </button>
           </Link>
         </div>
-        <div className={columns.delete.className}>
-          <button type="submit" className="btn-icon" onClick={onSubmitDelete}>
-            <Trash size={25} />
-          </button>
-        </div>
       </div>
     </div>
   );
 };
 
-function getPost(state: RootState, postId: string) {
-  return state.postState.entities[postId];
-}
-
 interface OwnProps {
-  postId: string;
-  columns: Columns;
+  comment: Comment;
+  columns: CommentColumns;
 }
 const mapStateToProps = (state: RootState, props: OwnProps) => ({
-  post: getPost(state, props.postId),
+  comment: props.comment,
   columns: props.columns,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({
+const mapDispatchToProps = (dispatch: any) => ({
   incrementVote: (id: string) => dispatch(actions.incrementPopularityRemote(id)),
   decrementVote: (id: string) => dispatch(actions.decrementPopularityRemote(id)),
-  selectedPost: (selectedId: string) => dispatch(actions.selectedPost(selectedId)),
-  deletePost: (selectedId: string) => dispatch(actions.removePostRemote(selectedId)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostItem);
+export default connect(mapStateToProps, mapDispatchToProps)(CommentItem);

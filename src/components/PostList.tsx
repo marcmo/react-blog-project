@@ -52,7 +52,7 @@ const StoriesHeader = ({ columns }: any) => (
         className={columns[key].className}
       >
         {columns[key].label}
-      </div>
+      </div>,
     )}
   </div>
 );
