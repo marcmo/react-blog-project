@@ -51,7 +51,7 @@ class SearchStories extends React.Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div>
-        <h1>Something went wrong in SearchPost</h1>
+          <h1>Something went wrong in SearchPost</h1>
         </div>
       );
     }

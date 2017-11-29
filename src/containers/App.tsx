@@ -49,6 +49,7 @@ class App extends React.Component<Props, State> {
 
   renderRoute = (post: Post) => (
     <Route
+      key={post.id}
       exact={true}
       path={`/${post.id}`}
       render={() => <PostItem post={post} />}
@@ -56,6 +57,7 @@ class App extends React.Component<Props, State> {
   )
   renderEditRoute = (post: Post) => (
     <Route
+      key={`edit-${post.id}`}
       exact={true}
       path={`/edit/${post.id}`}
       render={() => <EditForm post={post} />}

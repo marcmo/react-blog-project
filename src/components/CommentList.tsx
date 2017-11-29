@@ -74,7 +74,7 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.PostListAction>) {
   return {};
 }
 
-const matchPostId = (postId: string) => ( (comment: Comment) => {
+const matchPostId = (postId: string) => ((comment: Comment) => {
   return comment.parentId === postId;
 });
 // selectors

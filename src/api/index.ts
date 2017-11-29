@@ -8,10 +8,10 @@ const authHeaders = { Authorization: 'Basic ' + btoa('username:password') };
 const doAxiosRequest = (method: string, endpoint: string) =>
   axios({
     headers: authHeaders,
-    method: 'get',
+    method,
     url: `${BASE_URL}/${endpoint}`,
   })
-  .then((response) => response.data);
+    .then((response) => response.data);
 const doGetRequest = (endpoint: string) => doAxiosRequest('get', endpoint);
 const doDeleteRequest = (endpoint: string) => doAxiosRequest('delete', endpoint);
 const doPutRequest = (endpoint: string, data: object) =>
@@ -21,7 +21,7 @@ const doPutRequest = (endpoint: string, data: object) =>
     url: `${BASE_URL}/${endpoint}`,
     data,
   })
-  .then((response) => response.data);
+    .then((response) => response.data);
 const doPostRequest = (endpoint: string, data: object): Promise<string> =>
   axios({
     headers: authHeaders,
@@ -29,7 +29,7 @@ const doPostRequest = (endpoint: string, data: object): Promise<string> =>
     url: `${BASE_URL}/${endpoint}`,
     data,
   })
-  .then((response) => response.data);
+    .then((response) => response.data);
 
 // PUT /posts/:id
 //   USAGE:
@@ -37,8 +37,12 @@ const doPostRequest = (endpoint: string, data: object): Promise<string> =>
 //   PARAMS:
 //     title - String
 //     body - String
-export const editPost = (postId: string, newTitle: string, newBody: string): Promise<string> =>
-  doPutRequest(`posts/${postId}`, { title: newTitle, body: newBody });
+export const editPost = (postId: string, category: string, newTitle: string, newBody: string): Promise<string> =>
+  doPutRequest(`posts/${postId}`, {
+    title: newTitle,
+    category,
+    body: newBody,
+  });
 
 // POST /comments
 //   USAGE:
@@ -51,13 +55,13 @@ export const editPost = (postId: string, newTitle: string, newBody: string): Pro
 //     parentId: Should match a post id in the database.
 //
 export const createComment = (comment: Comment): Promise<string> =>
-  doPostRequest(`posts/${comment.id}`, {
+  doPostRequest(`comments`, {
     id: comment.id,
     timestamp: comment.timestamp,
     body: comment.body,
     author: comment.author,
     parentId: comment.parentId,
-    });
+  });
 // DELETE /comments/:id
 //   USAGE:
 //     sets a comment's deleted flag to 'true'
@@ -132,12 +136,12 @@ export const deletePost = (postId: string): Promise<string> => doDeleteRequest(`
 // const doPostRequest = (endpoint: string, data: object): Promise<string> =>
 export const createPost = (post: Post): Promise<string> =>
   doPostRequest('posts', {
-      id: post.id,
-      timestamp: post.timestamp,
-      title: post.title,
-      body: post.body,
-      author: post.author,
-      category: post.category,
+    id: post.id,
+    timestamp: post.timestamp,
+    title: post.title,
+    body: post.body,
+    author: post.author,
+    category: post.category,
   });
 
 // POST /posts/:id

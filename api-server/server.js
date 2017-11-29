@@ -1,5 +1,6 @@
 require('dotenv').config()
 
+const logging = require('./logging')
 const express = require('express')
 const delay = require('express-delay')
 const bodyParser = require('body-parser')
@@ -277,6 +278,7 @@ app.put('/comments/:id', bodyParser.json(), (req, res) => {
 })
 
 app.post('/comments', bodyParser.json(), (req, res) => {
+    logging.log.w(`[app] received 'comments' post request`);
     comments.add(req.token, req.body)
       .then(
           (data) => res.send(data),
@@ -290,6 +292,7 @@ app.post('/comments', bodyParser.json(), (req, res) => {
 })
 
 app.post('/comments/:id', bodyParser.json(), (req, res) => {
+    logging.log.w(`[app] received 'comments' post request for id ${req.params.id}`);
     const { option } = req.body
     comments.vote(req.token, req.params.id, option)
       .then(

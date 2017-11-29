@@ -5,15 +5,12 @@ import {
 
 // post list actions
 export type PostListAction =
-  CreatePost |
+  AddPost |
   AddFetchedPosts |
-  AddPostToRemote |
   AddComment |
-  EditRemotePost |
   EditPost |
   UpdatePost |
   RemovePost |
-  RemovePostRemote |
   FetchPosts |
   FetchPostDetails |
   FetchPostComments |
@@ -21,20 +18,16 @@ export type PostListAction =
   FetchError |
   PostSelected |
   PostDeselected |
+  IncrementPopularityComment |
+  DecrementPopularityComment |
   IncrementPopularity |
-  IncrementPopularityRemote |
-  DecrementPopularityRemote |
   DecrementPopularity;
 export interface AddFetchedPosts {
   type: UpdatePostListActionType.ADD_FETCHED_POSTS;
   posts: Array<Post>;
 }
-export interface CreatePost {
-  type: UpdatePostListActionType.CREATE_POST;
-  post: Post;
-}
-export interface AddPostToRemote {
-  type: UpdatePostListActionType.ADD_POST_REMOTE;
+export interface AddPost {
+  type: UpdatePostListActionType.ADD_POST;
   post: Post;
 }
 export interface AddComment {
@@ -42,12 +35,6 @@ export interface AddComment {
   payload: {
     comment: Comment;
   };
-}
-export interface EditPost {
-  type: UpdatePostListActionType.EDIT_POST;
-  postId: string;
-  newTitle: string;
-  newBody: string;
 }
 export interface UpdatePostInfo {
   timestamp?: number;
@@ -63,11 +50,14 @@ export interface UpdatePost {
   id: string;
   info: UpdatePostInfo;
 }
-export interface EditRemotePost {
-  type: UpdatePostListActionType.EDIT_REMOTE_POST;
-  postId: string;
-  newTitle: string;
-  newBody: string;
+export interface EditPost {
+  type: UpdatePostListActionType.EDIT_POST;
+  payload: {
+    postId: string;
+    category: string;
+    newTitle: string;
+    newBody: string;
+  };
 }
 export interface PostSelected {
   type: UpdatePostListActionType.POST_SELECTED;
@@ -78,10 +68,6 @@ export interface PostDeselected {
 }
 export interface RemovePost {
   type: UpdatePostListActionType.REMOVE_POST;
-  postId: string;
-}
-export interface RemovePostRemote {
-  type: UpdatePostListActionType.REMOVE_POST_REMOTE;
   postId: string;
 }
 export interface FetchPosts {
@@ -106,32 +92,24 @@ export interface IncrementPopularity {
   type: UpdatePostListActionType.INCREMENT_POPULARITY;
   id: string;
 }
-export interface IncrementPopularityRemote {
-  type: UpdatePostListActionType.INCREMENT_POPULARITY_REMOTE;
+export interface IncrementPopularityComment {
+  type: UpdatePostListActionType.INCREMENT_POPULARITY_COMMENT;
+  id: string;
+}
+export interface DecrementPopularityComment {
+  type: UpdatePostListActionType.DECREMENT_POPULARITY_COMMENT;
   id: string;
 }
 export interface DecrementPopularity {
   type: UpdatePostListActionType.DECREMENT_POPULARITY;
   id: string;
 }
-export interface DecrementPopularityRemote {
-  type: UpdatePostListActionType.DECREMENT_POPULARITY_REMOTE;
-  id: string;
-}
-export const decrementPopularityRemote = (id: string): DecrementPopularityRemote => ({
-  type: UpdatePostListActionType.DECREMENT_POPULARITY_REMOTE,
-  id,
-});
 export const decrementPopularity = (id: string): DecrementPopularity => ({
   type: UpdatePostListActionType.DECREMENT_POPULARITY,
   id,
 });
 export const incrementPopularity = (id: string): IncrementPopularity => ({
   type: UpdatePostListActionType.INCREMENT_POPULARITY,
-  id,
-});
-export const incrementPopularityRemote = (id: string): IncrementPopularityRemote => ({
-  type: UpdatePostListActionType.INCREMENT_POPULARITY_REMOTE,
   id,
 });
 export interface NewPostArgs {
@@ -141,16 +119,6 @@ export interface NewPostArgs {
 export interface NewCommentArgs {
   author: string;
 }
-export const createLocalPost = (post: Post): CreatePost => ({
-  type: UpdatePostListActionType.CREATE_POST,
-  post,
-});
-export const editPost = (postId: string, newTitle: string, newBody: string): EditPost => ({
-  type: UpdatePostListActionType.EDIT_POST,
-  postId,
-  newTitle,
-  newBody,
-});
 export const updatePost = (
   postId: string,
   timestamp: number,
@@ -173,11 +141,14 @@ export const updatePost = (
     deleted,
   },
 });
-export const editRemotePost = (postId: string, newTitle: string, newBody: string): EditRemotePost => ({
-  type: UpdatePostListActionType.EDIT_REMOTE_POST,
-  postId,
-  newTitle,
-  newBody,
+export const editPost = (postId: string, newCategory: string, newTitle: string, newBody: string): EditPost => ({
+  type: UpdatePostListActionType.EDIT_POST,
+  payload: {
+    postId,
+    category: newCategory,
+    newTitle,
+    newBody,
+  },
 });
 export const selectedPost = (selectedId: string): PostSelected => ({
   type: UpdatePostListActionType.POST_SELECTED,
@@ -190,8 +161,8 @@ export const addFetchedPosts = (posts: Array<Post>): AddFetchedPosts => ({
   type: UpdatePostListActionType.ADD_FETCHED_POSTS,
   posts,
 });
-export const addPostToRemote = (post: Post): AddPostToRemote => ({
-  type: UpdatePostListActionType.ADD_POST_REMOTE,
+export const addPost = (post: Post): AddPost => ({
+  type: UpdatePostListActionType.ADD_POST,
   post,
 });
 export const createAddCommentAction = (comment: Comment): AddComment => ({
@@ -220,9 +191,5 @@ export const fetchError = (error: string): FetchError => ({
 });
 export const removePost = (id: string): RemovePost => ({
   type: UpdatePostListActionType.REMOVE_POST,
-  postId: id,
-});
-export const removePostRemote = (id: string): RemovePostRemote => ({
-  type: UpdatePostListActionType.REMOVE_POST_REMOTE,
   postId: id,
 });

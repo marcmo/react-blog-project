@@ -9,16 +9,18 @@ import {
   handleCreatePost,
   handleEditPost,
 } from './post';
+import * as P from './post';
 
-function *watchAll() {
+function* watchAll() {
   yield all([
     takeEvery(UpdatePostListActionType.FETCH_POSTS, handleFetchPosts),
     takeEvery(UpdatePostListActionType.FETCH_CATEGORIES, handleFetchCategories),
-    takeEvery(UpdatePostListActionType.INCREMENT_POPULARITY_REMOTE, handleUpvote),
-    takeEvery(UpdatePostListActionType.DECREMENT_POPULARITY_REMOTE, handleDownvote),
-    takeEvery(UpdatePostListActionType.REMOVE_POST_REMOTE, handleDeletePost),
-    takeEvery(UpdatePostListActionType.ADD_POST_REMOTE, handleCreatePost),
-    takeEvery(UpdatePostListActionType.EDIT_REMOTE_POST, handleEditPost),
+    takeEvery(UpdatePostListActionType.INCREMENT_POPULARITY, handleUpvote),
+    takeEvery(UpdatePostListActionType.DECREMENT_POPULARITY, handleDownvote),
+    takeEvery(UpdatePostListActionType.REMOVE_POST, handleDeletePost),
+    takeEvery(UpdatePostListActionType.ADD_POST, handleCreatePost),
+    takeEvery(UpdatePostListActionType.ADD_COMMENT, P.handleCreateComment),
+    takeEvery(UpdatePostListActionType.EDIT_POST, handleEditPost),
   ]);
 }
 

@@ -1,4 +1,5 @@
 const clone = require('clone')
+const logging = require('./logging')
 
 let db = {}
 
@@ -30,6 +31,7 @@ function getData (token) {
   if (data == null) {
     data = db[token] = clone(defaultData)
   }
+  logging.log.w(`[${token}] getData`, Object.keys(data));
   return data
 }
 
@@ -43,6 +45,7 @@ function getByParent (token, parentId) {
 }
 
 function get (token, id) {
+  logging.log.w(`[${token}] get comment: ${comment.id}`);
   return new Promise((res) => {
     const comments = getData(token)
     res(
@@ -54,8 +57,10 @@ function get (token, id) {
 }
 
 function add (token, comment) {
+  logging.log.w(`[${token}] add comment: ${comment.body} (id: ${comment.id})`);
   return new Promise((res) => {
     let comments = getData(token)
+    logging.log.w(`add a comment to comments: (id:${comment.id})`, Object.keys(comments));
 
     comments[comment.id] = {
       id: comment.id,
@@ -67,25 +72,28 @@ function add (token, comment) {
       deleted: false,
       parentDeleted: false
     }
+    logging.log.w(`[${token}] added comment, now we have: ${Object.keys(comments).length})`, Object.keys(comments));
 
     res(comments[comment.id])
   })
 }
 
 function vote (token, id, option) {
+  logging.log.w(`[${token}] voting on token with id ${id}`);
   return new Promise((res) => {
     let comments = getData(token)
+    logging.log.w(`voting on (id:${comment.id}), we have:`, Object.keys(comments));
     comment = comments[id]
-    switch(option) {
-        case "upVote":
-            comment.voteScore = comment.voteScore + 1
-            break
-        case "downVote":
-            comment.voteScore = comment.voteScore - 1
-            break
-        default:
-            console.log(`comments.vote received incorrect parameter: ${option}`)
-    }
+    // switch(option) {
+    //     case "upVote":
+    //         comment.voteScore = comment.voteScore + 1
+    //         break
+    //     case "downVote":
+    //         comment.voteScore = comment.voteScore - 1
+    //         break
+    //     default:
+    //         console.log(`comments.vote received incorrect parameter: ${option}`)
+    // }
     res(comment)
   })
 }

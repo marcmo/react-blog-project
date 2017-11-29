@@ -2,7 +2,8 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Comment, RootState, CommentColumns } from '../types';
 import { Link } from 'react-router-dom';
-import Pencile from 'react-icons/lib/ti/pencil';
+import * as b from 'react-icons/lib/fa';
+// import Pencil from 'react-icons/lib/ti/pencil';
 import Button from './Button';
 import { formatTimestamp } from './Util';
 import * as actions from '../actions';
@@ -45,7 +46,7 @@ const CommentItem = ({ columns, comment, incrementVote, decrementVote }: Props) 
         <div className={columns.edit.className}>
           <Link to={getEditDestination()}>
             <button type="submit" className="btn-icon">
-              <Pencile size={25} />
+              <b.FaPencil size={25} />
             </button>
           </Link>
         </div>
@@ -64,8 +65,8 @@ const mapStateToProps = (state: RootState, props: OwnProps) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  incrementVote: (id: string) => dispatch(actions.incrementPopularityRemote(id)),
-  decrementVote: (id: string) => dispatch(actions.decrementPopularityRemote(id)),
+  incrementVote: (id: string) => dispatch(actions.incrementPopularity(id)),
+  decrementVote: (id: string) => dispatch(actions.decrementPopularity(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentItem);

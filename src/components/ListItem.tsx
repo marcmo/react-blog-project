@@ -2,9 +2,7 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Post, RootState, Columns } from '../types';
 import { Link } from 'react-router-dom';
-import FaSearch from 'react-icons/lib/fa/search';
-import Trash from 'react-icons/lib/ti/trash';
-import Pencile from 'react-icons/lib/ti/pencil';
+import * as FA from 'react-icons/lib/fa';
 import Button from './Button';
 import { formatTimestamp } from './Util';
 import * as actions from '../actions';
@@ -55,13 +53,13 @@ const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, d
         <div className={columns.edit.className}>
           <Link to={getEditDestination()}>
             <button type="submit" className="btn-icon">
-              <Pencile size={25} />
+              <FA.FaPencil size={25} />
             </button>
           </Link>
         </div>
         <div className={columns.delete.className}>
           <button type="submit" className="btn-icon" onClick={onSubmitDelete}>
-            <Trash size={25} />
+            <FA.FaTrash size={25} />
           </button>
         </div>
       </div>
@@ -83,10 +81,10 @@ const mapStateToProps = (state: RootState, props: OwnProps) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({
-  incrementVote: (id: string) => dispatch(actions.incrementPopularityRemote(id)),
-  decrementVote: (id: string) => dispatch(actions.decrementPopularityRemote(id)),
+  incrementVote: (id: string) => dispatch(actions.incrementPopularity(id)),
+  decrementVote: (id: string) => dispatch(actions.decrementPopularity(id)),
   selectedPost: (selectedId: string) => dispatch(actions.selectedPost(selectedId)),
-  deletePost: (selectedId: string) => dispatch(actions.removePostRemote(selectedId)),
+  deletePost: (selectedId: string) => dispatch(actions.removePost(selectedId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostItem);

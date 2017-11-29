@@ -43,18 +43,18 @@ class PostItem extends React.Component<Props, State> {
             {formatTimestamp(this.props.post.timestamp * 1000)}
           </div>
         </div>
-        <div className="divider text-left" data-content="content"/>
+        <div className="divider text-left" data-content="content" />
         <div className="columns">
           <div className="column col-xs-12">
             <span>{this.props.post.body}</span>
           </div>
         </div>
-        <div className="divider"/>
+        <div className="divider" />
         <Link to="/">Back</Link>
         {this.state.doRedirect && (
           <Redirect to={'/'} />
         )}
-        <div className="divider"/>
+        <div className="divider" />
         <div>
           <CommentList post={this.props.post} />
         </div>
@@ -76,7 +76,7 @@ const mapStateToProps = (state: RootState, props: OwnProps) => ({
 const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({
   incrementVote: (id: string) => dispatch(actions.incrementPopularity(id)),
   decrementVote: (id: string) => dispatch(actions.decrementPopularity(id)),
-  deletePost: (selectedId: string) => dispatch(actions.removePostRemote(selectedId)),
+  deletePost: (selectedId: string) => dispatch(actions.removePost(selectedId)),
   addComment: (comment: Comment) => dispatch(actions.createAddCommentAction(comment)),
 });
 

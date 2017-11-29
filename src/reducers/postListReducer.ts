@@ -28,14 +28,19 @@ export const postListReducer: PostListReducer = (state = initialPostsState, acti
         const comments = [...state.comments, action.payload.comment];
         return { ...state, comments };
       }
-    case UpdatePostListActionType.CREATE_POST:
+    case UpdatePostListActionType.ADD_POST:
       {
         const entities = { ...state.entities, [action.post.id]: action.post };
         const ids = [...state.ids, action.post.id];
         return { ...state, entities, ids };
       }
     case UpdatePostListActionType.EDIT_POST:
-      return updateTitleAndBody(state, action.postId, action.newTitle, action.newBody);
+      return updateTitleAndBody(
+        state,
+        action.payload.postId,
+        action.payload.category,
+        action.payload.newTitle,
+        action.payload.newBody);
     case UpdatePostListActionType.UPDATE_POST:
       return updatePostContent(state, action.id, action.info);
     case UpdatePostListActionType.POST_SELECTED:
@@ -102,11 +107,13 @@ const changeVote = (
 const updateTitleAndBody = (
   state: PostState,
   postId: string,
+  category: string,
   newTitle: string,
   newBody: string): PostState => {
   const post: Post = state.entities[postId];
   const updatedPost: Post = {
     ...post,
+    category,
     body: newBody,
     title: newTitle,
   };
@@ -117,7 +124,7 @@ const updatePostContent = (
   state: PostState,
   postId: string,
   info: actions.UpdatePostInfo,
-  ): PostState => {
+): PostState => {
   const post: Post = state.entities[postId];
   const updatedPost: Post = {
     ...post,

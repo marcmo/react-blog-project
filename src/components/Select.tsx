@@ -11,7 +11,7 @@ interface Props {
 
 const Select = (props: Props) => (
   <div className="form-group">
-    {props.title ?  <label className="form-label">{props.title}</label> : ''}
+    {props.title ? <label className="form-label">{props.title}</label> : ''}
     <select
       name={props.name}
       value={props.selectedOption}

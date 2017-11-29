@@ -68,7 +68,7 @@ const PostList = ({ posts, createNewPost, removePost }: Props) => (
     </div>
     <button
       className="button"
-      onClick={(e) => createNewPost({title: 'new stuff', author: 'Chuck'})}
+      onClick={(e) => createNewPost({ title: 'new stuff', author: 'Chuck' })}
     >
       Add Post
     </button>
@@ -79,12 +79,12 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.PostListAction>) {
   return {
     // TODO make udacity configurable
     createNewPost: (args: actions.NewPostArgs) => dispatch(
-      actions.addPostToRemote(postTemplate(args.title, args.author, 'udacity'))),
-    removePost: (id: string) => dispatch(actions.removePostRemote(id)),
+      actions.addPost(postTemplate(args.title, args.author, 'udacity'))),
+    removePost: (id: string) => dispatch(actions.removePost(id)),
   };
 }
 
-const matchFilter = (filter: string) => ( (post: Post) => {
+const matchFilter = (filter: string) => ((post: Post) => {
   return 'SHOW_ALL' === filter || post.category === filter;
 });
 // selectors

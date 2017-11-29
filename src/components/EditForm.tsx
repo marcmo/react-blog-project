@@ -17,7 +17,7 @@ interface State {
   timestamp?: number;
   title?: string;
   body?: string;
-  category?: string;
+  category: string;
   votes?: number;
   doRedirect: boolean;
 }
@@ -123,7 +123,7 @@ class EditForm extends React.Component<Props, State> {
           </button>
         </form>
         {this.state.doRedirect && (
-          <Redirect to={'/'}/>
+          <Redirect to={'/'} />
         )}
       </div>
     );
@@ -135,7 +135,11 @@ const mapStateToProps = (state: RootState) => ({
 });
 const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({
   updatePost: (id: string, args: actions.UpdatePostInfo) =>
-    dispatch(actions.editRemotePost(id, args.title ? args.title : '', args.body ? args.body : '')),
+    dispatch(actions.editPost(
+      id,
+      args.category ? args.category : 'none',
+      args.title ? args.title : '',
+      args.body ? args.body : '')),
   exit: () => dispatch(actions.createDeselectedPostAction()),
 });
 

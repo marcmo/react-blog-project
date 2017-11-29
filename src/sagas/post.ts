@@ -13,18 +13,23 @@ function* handleFetchPosts(action: actions.FetchPosts) {
     yield put(actions.fetchError(error));
   }
 }
-function* handleDeletePost(action: actions.RemovePostRemote) {
+function* handleDeletePost(action: actions.RemovePost) {
   try {
     yield call(Api.deletePost, action.postId);
-    yield put(actions.removePost(action.postId));
   } catch (error) {
     yield put(actions.fetchError(error));
   }
 }
-function* handleCreatePost(action: actions.AddPostToRemote) {
+function* handleCreatePost(action: actions.AddPost) {
   try {
     yield call(Api.createPost, action.post);
-    yield put(actions.createLocalPost(action.post));
+  } catch (error) {
+    yield put(actions.fetchError(error));
+  }
+}
+export function* handleCreateComment(action: actions.AddComment) {
+  try {
+    yield call(Api.createComment, action.payload.comment);
   } catch (error) {
     yield put(actions.fetchError(error));
   }
@@ -65,14 +70,13 @@ function* handleFetchPostComments(action: actions.FetchPostDetails) {
     yield put(actions.fetchError(error));
   }
 }
-function* handleEditPost(action: actions.EditRemotePost) {
+function* handleEditPost(action: actions.EditPost) {
   try {
-    yield call(Api.editPost, action.postId, action.newTitle, action.newBody);
-    yield put(actions.editPost(
-      action.postId,
-      action.newTitle,
-      action.newBody,
-    ));
+    yield call(Api.editPost,
+      action.payload.postId,
+      action.payload.category,
+      action.payload.newTitle,
+      action.payload.newBody);
   } catch (error) {
     yield put(actions.fetchError(error));
   }
@@ -86,18 +90,23 @@ function* handleFetchCategories(action: actions.FetchPosts) {
     yield put(actions.fetchError(error));
   }
 }
-function* handleUpvote(action: actions.IncrementPopularityRemote) {
+function* handleUpvote(action: actions.IncrementPopularity) {
   try {
     yield call(Api.upvote, action.id);
-    yield put(actions.incrementPopularity(action.id));
   } catch (error) {
     yield put(actions.fetchError(error));
   }
 }
-function* handleDownvote(action: actions.IncrementPopularityRemote) {
+export function* handleUpvoteComment(action: actions.IncrementPopularityComment) {
+  try {
+    yield call(Api.upvoteComment, action.id);
+  } catch (error) {
+    yield put(actions.fetchError(error));
+  }
+}
+function* handleDownvote(action: actions.IncrementPopularity) {
   try {
     yield call(Api.downvote, action.id);
-    yield put(actions.decrementPopularity(action.id));
   } catch (error) {
     yield put(actions.fetchError(error));
   }
