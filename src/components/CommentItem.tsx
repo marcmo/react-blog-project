@@ -1,23 +1,23 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Comment, RootState, CommentColumns } from '../types';
+import { CommentType, RootState, CommentColumns } from '../types';
 import { Link } from 'react-router-dom';
 import * as b from 'react-icons/lib/fa';
 // import Pencil from 'react-icons/lib/ti/pencil';
 import Button from './Button';
 import { formatTimestamp } from './Util';
 import * as actions from '../actions';
-import './styles/ListItem.css';
+import './styles/PostItem.css';
 
 export interface Props {
   key: string;
-  comment: Comment;
-  incrementVote: (id: string) => any;
-  decrementVote: (id: string) => any;
+  comment: CommentType;
+  incrementVote: (comment: CommentType) => any;
+  decrementVote: (comment: CommentType) => any;
   columns: CommentColumns;
 }
 const CommentItem = ({ columns, comment, incrementVote, decrementVote }: Props) => {
-  const { id, author, voteScore } = comment;
+  const { id, body, author, voteScore } = comment;
   const getEditDestination = () => {
     return `/edit/${id}`;
   };
@@ -27,8 +27,8 @@ const CommentItem = ({ columns, comment, incrementVote, decrementVote }: Props) 
   return (
     <div className="container">
       <div className="columns">
-        <div className={columns.id.className}>
-          <Link to={getDestination()}>{id}</Link>
+        <div className={columns.body.className}>
+          <Link to={getDestination()}>{body}</Link>
         </div>
         <div className={columns.author.className}>
           {author}
@@ -38,8 +38,8 @@ const CommentItem = ({ columns, comment, incrementVote, decrementVote }: Props) 
         </div>
         <div className={columns.votes.className}>
           <div className="vote circle">
-            <div className="increment up" onClick={() => incrementVote(id)} />
-            <div className="increment down" onClick={() => decrementVote(id)} />
+            <div className="increment up" onClick={() => incrementVote(comment)} />
+            <div className="increment down" onClick={() => decrementVote(comment)} />
             <div className="count">{voteScore}</div>
           </div>
         </div>
@@ -56,7 +56,7 @@ const CommentItem = ({ columns, comment, incrementVote, decrementVote }: Props) 
 };
 
 interface OwnProps {
-  comment: Comment;
+  comment: CommentType;
   columns: CommentColumns;
 }
 const mapStateToProps = (state: RootState, props: OwnProps) => ({
@@ -65,8 +65,8 @@ const mapStateToProps = (state: RootState, props: OwnProps) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  incrementVote: (id: string) => dispatch(actions.incrementPopularity(id)),
-  decrementVote: (id: string) => dispatch(actions.decrementPopularity(id)),
+  incrementVote: (comment: CommentType) => dispatch(actions.incrementPopularityComment(comment)),
+  decrementVote: (comment: CommentType) => dispatch(actions.decrementPopularityComment(comment)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentItem);

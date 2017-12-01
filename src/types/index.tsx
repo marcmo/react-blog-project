@@ -6,11 +6,11 @@ export interface RootState {
 }
 export interface Entity {
   readonly id: string;
-  readonly post: Post;
+  readonly post: PostType;
 }
 export interface PostState {
   readonly entities: Array<Entity>;
-  readonly comments: Array<Comment>;
+  readonly comments: Array<CommentType>;
   readonly ids: Array<string>;
   readonly selectedPostId: string | null;
 }
@@ -29,7 +29,7 @@ export const createCategory = (name: string): Category => ({
   path: name,
 });
 
-export interface Post {
+export interface PostType {
   id: string; // Unique identifier
   timestamp: number; // Time created - default data tracks this in Unix time. You can use Date.now() to get this number
   title: string;
@@ -38,7 +38,7 @@ export interface Post {
   category: string; // Should be one of the categories provided by the server
   voteScore: number; // Net votes the post has received (default: 1)
   deleted: boolean; // Flag if post has been 'deleted' (inaccessible by the front end), (default: false)
-  comments: Comment[];
+  comments: CommentType[];
 }
 
 export const createComment = (postId: string, content: string) => ({
@@ -51,7 +51,7 @@ export const createComment = (postId: string, content: string) => ({
   deleted: false,
   parentDeleted: false,
 });
-export interface Comment {
+export interface CommentType {
   id: string; // Unique identifier
   parentId: string; // id of the parent post
   timestamp: number; // Time created - default data tracks this in Unix time. You can use Date.now() to get this number
@@ -76,7 +76,7 @@ export interface Columns {
   delete: LabeledColumn;
 }
 export interface CommentColumns {
-  id: LabeledColumn;
+  body: LabeledColumn;
   author: LabeledColumn;
   comments: LabeledColumn;
   date: LabeledColumn;

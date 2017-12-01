@@ -1,4 +1,4 @@
-import { Post, Comment } from '../types';
+import { PostType, CommentType } from '../types';
 import axios, { AxiosRequestConfig, AxiosPromise } from 'axios';
 
 axios.defaults.headers.common.Authorization = 'OK';
@@ -54,7 +54,7 @@ export const editPost = (postId: string, category: string, newTitle: string, new
 //     author: String
 //     parentId: Should match a post id in the database.
 //
-export const createComment = (comment: Comment): Promise<string> =>
+export const createComment = (comment: CommentType): Promise<string> =>
   doPostRequest(`comments`, {
     id: comment.id,
     timestamp: comment.timestamp,
@@ -134,7 +134,7 @@ export const deletePost = (postId: string): Promise<string> => doDeleteRequest(`
 //     author - String
 //     category: Any of the categories listed in categories.js. Feel free to extend this list as you desire.
 // const doPostRequest = (endpoint: string, data: object): Promise<string> =>
-export const createPost = (post: Post): Promise<string> =>
+export const createPost = (post: PostType): Promise<string> =>
   doPostRequest('posts', {
     id: post.id,
     timestamp: post.timestamp,

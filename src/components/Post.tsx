@@ -3,22 +3,23 @@ import { connect, Dispatch } from 'react-redux';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import { formatTimestamp } from './Util';
-import { Post, RootState, Comment, createComment } from '../types';
+import * as T from '../types';
 import CommentList from '../components/CommentList';
 import Button from './Button';
 import * as actions from '../actions';
 
 export interface Props {
-  post: Post;
+  post: T.PostType;
   incrementVote: (id: string) => any;
   decrementVote: (id: string) => any;
   deletePost: (selectedId: string) => any;
-  addComment: (comment: Comment) => any;
+  addComment: (comment: T.CommentType) => any;
+  fetchPostComments: (id: string) => any;
 }
 interface State {
   doRedirect: boolean;
 }
-class PostItem extends React.Component<Props, State> {
+class Post extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -26,6 +27,11 @@ class PostItem extends React.Component<Props, State> {
       doRedirect: false,
     };
   }
+
+  componentDidMount() {
+    this.props.fetchPostComments(this.props.post.id);
+  }
+
   handleFormSubmit = (e: any) => {
     this.setState({ doRedirect: true });
     e.preventDefault();
@@ -58,7 +64,7 @@ class PostItem extends React.Component<Props, State> {
         <div>
           <CommentList post={this.props.post} />
         </div>
-        <Button type="submit" className="button" onClick={() => this.props.addComment(createComment(this.props.post.id, 'uuhu'))}>
+        <Button type="submit" className="button" onClick={() => this.props.addComment(T.createComment(this.props.post.id, 'uuhu'))}>
           Add Comment
         </Button>
       </div>
@@ -67,9 +73,9 @@ class PostItem extends React.Component<Props, State> {
 }
 
 interface OwnProps {
-  post: Post;
+  post: T.PostType;
 }
-const mapStateToProps = (state: RootState, props: OwnProps) => ({
+const mapStateToProps = (state: T.RootState, props: OwnProps) => ({
   post: props.post,
 });
 
@@ -77,7 +83,8 @@ const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({
   incrementVote: (id: string) => dispatch(actions.incrementPopularity(id)),
   decrementVote: (id: string) => dispatch(actions.decrementPopularity(id)),
   deletePost: (selectedId: string) => dispatch(actions.removePost(selectedId)),
-  addComment: (comment: Comment) => dispatch(actions.createAddCommentAction(comment)),
+  addComment: (comment: T.CommentType) => dispatch(actions.createAddCommentAction(comment)),
+  fetchPostComments: (id: string) => dispatch(actions.fetchCommentsAction(id)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostItem);
+export default connect(mapStateToProps, mapDispatchToProps)(Post);

@@ -1,14 +1,25 @@
 import { call, put } from 'redux-saga/effects';
 import * as actions from '../actions';
-import { Post, Category } from '../types';
+import { PostType, Category, CommentType } from '../types';
 import { BlogPost } from '../types/BlogPost';
 import * as Api from '../api';
+import { log } from '../lib/Logging';
 
 function* handleFetchPosts(action: actions.FetchPosts) {
   try {
     const result = yield call(Api.fetchPosts);
-    const posts: Array<Post> = result.map(BlogPost.fromJSON);
+    const posts: Array<PostType> = result.map(BlogPost.fromJSON);
     yield put(actions.addFetchedPosts(posts));
+  } catch (error) {
+    yield put(actions.fetchError(error));
+  }
+}
+export function* handleFetchPostComments(action: actions.FetchPostComments) {
+  try {
+    const result = yield call(Api.fetchPostComments, action.postId);
+    log.d('result for comments:', result);
+    const comments: Array<CommentType> = result.map(BlogPost.fromJSON);
+    yield put(actions.createUpdateLocalCommentsAction(comments));
   } catch (error) {
     yield put(actions.fetchError(error));
   }
@@ -37,25 +48,7 @@ export function* handleCreateComment(action: actions.AddComment) {
 function* handleFetchPostDetails(action: actions.FetchPostDetails) {
   try {
     const result = yield call(Api.fetchPostDetails, action.postId);
-    const post: Post = BlogPost.fromJSON(result);
-    yield put(actions.updatePost(
-      post.id,
-      post.timestamp,
-      post.title,
-      post.body,
-      post.author,
-      post.category,
-      post.voteScore,
-      post.deleted,
-    ));
-  } catch (error) {
-    yield put(actions.fetchError(error));
-  }
-}
-function* handleFetchPostComments(action: actions.FetchPostDetails) {
-  try {
-    const result = yield call(Api.fetchPostDetails, action.postId);
-    const post: Post = BlogPost.fromJSON(result);
+    const post: PostType = BlogPost.fromJSON(result);
     yield put(actions.updatePost(
       post.id,
       post.timestamp,
@@ -99,7 +92,14 @@ function* handleUpvote(action: actions.IncrementPopularity) {
 }
 export function* handleUpvoteComment(action: actions.IncrementPopularityComment) {
   try {
-    yield call(Api.upvoteComment, action.id);
+    yield call(Api.upvoteComment, action.payload.comment.id);
+  } catch (error) {
+    yield put(actions.fetchError(error));
+  }
+}
+export function* handleDownvoteComment(action: actions.IncrementPopularityComment) {
+  try {
+    yield call(Api.downvoteComment, action.payload.comment.id);
   } catch (error) {
     yield put(actions.fetchError(error));
   }

@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import {
-  Post,
+  PostType,
   RootState,
   Columns,
 } from '../types';
 import * as actions from '../actions';
 import { postTemplate } from '../components/Util';
-import ConnectedPostItem from './ListItem';
+import ConnectedPostItem from './PostItem';
 import './styles/PostList.css';
 
 interface Props {
   createNewPost: (args: actions.NewPostArgs) => void;
   removePost: (id: string) => void;
-  posts: Post[];
+  posts: PostType[];
 }
 
 const COLUMNS: Columns = {
@@ -60,7 +60,7 @@ const PostList = ({ posts, createNewPost, removePost }: Props) => (
   <div className="stories">
     <StoriesHeader columns={COLUMNS} />
     <div>
-      {posts.filter((p: Post) => !p.deleted).map((post: Post) => <ConnectedPostItem
+      {posts.filter((p: PostType) => !p.deleted).map((post: PostType) => <ConnectedPostItem
         key={post.id}
         postId={post.id}
         columns={COLUMNS}
@@ -84,11 +84,11 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.PostListAction>) {
   };
 }
 
-const matchFilter = (filter: string) => ((post: Post) => {
+const matchFilter = (filter: string) => ((post: PostType) => {
   return 'SHOW_ALL' === filter || post.category === filter;
 });
 // selectors
-function getPosts(state: RootState): Post[] {
+function getPosts(state: RootState): PostType[] {
   const filter = state.categoryState.filter;
   const res = state.postState.ids
     .map((id: string) => state.postState.entities[id])

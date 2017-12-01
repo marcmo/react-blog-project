@@ -1,6 +1,6 @@
-import { Post, Comment } from '.';
+import { PostType, CommentType } from '.';
 
-export class BlogPost implements Post {
+export class BlogPost implements PostType {
 
   id: string; // Unique identifier
   timestamp: number; // Time created - default data tracks this in Unix time. You can use Date.now() to get this number
@@ -10,7 +10,7 @@ export class BlogPost implements Post {
   category: string; // Should be one of the categories provided by the server
   voteScore: number; // Net votes the post has received (default: 1)
   deleted: boolean; // Flag if post has been 'deleted' (inaccessible by the front end), (default: false)
-  comments: Comment[];
+  comments: CommentType[];
 
   constructor(
     id: string,
@@ -21,7 +21,7 @@ export class BlogPost implements Post {
     category: string,
     voteScore: number,
     deleted: boolean,
-    comments: Comment[],
+    comments: CommentType[],
   ) {
     this.id = id;
     this.timestamp = timestamp;
@@ -84,5 +84,5 @@ interface PostJSON {
   category?: string; // Should be one of the categories provided by the server
   voteScore?: number; // Net votes the post has received (default: 1)
   deleted?: boolean; // Flag if post has been 'deleted' (inaccessible by the front end), (default: false)
-  comments?: Comment[];
+  comments?: CommentType[];
 }

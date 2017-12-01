@@ -2,21 +2,21 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter, Route, Link } from 'react-router-dom';
 import 'spectre.css/dist/spectre.min.css';
-import { RootState, Category, Post } from '../types';
+import * as T from '../types';
 import PostList from '../components/PostList';
 import EditForm from '../components/EditForm';
-import PostItem from '../components/Post';
+import Post from '../components/Post';
 import Categories from '../components/Categories';
 import { UpdatePostListActionType } from '../actions/types';
 import * as actions from '../actions';
 import './App.css';
 
 interface Props {
-  posts: Post[];
+  posts: T.PostType[];
   initialFetchPostsAndCategories: () => any;
   deselectedPost: () => any;
   selectedPostId: string | null;
-  categories: Array<Category>;
+  categories: Array<T.Category>;
 }
 interface State {
   input: string;
@@ -47,15 +47,15 @@ class App extends React.Component<Props, State> {
     this.props.deselectedPost();
   }
 
-  renderRoute = (post: Post) => (
+  renderRoute = (post: T.PostType) => (
     <Route
       key={post.id}
       exact={true}
       path={`/${post.id}`}
-      render={() => <PostItem post={post} />}
+      render={() => <Post post={post} />}
     />
   )
-  renderEditRoute = (post: Post) => (
+  renderEditRoute = (post: T.PostType) => (
     <Route
       key={`edit-${post.id}`}
       exact={true}
@@ -82,19 +82,19 @@ class App extends React.Component<Props, State> {
             </div>
           }
         />
-        {this.props.posts.map((p: Post) => this.renderEditRoute(p))}
-        {this.props.posts.map((p: Post) => this.renderRoute(p))}
+        {this.props.posts.map((p: T.PostType) => this.renderEditRoute(p))}
+        {this.props.posts.map((p: T.PostType) => this.renderRoute(p))}
       </div>
     );
   }
 }
 
-function getPosts(state: RootState): Post[] {
+function getPosts(state: T.RootState): T.PostType[] {
   const res = state.postState.ids
     .map((id: string) => state.postState.entities[id]);
   return res;
 }
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: T.RootState) => ({
   selectedPostId: state.postState.selectedPostId,
   categories: state.categoryState.categories,
   posts: getPosts(state),

@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Redirect } from 'react-router';
-import { Post, Category, RootState } from '../types';
+import { PostType, Category, RootState } from '../types';
 import TextArea from '../components/TextArea';
 import Select from '../components/Select';
 import SingleInput from '../components/SingleInput';
 import * as actions from '../actions';
 
 interface Props {
-  post: Post;
+  post: PostType;
   categories: Array<Category>;
   updatePost: (postId: string, args: actions.UpdatePostInfo) => any;
   exit: () => any;

@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Post, RootState, Columns } from '../types';
+import { PostType, RootState, Columns } from '../types';
 import { Link } from 'react-router-dom';
 import * as FA from 'react-icons/lib/fa';
 import Button from './Button';
 import { formatTimestamp } from './Util';
 import * as actions from '../actions';
-import './styles/ListItem.css';
+import './styles/PostItem.css';
 
 export interface Props {
   key: string;
-  post: Post;
+  post: PostType;
   incrementVote: (id: string) => any;
   decrementVote: (id: string) => any;
   selectedPost: (selectedId: string) => any;
@@ -22,12 +22,8 @@ const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, d
   const onSubmitDelete = () => {
     deletePost(id);
   };
-  const getEditDestination = () => {
-    return `/edit/${id}`;
-  };
-  const getDestination = () => {
-    return `/${id}`;
-  };
+  const getEditDestination = () => `/edit/${id}`;
+  const getDestination = () => `/${id}`;
   return (
     <div className="container">
       <div className="columns">
@@ -67,16 +63,12 @@ const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, d
   );
 };
 
-function getPost(state: RootState, postId: string) {
-  return state.postState.entities[postId];
-}
-
 interface OwnProps {
   postId: string;
   columns: Columns;
 }
 const mapStateToProps = (state: RootState, props: OwnProps) => ({
-  post: getPost(state, props.postId),
+  post: state.postState.entities[props.postId],
   columns: props.columns,
 });
 

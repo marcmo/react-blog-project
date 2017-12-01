@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import {
-  Comment,
-  Post,
+  CommentType,
+  PostType,
   RootState,
   CommentColumns,
   createComment,
@@ -14,12 +14,12 @@ import ConnetedCommentItem from './CommentItem';
 import './styles/CommentList.css';
 
 interface Props {
-  comments: Comment[];
+  comments: CommentType[];
 }
 
 const COMMENT_COLUMNS: CommentColumns = {
-  id: {
-    label: 'id',
+  body: {
+    label: 'body',
     className: 'column col-4 story',
   },
   author: {
@@ -61,7 +61,7 @@ const CommentList = ({ comments }: Props) => (
   <div className="stories">
     <StoriesHeader columns={COMMENT_COLUMNS} />
     <div>
-      {comments.map((comment: Comment) => <ConnetedCommentItem
+      {comments.map((comment: CommentType) => <ConnetedCommentItem
         key={comment.id}
         comment={comment}
         columns={COMMENT_COLUMNS}
@@ -74,16 +74,16 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.PostListAction>) {
   return {};
 }
 
-const matchPostId = (postId: string) => ((comment: Comment) => {
+const matchPostId = (postId: string) => ((comment: CommentType) => {
   return comment.parentId === postId;
 });
 // selectors
-function getCommentsForPost(state: RootState, post: Post): Comment[] {
-  return R.filter(matchPostId(post.id), state.postState.comments);
+function getCommentsForPost(state: RootState, post: PostType): CommentType[] {
+  return R.sortBy(R.prop('timestamp'), R.filter(matchPostId(post.id), state.postState.comments));
 }
 
 interface OwnProps {
-  post: Post;
+  post: PostType;
 }
 const mapStateToPropsList = (state: RootState, ownProps: OwnProps) => ({
   comments: getCommentsForPost(state, ownProps.post),

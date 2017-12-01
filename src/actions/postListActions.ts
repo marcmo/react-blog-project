@@ -1,4 +1,4 @@
-import { Post, Comment } from '../types';
+import { PostType, CommentType } from '../types';
 import {
   UpdatePostListActionType,
 } from './types';
@@ -8,6 +8,7 @@ export type PostListAction =
   AddPost |
   AddFetchedPosts |
   AddComment |
+  UpdateLocalComments |
   EditPost |
   UpdatePost |
   RemovePost |
@@ -24,16 +25,22 @@ export type PostListAction =
   DecrementPopularity;
 export interface AddFetchedPosts {
   type: UpdatePostListActionType.ADD_FETCHED_POSTS;
-  posts: Array<Post>;
+  posts: Array<PostType>;
 }
 export interface AddPost {
   type: UpdatePostListActionType.ADD_POST;
-  post: Post;
+  post: PostType;
 }
 export interface AddComment {
   type: UpdatePostListActionType.ADD_COMMENT;
   payload: {
-    comment: Comment;
+    comment: CommentType;
+  };
+}
+export interface UpdateLocalComments {
+  type: UpdatePostListActionType.UPDATE_LOCAL_COMMENTS;
+  payload: {
+    comments: Array<CommentType>;
   };
 }
 export interface UpdatePostInfo {
@@ -94,11 +101,15 @@ export interface IncrementPopularity {
 }
 export interface IncrementPopularityComment {
   type: UpdatePostListActionType.INCREMENT_POPULARITY_COMMENT;
-  id: string;
+  payload: {
+    comment: CommentType;
+  };
 }
 export interface DecrementPopularityComment {
   type: UpdatePostListActionType.DECREMENT_POPULARITY_COMMENT;
-  id: string;
+  payload: {
+    comment: CommentType;
+  };
 }
 export interface DecrementPopularity {
   type: UpdatePostListActionType.DECREMENT_POPULARITY;
@@ -111,6 +122,18 @@ export const decrementPopularity = (id: string): DecrementPopularity => ({
 export const incrementPopularity = (id: string): IncrementPopularity => ({
   type: UpdatePostListActionType.INCREMENT_POPULARITY,
   id,
+});
+export const incrementPopularityComment = (comment: CommentType): IncrementPopularityComment => ({
+  type: UpdatePostListActionType.INCREMENT_POPULARITY_COMMENT,
+  payload: {
+    comment,
+  },
+});
+export const decrementPopularityComment = (comment: CommentType): DecrementPopularityComment => ({
+  type: UpdatePostListActionType.DECREMENT_POPULARITY_COMMENT,
+  payload: {
+    comment,
+  },
 });
 export interface NewPostArgs {
   title: string;
@@ -157,18 +180,24 @@ export const selectedPost = (selectedId: string): PostSelected => ({
 export const createDeselectedPostAction = (): PostDeselected => ({
   type: UpdatePostListActionType.POST_DESELECTED,
 });
-export const addFetchedPosts = (posts: Array<Post>): AddFetchedPosts => ({
+export const addFetchedPosts = (posts: Array<PostType>): AddFetchedPosts => ({
   type: UpdatePostListActionType.ADD_FETCHED_POSTS,
   posts,
 });
-export const addPost = (post: Post): AddPost => ({
+export const addPost = (post: PostType): AddPost => ({
   type: UpdatePostListActionType.ADD_POST,
   post,
 });
-export const createAddCommentAction = (comment: Comment): AddComment => ({
+export const createAddCommentAction = (comment: CommentType): AddComment => ({
   type: UpdatePostListActionType.ADD_COMMENT,
   payload: {
     comment,
+  },
+});
+export const createUpdateLocalCommentsAction = (comments: Array<CommentType>): UpdateLocalComments => ({
+  type: UpdatePostListActionType.UPDATE_LOCAL_COMMENTS,
+  payload: {
+    comments,
   },
 });
 export const createFetchPostsAction = (): FetchPosts => ({

@@ -82,18 +82,18 @@ function vote (token, id, option) {
   logging.log.w(`[${token}] voting on token with id ${id}`);
   return new Promise((res) => {
     let comments = getData(token)
-    logging.log.w(`voting on (id:${comment.id}), we have:`, Object.keys(comments));
     comment = comments[id]
-    // switch(option) {
-    //     case "upVote":
-    //         comment.voteScore = comment.voteScore + 1
-    //         break
-    //     case "downVote":
-    //         comment.voteScore = comment.voteScore - 1
-    //         break
-    //     default:
-    //         console.log(`comments.vote received incorrect parameter: ${option}`)
-    // }
+    logging.log.w(`voting on (id:${comment.id}), we have:`, Object.keys(comments));
+    switch(option) {
+        case "upVote":
+            comment.voteScore = comment.voteScore + 1
+            break
+        case "downVote":
+            comment.voteScore = comment.voteScore - 1
+            break
+        default:
+            console.log(`comments.vote received incorrect parameter: ${option}`)
+    }
     res(comment)
   })
 }
@@ -117,6 +117,7 @@ function disable (token, id) {
 }
 
 function edit (token, id, comment) {
+    logging.log.w(`[${token}] editing comment: ${comment.id}`);
     return new Promise((res) => {
         let comments = getData(token)
         for (prop in comment) {
