@@ -74,6 +74,16 @@ function* handleEditPost(action: actions.EditPost) {
     yield put(actions.fetchError(error));
   }
 }
+export function* handleEditComment(action: actions.EditComment) {
+  try {
+    yield call(Api.editComment,
+      action.payload.commentId,
+      action.payload.timestamp,
+      action.payload.newBody);
+  } catch (error) {
+    yield put(actions.fetchError(error));
+  }
+}
 function* handleFetchCategories(action: actions.FetchPosts) {
   try {
     const result = yield call(Api.fetchCategories);

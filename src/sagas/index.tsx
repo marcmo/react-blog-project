@@ -18,6 +18,7 @@ function* watchAll() {
     takeEvery(UpdatePostListActionType.FETCH_CATEGORIES, handleFetchCategories),
     takeEvery(UpdatePostListActionType.INCREMENT_POPULARITY, handleUpvote),
     takeEvery(UpdatePostListActionType.DECREMENT_POPULARITY, handleDownvote),
+    takeEvery(UpdatePostListActionType.EDIT_COMMENT, P.handleEditComment),
     takeEvery(UpdatePostListActionType.INCREMENT_POPULARITY_COMMENT, P.handleUpvoteComment),
     takeEvery(UpdatePostListActionType.DECREMENT_POPULARITY_COMMENT, P.handleDownvoteComment),
     takeEvery(UpdatePostListActionType.REMOVE_POST, handleDeletePost),

@@ -7,7 +7,7 @@ import * as b from 'react-icons/lib/fa';
 import Button from './Button';
 import { formatTimestamp } from './Util';
 import * as actions from '../actions';
-import './styles/PostItem.css';
+import './styles/CommentItem.css';
 
 export interface Props {
   key: string;
@@ -21,14 +21,11 @@ const CommentItem = ({ columns, comment, incrementVote, decrementVote }: Props) 
   const getEditDestination = () => {
     return `/edit/${id}`;
   };
-  const getDestination = () => {
-    return `/${id}`;
-  };
   return (
     <div className="container">
       <div className="columns">
         <div className={columns.body.className}>
-          <Link to={getDestination()}>{body}</Link>
+          <span>{body}</span>
         </div>
         <div className={columns.author.className}>
           {author}

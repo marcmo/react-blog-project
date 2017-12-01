@@ -6,6 +6,7 @@ import * as T from '../types';
 import PostList from '../components/PostList';
 import EditForm from '../components/EditForm';
 import Post from '../components/Post';
+import EditCommentForm from '../components/EditCommentForm';
 import Categories from '../components/Categories';
 import { UpdatePostListActionType } from '../actions/types';
 import * as actions from '../actions';
@@ -13,6 +14,7 @@ import './App.css';
 
 interface Props {
   posts: T.PostType[];
+  comments: T.CommentType[];
   initialFetchPostsAndCategories: () => any;
   deselectedPost: () => any;
   selectedPostId: string | null;
@@ -63,6 +65,14 @@ class App extends React.Component<Props, State> {
       render={() => <EditForm post={post} />}
     />
   )
+  renderEditComment = (comment: T.CommentType) => (
+    <Route
+      key={comment.id}
+      exact={true}
+      path={`/edit/${comment.id}`}
+      render={() => <EditCommentForm comment={comment} />}
+    />
+  )
 
   render() {
     return (
@@ -84,6 +94,7 @@ class App extends React.Component<Props, State> {
         />
         {this.props.posts.map((p: T.PostType) => this.renderEditRoute(p))}
         {this.props.posts.map((p: T.PostType) => this.renderRoute(p))}
+        {this.props.comments.map((p: T.CommentType) => this.renderEditComment(p))}
       </div>
     );
   }
@@ -98,6 +109,7 @@ const mapStateToProps = (state: T.RootState) => ({
   selectedPostId: state.postState.selectedPostId,
   categories: state.categoryState.categories,
   posts: getPosts(state),
+  comments: state.postState.comments,
 });
 const mapDispatchToProps = (dispatch: Dispatch<UpdatePostListActionType>) => ({
   initialFetchPostsAndCategories: () => {

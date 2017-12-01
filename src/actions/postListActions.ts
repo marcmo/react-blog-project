@@ -10,6 +10,7 @@ export type PostListAction =
   AddComment |
   UpdateLocalComments |
   EditPost |
+  EditComment |
   UpdatePost |
   RemovePost |
   FetchPosts |
@@ -52,6 +53,11 @@ export interface UpdatePostInfo {
   voteScore?: number;
   deleted?: boolean;
 }
+export interface UpdateCommentInfo {
+  timestamp?: number;
+  body?: string;
+  deleted?: boolean;
+}
 export interface UpdatePost {
   type: UpdatePostListActionType.UPDATE_POST;
   id: string;
@@ -63,6 +69,14 @@ export interface EditPost {
     postId: string;
     category: string;
     newTitle: string;
+    newBody: string;
+  };
+}
+export interface EditComment {
+  type: UpdatePostListActionType.EDIT_COMMENT;
+  payload: {
+    commentId: string;
+    timestamp: number;
     newBody: string;
   };
 }
@@ -170,6 +184,14 @@ export const editPost = (postId: string, newCategory: string, newTitle: string, 
     postId,
     category: newCategory,
     newTitle,
+    newBody,
+  },
+});
+export const editComment = (commentId: string, timestamp: number, newBody: string): EditComment => ({
+  type: UpdatePostListActionType.EDIT_COMMENT,
+  payload: {
+    commentId,
+    timestamp,
     newBody,
   },
 });

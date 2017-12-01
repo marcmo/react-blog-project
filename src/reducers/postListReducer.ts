@@ -21,18 +21,23 @@ const initialPostsState: PostState = {
   selectedPostId: null,
 };
 
+const addUpdatedComment = (cs: Array<CommentType>, c: CommentType): Array<CommentType> => {
+  const matchId = (cc: CommentType) => cc.id === c.id;
+  return R.append(c, R.reject(matchId, cs));
+};
+
 export type PostListReducer = Redux.Reducer<PostState>;
 export const postListReducer: PostListReducer = (state = initialPostsState, action: actions.PostListAction) => {
   switch (action.type) {
     case UpdatePostListActionType.ADD_COMMENT:
       return {
         ...state,
-        comments: R.uniq(R.append(action.payload.comment, state.comments)),
+        comments: addUpdatedComment(state.comments, action.payload.comment),
       };
     case UpdatePostListActionType.UPDATE_LOCAL_COMMENTS:
       return {
         ...state,
-        comments: R.uniq(R.concat(state.comments, action.payload.comments)),
+        comments: R.reduce(addUpdatedComment, state.comments, action.payload.comments),
       };
     case UpdatePostListActionType.ADD_POST:
       {
@@ -46,6 +51,11 @@ export const postListReducer: PostListReducer = (state = initialPostsState, acti
         action.payload.postId,
         action.payload.category,
         action.payload.newTitle,
+        action.payload.newBody);
+    case UpdatePostListActionType.EDIT_COMMENT:
+      return updateComment(
+        state,
+        action.payload.commentId,
         action.payload.newBody);
     case UpdatePostListActionType.UPDATE_POST:
       return updatePostContent(state, action.id, action.info);
@@ -127,7 +137,7 @@ const changeVoteComment = (
     ...comment,
     voteScore: changer(comment.voteScore),
   };
-  const comments = R.append(updatedComment, R.reject(matchId, state.comments));
+  const comments = R.uniq(R.append(updatedComment, R.reject(matchId, state.comments)));
   return {
     ...state,
     comments,
@@ -148,6 +158,25 @@ const updateTitleAndBody = (
   };
   const entities = { ...state.entities, [post.id]: updatedPost };
   return { ...state, entities };
+};
+const updateComment = (
+  state: PostState,
+  commentId: string,
+  newBody: string): PostState => {
+  const matchId = (c: CommentType) => c.id === commentId;
+  const comment: CommentType | undefined = R.head(R.filter(matchId, state.comments));
+  if (comment == null) {
+    return state;
+  }
+  const updatedComment: CommentType = {
+    ...comment,
+    body: newBody,
+  };
+  const comments = R.uniq(R.append(updatedComment, R.reject(matchId, state.comments)));
+  return {
+    ...state,
+    comments,
+  };
 };
 const updatePostContent = (
   state: PostState,
