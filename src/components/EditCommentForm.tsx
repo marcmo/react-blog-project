@@ -3,8 +3,6 @@ import { connect, Dispatch } from 'react-redux';
 import { Redirect } from 'react-router';
 import { CommentType, Category, RootState } from '../types';
 import TextArea from '../components/TextArea';
-import Select from '../components/Select';
-import SingleInput from '../components/SingleInput';
 import * as actions from '../actions';
 
 interface Props {

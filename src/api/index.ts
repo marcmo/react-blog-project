@@ -1,5 +1,5 @@
 import { PostType, CommentType } from '../types';
-import axios, { AxiosRequestConfig, AxiosPromise } from 'axios';
+import axios from 'axios';
 
 axios.defaults.headers.common.Authorization = 'OK';
 const BASE_URL = 'http://localhost:3002';

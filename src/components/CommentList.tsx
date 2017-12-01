@@ -5,11 +5,9 @@ import {
   PostType,
   RootState,
   CommentColumns,
-  createComment,
 } from '../types';
 import * as actions from '../actions';
 import * as R from 'ramda';
-import { postTemplate } from '../components/Util';
 import ConnetedCommentItem from './CommentItem';
 import './styles/CommentList.css';
 

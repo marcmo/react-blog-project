@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { connect, Dispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { CommentType, RootState, CommentColumns } from '../types';
 import { Link } from 'react-router-dom';
 import * as b from 'react-icons/lib/fa';
 // import Pencil from 'react-icons/lib/ti/pencil';
-import Button from './Button';
 import { formatTimestamp } from './Util';
 import * as actions from '../actions';
 import './styles/CommentItem.css';

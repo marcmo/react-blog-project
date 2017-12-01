@@ -3,7 +3,6 @@ import { connect, Dispatch } from 'react-redux';
 import { PostType, RootState, Columns } from '../types';
 import { Link } from 'react-router-dom';
 import * as FA from 'react-icons/lib/fa';
-import Button from './Button';
 import { formatTimestamp } from './Util';
 import * as actions from '../actions';
 import './styles/PostItem.css';
