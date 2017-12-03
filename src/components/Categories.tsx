@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import * as actions from '../actions';
 import { FilterActionType } from '../actions/types';
 import Button from './Button';
-import { RootState, Category } from '../types';
+import * as T from '../types';
 import './styles/SearchPosts.css';
 
 interface VehicleProps {
@@ -15,11 +16,18 @@ interface Props {
   selectCategory: (category: string) => void;
 }
 
-const Cat = (props: VehicleProps) => (
-  <Button type="submit" className="button" onClick={() => props.selectCategory(props.name)}>
-    {props.name}
-  </Button>
-);
+const Cat = (props: VehicleProps) => {
+  const getDestination = () => `/${props.name}`;
+  return (
+    <Button
+      type="submit"
+      className="button"
+      onClick={() => props.selectCategory(props.name)}
+    >
+      <Link to={getDestination()}>{props.name}</Link>
+    </Button>
+  );
+};
 
 const Categories = (props: Props) => {
   return (
@@ -31,8 +39,8 @@ const Categories = (props: Props) => {
   );
 };
 
-const mapStateToProps = (state: RootState) => ({
-  categories: state.categoryState.categories.map((c: Category) => c.name),
+const mapStateToProps = (state: T.RootState) => ({
+  categories: state.categoryState.categories.map((c: T.Category) => c.name),
 });
 const mapDispatchToProps = (dispatch: Dispatch<FilterActionType>) => ({
   selectCategory: (category: string) => dispatch(actions.applyFilter(category)),

@@ -8,14 +8,10 @@ import {
 export type FilterListAction =
   ApplyFilter |
   DeletedFilter |
-  RemoveFilter |
   AddRemoteCategories;
 export interface ApplyFilter {
   type: FilterActionType.APPLY_FILTER;
   filter: string;
-}
-export interface RemoveFilter {
-  type: FilterActionType.SHOW_ALL;
 }
 export interface DeletedFilter {
   type: FilterActionType.SHOW_DELETED;
@@ -27,9 +23,6 @@ export interface AddRemoteCategories {
 export const applyFilter = (f: string): ApplyFilter => ({
   type: FilterActionType.APPLY_FILTER,
   filter: f,
-});
-export const removeFilter = (): RemoveFilter => ({
-  type: FilterActionType.SHOW_ALL,
 });
 export const deletedFilter = (): DeletedFilter => ({
   type: FilterActionType.SHOW_DELETED,

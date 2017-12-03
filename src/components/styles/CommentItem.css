@@ -2,13 +2,13 @@
 .button {
   margin: 5px;
 }
-.story {
+.comment {
   display: flex;
   line-height: 34px;
   white-space: nowrap;
   margin: 10px 0;
   padding: 10px;
-  background: #eee;
+  background: rgba(46, 204, 113,0.1);
   text-overflow: ellipsis;
   overflow: hidden;
   padding: 0 5px;

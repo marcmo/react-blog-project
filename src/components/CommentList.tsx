@@ -18,46 +18,33 @@ interface Props {
 const COMMENT_COLUMNS: CommentColumns = {
   body: {
     label: 'body',
-    className: 'column col-4 story',
+    className: 'column col-4 comment',
   },
   author: {
     label: 'Author',
-    className: 'column col-1 story',
+    className: 'column col-1 comment',
   },
   comments: {
     label: 'Comments',
-    className: 'column col-1 story',
+    className: 'column col-1 comment',
   },
   date: {
     label: 'Date',
-    className: 'column col-3 story',
+    className: 'column col-3 comment',
   },
   votes: {
-    className: 'column col-1 story',
+    className: 'column col-1 comment',
   },
   edit: {
-    className: 'column col-1 story',
+    className: 'column col-1 comment',
   },
   delete: {
-    className: 'column col-1 story',
+    className: 'column col-1 comment',
   },
 };
 
-const StoriesHeader = ({ columns }: any) => (
-  <div className="stories-header">
-    {Object.keys(columns).map((key) =>
-      <div
-        key={key}
-        className={columns[key].className}
-      >
-        {columns[key].label}
-      </div>,
-    )}
-  </div>
-);
 const CommentList = ({ comments }: Props) => (
   <div className="stories">
-    <StoriesHeader columns={COMMENT_COLUMNS} />
     <div>
       {comments.map((comment: CommentType) => <ConnetedCommentItem
         key={comment.id}

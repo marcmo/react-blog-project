@@ -7,8 +7,8 @@ import {
 } from '../types';
 
 const initialFilterState: CategoryState = {
-  filter: 'SHOW_ALL',
-  categories: ['myStuff', 'tech', 'SHOW_ALL'].map(createCategory),
+  filter: 'none',
+  categories: ['myStuff', 'tech', 'none'].map(createCategory),
   onlyDeleted: false,
 };
 
@@ -22,9 +22,6 @@ export const categoryReducer: CategoryReducer = (
     }
     case FilterActionType.SHOW_DELETED: {
       return applyDeletedFilter(state, true);
-    }
-    case FilterActionType.SHOW_ALL: {
-      return applySetFilter(state, 'SHOW_ALL');
     }
     case FilterActionType.ADD_REMOTE_CATEGORIES: {
       return applyNewCategories(state, action);

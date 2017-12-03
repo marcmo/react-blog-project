@@ -4,6 +4,7 @@ import { withRouter, Route, Link } from 'react-router-dom';
 import 'spectre.css/dist/spectre.min.css';
 import * as T from '../types';
 import PostList from '../components/PostList';
+import AllPostList from '../components/AllPostList';
 import EditForm from '../components/EditForm';
 import Post from '../components/Post';
 import EditCommentForm from '../components/EditCommentForm';
@@ -53,7 +54,7 @@ class App extends React.Component<Props, State> {
     <Route
       key={post.id}
       exact={true}
-      path={`/${post.id}`}
+      path={`/${post.category}/${post.id}`}
       render={() => <Post post={post} />}
     />
   )
@@ -78,23 +79,24 @@ class App extends React.Component<Props, State> {
     return (
       <div className="container">
         <ul>
-          <li><Link to="/">Home</Link></li>
+          <li><Link to="/">All Posts</Link></li>
         </ul>
+        <div className="interactions">
+          <Categories />
+        </div>
         <Route
           exact={true}
           path="/"
-          render={() =>
-            <div>
-              <div className="interactions">
-                <Categories />
-              </div>
-              <PostList />
-            </div>
-          }
+          component={AllPostList}
         />
         {this.props.posts.map((p: T.PostType) => this.renderEditRoute(p))}
         {this.props.posts.map((p: T.PostType) => this.renderRoute(p))}
         {this.props.comments.map((p: T.CommentType) => this.renderEditComment(p))}
+        <Route
+          exact={true}
+          path="/:category"
+          component={PostList}
+        />
       </div>
     );
   }

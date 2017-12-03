@@ -14,7 +14,6 @@ interface Props {
   createNewPost: (args: actions.NewPostArgs, category: string) => void;
   removePost: (id: string) => void;
   posts: PostType[];
-  currentCategory: string;
 }
 
 const COLUMNS: Columns = {
@@ -57,7 +56,7 @@ const StoriesHeader = ({ columns }: any) => (
     )}
   </div>
 );
-const PostList = ({ posts, createNewPost, removePost, currentCategory }: Props) => (
+const AllPostList = ({ posts, createNewPost, removePost }: Props) => (
   <div className="stories">
     <StoriesHeader columns={COLUMNS} />
     <div>
@@ -69,7 +68,7 @@ const PostList = ({ posts, createNewPost, removePost, currentCategory }: Props) 
     </div>
     <button
       className="button"
-      onClick={(e) => createNewPost({ title: 'new stuff', author: 'Chuck' }, currentCategory)}
+      onClick={(e) => createNewPost({ title: 'new stuff', author: 'Chuck' }, 'none')}
     >
       Add Post
     </button>
@@ -84,22 +83,16 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.PostListAction>) {
   };
 }
 
-const matchFilter = (filter: string) => ((post: PostType) => {
-  return post.category === filter;
-});
 // selectors
 function getPosts(state: RootState): PostType[] {
-  const filter = state.categoryState.filter;
   const res = state.postState.ids
-    .map((id: string) => state.postState.entities[id])
-    .filter(matchFilter(filter));
+    .map((id: string) => state.postState.entities[id]);
   return res;
 }
 
 const mapStateToPropsList = (state: RootState) => ({
   posts: getPosts(state),
-  currentCategory: state.categoryState.filter,
 });
 
-const ConnectedPostList = connect(mapStateToPropsList, mapDispatchToProps)(PostList);
-export default ConnectedPostList;
+const ConnectedAllPostList = connect(mapStateToPropsList, mapDispatchToProps)(AllPostList);
+export default ConnectedAllPostList;

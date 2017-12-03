@@ -9,7 +9,6 @@ interface Props {
   comment: CommentType;
   categories: Array<Category>;
   updateComment: (postId: string, timestamp: number, args: actions.UpdateCommentInfo) => any;
-  exit: () => any;
 }
 interface State {
   timestamp?: number;
@@ -32,7 +31,7 @@ class EditCommentForm extends React.Component<Props, State> {
   getOptions = () => {
     return this.props.categories
       .map((category: Category) => category.name)
-      .filter((name: string) => name !== 'SHOW_ALL');
+      .filter((name: string) => name !== 'none');
   }
   handleInputChange = (event: any) => {
     const target = event.target;
@@ -61,7 +60,6 @@ class EditCommentForm extends React.Component<Props, State> {
     this.setState({ doRedirect: true });
     this.props.updateComment(this.props.comment.id, Date.now(), this.state);
     this.handleClearForm(e);
-    this.props.exit();
   }
 
   render() {
@@ -108,7 +106,6 @@ const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({
       id,
       timestamp,
       args.body ? args.body : '')),
-  exit: () => dispatch(actions.createDeselectedPostAction()),
 });
 
 export default connect(

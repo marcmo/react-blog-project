@@ -25,6 +25,5 @@ export enum UpdatePostListActionType {
 export enum FilterActionType {
   APPLY_FILTER = 'APPLY_FILTER',
   SHOW_DELETED = 'SHOW_DELETED',
-  SHOW_ALL = 'SHOW_ALL',
   ADD_REMOTE_CATEGORIES = 'ADD_REMOTE_CATEGORIES',
 }

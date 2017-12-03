@@ -2,7 +2,7 @@ import { PostType, CommentType } from '../types';
 import axios from 'axios';
 
 axios.defaults.headers.common.Authorization = 'OK';
-const BASE_URL = 'http://localhost:3002';
+const BASE_URL = 'http://localhost:3001';
 
 const authHeaders = { Authorization: 'Basic ' + btoa('username:password') };
 const doAxiosRequest = (method: string, endpoint: string) =>

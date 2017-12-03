@@ -18,9 +18,11 @@ export const object2string = (o: object | null | undefined): string => {
 export const log = {
   d: (s: string, o?: object) => {
     if (undefined === o) {
-      console.log(`[carsharing] ${s}`);
+      // eslint-disable-next-line
+      console.log(`[carsharing] ${s}`); // tslint:disable-line
     } else {
-      console.log(`[carsharing] ${s} "${object2string(o)}"`);
+      // eslint-disable-next-line
+      console.log(`[carsharing] ${s} "${object2string(o)}"`); // tslint:disable-line
     }
   },
   w: (s: string, o?: object) => {

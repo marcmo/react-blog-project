@@ -37,8 +37,7 @@ class EditForm extends React.Component<Props, State> {
 
   getOptions = () => {
     return this.props.categories
-      .map((category: Category) => category.name)
-      .filter((name: string) => name !== 'SHOW_ALL');
+      .map((category: Category) => category.name);
   }
   handleInputChange = (event: any) => {
     const target = event.target;

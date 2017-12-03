@@ -22,7 +22,7 @@ const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, d
     deletePost(id);
   };
   const getEditDestination = () => `/edit/${id}`;
-  const getDestination = () => `/${id}`;
+  const getDestination = () => `/${post.category}/${id}`;
   return (
     <div className="container">
       <div className="columns">
