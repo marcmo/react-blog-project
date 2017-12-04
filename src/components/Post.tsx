@@ -83,9 +83,11 @@ class Post extends React.Component<Props, State> {
             <FA.FaPencil size={25} />
           </button>
         </Link>
-        <Button type="submit" className="button" onClick={() => this.props.deletePost(this.props.post.id)}>
-          Delete
-        </Button>
+        <Link to="/">
+          <Button type="submit" className="button" onClick={() => this.props.deletePost(this.props.post.id)}>
+            Delete
+          </Button>
+        </Link>
         <div className="divider text-left" data-content="vote" />
         <div className="vote circle">
           <div className="increment up" onClick={() => this.props.incrementVote(this.props.post.id)} />

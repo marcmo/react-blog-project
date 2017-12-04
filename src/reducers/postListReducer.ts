@@ -71,6 +71,11 @@ export const postListReducer: PostListReducer = (state = initialPostsState, acti
       };
     case UpdatePostListActionType.REMOVE_POST:
       return deletePost(state, action.postId);
+    case UpdatePostListActionType.DELETE_COMMENT:
+      return {
+        ...state,
+        comments: R.filter((c: CommentType) => c.id !== action.commentId, state.comments),
+      };
     case UpdatePostListActionType.ADD_FETCHED_POSTS:
       return action.posts.reduce(
         (acc: PostState, newPost: PostType) => {

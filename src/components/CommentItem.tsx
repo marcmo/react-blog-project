@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { CommentType, RootState, CommentColumns } from '../types';
 import { Link } from 'react-router-dom';
-import * as b from 'react-icons/lib/fa';
+import * as FA from 'react-icons/lib/fa';
 // import Pencil from 'react-icons/lib/ti/pencil';
 import { formatTimestamp } from './Util';
 import * as actions from '../actions';
@@ -13,9 +13,10 @@ export interface Props {
   comment: CommentType;
   incrementVote: (comment: CommentType) => any;
   decrementVote: (comment: CommentType) => any;
+  deleteComment: (commentId: string) => any;
   columns: CommentColumns;
 }
-const CommentItem = ({ columns, comment, incrementVote, decrementVote }: Props) => {
+const CommentItem = ({ columns, comment, incrementVote, decrementVote, deleteComment }: Props) => {
   const { id, body, author, voteScore } = comment;
   const getEditDestination = () => {
     return `/edit/${id}`;
@@ -42,9 +43,14 @@ const CommentItem = ({ columns, comment, incrementVote, decrementVote }: Props) 
         <div className={columns.edit.className}>
           <Link to={getEditDestination()}>
             <button type="submit" className="btn-icon">
-              <b.FaPencil size={25} />
+              <FA.FaPencil size={25} />
             </button>
           </Link>
+        </div>
+        <div className={columns.delete.className}>
+          <button type="submit" className="btn-icon" onClick={() => deleteComment(id)}>
+            <FA.FaTrash size={25} />
+          </button>
         </div>
       </div>
     </div>
@@ -63,6 +69,7 @@ const mapStateToProps = (state: RootState, props: OwnProps) => ({
 const mapDispatchToProps = (dispatch: any) => ({
   incrementVote: (comment: CommentType) => dispatch(actions.incrementPopularityComment(comment)),
   decrementVote: (comment: CommentType) => dispatch(actions.decrementPopularityComment(comment)),
+  deleteComment: (selectedId: string) => dispatch(actions.deleteComment(selectedId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentItem);

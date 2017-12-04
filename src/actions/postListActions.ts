@@ -13,6 +13,7 @@ export type PostListAction =
   EditComment |
   UpdatePost |
   RemovePost |
+  DeleteCommment |
   FetchPosts |
   FetchPostDetails |
   FetchPostComments |
@@ -90,6 +91,10 @@ export interface PostDeselected {
 export interface RemovePost {
   type: UpdatePostListActionType.REMOVE_POST;
   postId: string;
+}
+export interface DeleteCommment {
+  type: UpdatePostListActionType.DELETE_COMMENT;
+  commentId: string;
 }
 export interface FetchPosts {
   type: UpdatePostListActionType.FETCH_POSTS;
@@ -243,4 +248,8 @@ export const fetchError = (error: string): FetchError => ({
 export const removePost = (id: string): RemovePost => ({
   type: UpdatePostListActionType.REMOVE_POST,
   postId: id,
+});
+export const deleteComment = (id: string): DeleteCommment => ({
+  type: UpdatePostListActionType.DELETE_COMMENT,
+  commentId: id,
 });
