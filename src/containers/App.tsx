@@ -1,11 +1,18 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { withRouter, Route, Link } from 'react-router-dom';
+import {
+  withRouter,
+  BrowserRouter,
+  Route,
+  Switch,
+  Link,
+} from 'react-router-dom';
 import 'spectre.css/dist/spectre.min.css';
 import * as T from '../types';
 import PostList from '../components/PostList';
 import AllPostList from '../components/AllPostList';
 import EditForm from '../components/EditForm';
+import NotFound from '../components/NotFound';
 import Post from '../components/Post';
 import EditCommentForm from '../components/EditCommentForm';
 import Categories from '../components/Categories';
@@ -77,27 +84,32 @@ class App extends React.Component<Props, State> {
 
   render() {
     return (
-      <div className="container">
-        <ul>
-          <li><Link to="/">All Posts</Link></li>
-        </ul>
-        <div className="interactions">
-          <Categories />
+      <BrowserRouter>
+        <div className="container">
+          <ul>
+            <li><Link to="/">All Posts</Link></li>
+          </ul>
+          <div className="interactions">
+            <Categories />
+          </div>
+          <Switch>
+            <Route
+              exact={true}
+              path="/"
+              component={AllPostList}
+            />
+            {this.props.posts.map((p: T.PostType) => this.renderEditRoute(p))}
+            {this.props.posts.map((p: T.PostType) => this.renderRoute(p))}
+            {this.props.comments.map((c: T.CommentType) => this.renderEditComment(c))}
+            <Route
+              exact={true}
+              path="/:category"
+              component={PostList}
+            />
+            <Route path="*" component={NotFound} />
+          </Switch>
         </div>
-        <Route
-          exact={true}
-          path="/"
-          component={AllPostList}
-        />
-        {this.props.posts.map((p: T.PostType) => this.renderEditRoute(p))}
-        {this.props.posts.map((p: T.PostType) => this.renderRoute(p))}
-        {this.props.comments.map((p: T.CommentType) => this.renderEditComment(p))}
-        <Route
-          exact={true}
-          path="/:category"
-          component={PostList}
-        />
-      </div>
+      </BrowserRouter>
     );
   }
 }

@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Redirect } from 'react-router';
-import { CommentType, Category, RootState } from '../types';
+import { CommentType, Category, PostType, RootState } from '../types';
 import TextArea from '../components/TextArea';
+import * as R from 'ramda';
 import * as actions from '../actions';
+import { log } from '../lib/Logging';
 
 interface Props {
   comment: CommentType;
   categories: Array<Category>;
+  parentPost: PostType | undefined;
   updateComment: (postId: string, timestamp: number, args: actions.UpdateCommentInfo) => any;
 }
 interface State {
@@ -62,6 +65,13 @@ class EditCommentForm extends React.Component<Props, State> {
     this.handleClearForm(e);
   }
 
+  getRedirectRoute = () => {
+    const res = (this.props.parentPost != null)
+      ? `/${this.props.parentPost.category}/${this.props.parentPost.id}`
+      : '/';
+    console.warn(`getRedirectRoute to ${res}`);
+    return res;
+  }
   render() {
     return (
       <div className="container">
@@ -90,15 +100,28 @@ class EditCommentForm extends React.Component<Props, State> {
           </button>
         </form>
         {this.state.doRedirect && (
-          <Redirect to={'/'} />
+          <Redirect to={this.getRedirectRoute()} />
         )}
       </div>
     );
   }
 }
 
-const mapStateToProps = (state: RootState) => ({
+interface OwnProps {
+  comment: CommentType;
+}
+const findParentPost = (state: RootState, ownProps: OwnProps): PostType | undefined => {
+  const posts = R.map((e) => e.post, state.postState.entities);
+  log.w('posts:', posts);
+  const parentPost = state.postState.entities[ownProps.comment.parentId];
+  log.w('parentPost:', parentPost);
+  return parentPost;
+};
+const mapStateToProps = (state: RootState, ownProps: OwnProps) => ({
   categories: state.categoryState.categories,
+  parentPost: findParentPost(state, ownProps),
+  // parentPost: R.find((p: PostType) => p.id === ownProps.comment.parentId,
+  //   R.map((e) => e.post, state.postState.entities)),
 });
 const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({
   updateComment: (id: string, timestamp: number, args: actions.UpdatePostInfo) =>

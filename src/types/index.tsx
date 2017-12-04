@@ -4,12 +4,12 @@ export interface RootState {
   readonly postState: PostState;
   readonly categoryState: CategoryState;
 }
-export interface Entity {
-  readonly id: string;
-  readonly post: PostType;
-}
+// export interface Entity {
+//   readonly id: string;
+//   readonly post: PostType;
+// }
 export interface PostState {
-  readonly entities: Array<Entity>;
+  readonly entities: object;
   readonly comments: Array<CommentType>;
   readonly ids: Array<string>;
   readonly selectedPostId: string | null;
