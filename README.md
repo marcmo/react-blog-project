@@ -24,7 +24,7 @@ running linter
 
 example server taken from [readable-starter](https://github.com/udacity/reactnd-project-readable-starter)
 
-    cd api-server & yarn install & node server
+    cd api-server & yarn install & node server.js
 
 ## Gotchas
 
