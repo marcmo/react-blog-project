@@ -108,7 +108,7 @@ class CreatePostForm extends React.Component<Props, State> {
               rows={5}
               resize={false}
               content={this.state.body}
-              name={'currentPetInfo'}
+              name={'currentPostInfo'}
               controlFunc={this.handleDescriptionChange}
               placeholder={'...some content'}
             />

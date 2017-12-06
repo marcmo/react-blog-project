@@ -3,6 +3,8 @@ import { connect, Dispatch } from 'react-redux';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import { formatTimestamp } from './Util';
+import CreateCommentForm from '../components/CreateCommentForm';
+import * as ReactModal from 'react-modal';
 import * as FA from 'react-icons/lib/fa';
 import * as T from '../types';
 import CommentList from '../components/CommentList';
@@ -21,6 +23,7 @@ export interface Props {
 }
 interface State {
   doRedirect: boolean;
+  modalIsOpen: boolean;
 }
 class Post extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -28,7 +31,16 @@ class Post extends React.Component<Props, State> {
 
     this.state = {
       doRedirect: false,
+      modalIsOpen: false,
     };
+  }
+
+  openModal = () => {
+    this.setState({ modalIsOpen: true });
+  }
+
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
   }
 
   componentDidMount() {
@@ -75,9 +87,24 @@ class Post extends React.Component<Props, State> {
         <div>
           <CommentList post={this.props.post} />
         </div>
-        <Button type="submit" className="button" onClick={() => this.props.addComment(T.createComment(this.props.post.id, 'uuhu'))}>
+        <Button
+          type="submit"
+          className="button"
+          onClick={(e) => this.openModal()}
+        >
           Add Comment
         </Button>
+        <ReactModal
+          isOpen={this.state.modalIsOpen}
+          onRequestClose={this.closeModal}
+          style={customStyles}
+          contentLabel="New Post Modal"
+        >
+          <CreateCommentForm
+            onCloseModal={this.closeModal}
+            post={this.props.post}
+          />
+        </ReactModal>
         <Link to={this.getEditDestination()}>
           <button type="submit" className="btn-icon">
             <FA.FaPencil size={25} />
@@ -98,6 +125,16 @@ class Post extends React.Component<Props, State> {
     );
   }
 }
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
 
 interface OwnProps {
   post: T.PostType;

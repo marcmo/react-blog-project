@@ -1,41 +1,35 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Redirect } from 'react-router';
-import { CommentType, Category, PostType, RootState } from '../types';
+import * as T from '../types';
+import { postTemplate } from '../components/Util';
 import TextArea from '../components/TextArea';
-import * as R from 'ramda';
+import Select from '../components/Select';
+import SingleInput from '../components/SingleInput';
 import * as actions from '../actions';
-import { log } from '../lib/Logging';
 
 interface Props {
-  comment: CommentType;
-  categories: Array<Category>;
-  parentPost: PostType | undefined;
-  updateComment: (postId: string, timestamp: number, args: actions.UpdateCommentInfo) => any;
+  createComment: (comment: T.CommentType) => actions.AddComment;
+  exit: () => any;
+  onCloseModal: () => void;
+  post: T.PostType;
 }
 interface State {
-  timestamp?: number;
-  body?: string;
+  body: string;
   votes?: number;
   doRedirect: boolean;
 }
 
-class EditCommentForm extends React.Component<Props, State> {
+class CreateCommentForm extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
     this.state = {
-      timestamp: props.comment.timestamp,
-      body: props.comment.body,
+      body: '',
       doRedirect: false,
     };
   }
 
-  getOptions = () => {
-    return this.props.categories
-      .map((category: Category) => category.name)
-      .filter((name: string) => name !== 'none');
-  }
   handleInputChange = (event: any) => {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -49,7 +43,6 @@ class EditCommentForm extends React.Component<Props, State> {
   handleClearForm = (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
     this.setState({
-      timestamp: 0,
       body: '',
     });
   }
@@ -61,17 +54,14 @@ class EditCommentForm extends React.Component<Props, State> {
   handleFormSubmit = (e: any) => {
     e.preventDefault();
     this.setState({ doRedirect: true });
-    this.props.updateComment(this.props.comment.id, Date.now(), this.state);
+    this.props.createComment(
+      T.createComment(this.props.post.id, this.state.body),
+    );
     this.handleClearForm(e);
+    this.props.exit();
+    this.props.onCloseModal();
   }
 
-  getRedirectRoute = () => {
-    const res = (this.props.parentPost != null)
-      ? `/${this.props.parentPost.category}/${this.props.parentPost.id}`
-      : '/';
-    console.warn(`getRedirectRoute to ${res}`);
-    return res;
-  }
   render() {
     return (
       <div className="container">
@@ -100,38 +90,20 @@ class EditCommentForm extends React.Component<Props, State> {
           </button>
         </form>
         {this.state.doRedirect && (
-          <Redirect to={this.getRedirectRoute()} />
+          <Redirect to={'/'} />
         )}
       </div>
     );
   }
 }
 
-interface OwnProps {
-  comment: CommentType;
-}
-const findParentPost = (state: RootState, ownProps: OwnProps): PostType | undefined => {
-  const posts = R.map((e) => e.post, state.postState.entities);
-  log.w('posts:', posts);
-  const parentPost = state.postState.entities[ownProps.comment.parentId];
-  log.w('parentPost:', parentPost);
-  return parentPost;
-};
-const mapStateToProps = (state: RootState, ownProps: OwnProps) => ({
-  categories: state.categoryState.categories,
-  parentPost: findParentPost(state, ownProps),
-  // parentPost: R.find((p: PostType) => p.id === ownProps.comment.parentId,
-  //   R.map((e) => e.post, state.postState.entities)),
-});
+const mapStateToProps = (state: T.RootState) => ({});
 const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({
-  updateComment: (id: string, timestamp: number, args: actions.UpdatePostInfo) =>
-    dispatch(actions.editComment(
-      id,
-      timestamp,
-      args.body ? args.body : '')),
+  createComment: (comment: T.CommentType) => dispatch(actions.createAddCommentAction(comment)),
+  exit: () => dispatch(actions.createDeselectedPostAction()),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(EditCommentForm);
+)(CreateCommentForm);
