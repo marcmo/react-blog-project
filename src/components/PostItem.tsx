@@ -49,13 +49,13 @@ const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, d
         </div>
         <div className={columns.edit.className}>
           <Link to={getEditDestination()}>
-            <button type="submit" className="btn-icon">
+            <button type="submit" className="buttonWithout">
               <FA.FaPencil size={25} />
             </button>
           </Link>
         </div>
         <div className={columns.delete.className}>
-          <button type="submit" className="btn-icon" onClick={onSubmitDelete}>
+          <button type="submit" className="buttonWithout" onClick={onSubmitDelete}>
             <FA.FaTrash size={25} />
           </button>
         </div>

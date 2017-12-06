@@ -6,10 +6,12 @@ import {
   Columns,
 } from '../types';
 import * as actions from '../actions';
+import * as R from 'ramda';
 import * as ReactModal from 'react-modal';
 import { postTemplate } from '../components/Util';
 import CreatePostForm from '../components/CreatePostForm';
 import ConnectedPostItem from './PostItem';
+import { log } from '../lib/Logging';
 import './styles/PostList.css';
 
 interface Props {
@@ -35,6 +37,7 @@ const COLUMNS: Columns = {
     className: 'column col-3 story',
   },
   votes: {
+    label: 'Votes',
     className: 'column col-1 story',
   },
   edit: {
@@ -45,20 +48,10 @@ const COLUMNS: Columns = {
   },
 };
 
-const StoriesHeader = ({ columns }: any) => (
-  <div className="stories-header">
-    {Object.keys(columns).map((key) =>
-      <div
-        key={key}
-        className={columns[key].className}
-      >
-        {columns[key].label}
-      </div>,
-    )}
-  </div>
-);
 interface State {
   modalIsOpen: boolean;
+  criteria: 'Title' | 'Votes' | 'Date' | 'Title' | 'Author' | 'Comments';
+  down: boolean;
 }
 const customStyles = {
   content: {
@@ -76,6 +69,8 @@ class AllPostList extends React.Component<Props, State> {
 
     this.state = {
       modalIsOpen: false,
+      criteria: 'Votes',
+      down: true,
     };
   }
   openModal = () => {
@@ -85,16 +80,52 @@ class AllPostList extends React.Component<Props, State> {
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   }
+  // {this.props.posts.filter((p: PostType) => !p.deleted).map((post: PostType) => <ConnectedPostItem
+  getSortFunction = (p: PostType) => {
+    log.d(`getSortFunction for ${this.state.criteria}`);
+    switch (this.state.criteria) {
+      case 'Title':
+        return p.title;
+      case 'Votes':
+        return p.voteScore;
+      case 'Date':
+        return p.timestamp;
+      case 'Author':
+        return p.author;
+      case 'Comments':
+        return p.comments.length;
+      default:
+        return p.voteScore;
+    }
+  }
+  reverseIfNeeded = (ps: any) => (
+    (this.state.down) ? ps : R.reverse(ps)
+  )
   render() {
     return (
       <div className="stories">
-        <StoriesHeader columns={COLUMNS} />
+        <div className="stories-header">
+          {Object.keys(COLUMNS).map((key) =>
+            <div
+              key={key}
+              className={COLUMNS[key].className}
+            >
+              <button
+                className="buttonWithout"
+                onClick={(e) => this.setState((prevState: State) => ({ criteria: COLUMNS[key].label, down: !prevState.down }))}
+              >
+                {COLUMNS[key].label}
+              </button>
+            </div>,
+          )}
+        </div>
         <div>
-          {this.props.posts.filter((p: PostType) => !p.deleted).map((post: PostType) => <ConnectedPostItem
-            key={post.id}
-            postId={post.id}
-            columns={COLUMNS}
-          />)}
+          {R.map((post) =>
+            <ConnectedPostItem
+              key={post.id}
+              postId={post.id}
+              columns={COLUMNS}
+            />, this.reverseIfNeeded(R.sortBy((p) => this.getSortFunction(p), R.reject((p) => p.deleted, this.props.posts))))}
         </div>
         <button
           className="button"
@@ -108,7 +139,7 @@ class AllPostList extends React.Component<Props, State> {
           style={customStyles}
           contentLabel="New Post Modal"
         >
-          <CreatePostForm onCloseModal={this.closeModal}/>
+          <CreatePostForm onCloseModal={this.closeModal} />
         </ReactModal>
       </div>
     );

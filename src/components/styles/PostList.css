@@ -1,6 +1,12 @@
 .button {
   margin: 5px;
 }
+.buttonWithout {
+  margin: 5px;
+  padding: 0;
+  border: none;
+  background: none;
+}
 .stories {
   margin: 20px 0;
 }

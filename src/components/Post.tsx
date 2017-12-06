@@ -106,7 +106,7 @@ class Post extends React.Component<Props, State> {
           />
         </ReactModal>
         <Link to={this.getEditDestination()}>
-          <button type="submit" className="btn-icon">
+          <button type="submit" className="buttonWithout">
             <FA.FaPencil size={25} />
           </button>
         </Link>
