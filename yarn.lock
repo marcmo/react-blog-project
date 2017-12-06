@@ -48,9 +48,9 @@
     "@types/react" "*"
     "@types/react-icon-base" "*"
 
-"@types/react-modal@^2.2.2":
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/@types/react-modal/-/react-modal-2.2.2.tgz#651157522ba45c1ffd8831a2e7bbd8094390a925"
+"@types/react-modal@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@types/react-modal/-/react-modal-3.1.0.tgz#01e40ef67ce5dbf6d5d58dc1723f9283be140430"
   dependencies:
     "@types/react" "*"
 
@@ -4477,12 +4477,13 @@ react-icons@^2.2.7:
   dependencies:
     react-icon-base "2.1.0"
 
-react-modal@^3.0.0:
-  version "3.1.5"
-  resolved "https://registry.yarnpkg.com/react-modal/-/react-modal-3.1.5.tgz#9cfdb7634b5003148ffb7c8ead13a36f671d744e"
+react-modal@^3.1.7:
+  version "3.1.7"
+  resolved "https://registry.yarnpkg.com/react-modal/-/react-modal-3.1.7.tgz#21feb937c95cd722bf2d375cada751fdc8189c0e"
   dependencies:
     exenv "^1.2.0"
     prop-types "^15.5.10"
+    warning "^3.0.0"
 
 react-redux@^5.0.6:
   version "5.0.6"

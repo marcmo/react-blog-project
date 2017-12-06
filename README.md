@@ -28,6 +28,16 @@ example server taken from [readable-starter](https://github.com/udacity/reactnd-
 
 ## Gotchas
 
+### react-modal with typescript
+
+    ...has no default export
+
+better use like this:
+
+    import * as ReactModal from 'react-modal';
+    ...
+    <ReactModal ...>...</ReactModal>
+
 ### react-icons with typescript
 
     module xyz has no default export

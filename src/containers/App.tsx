@@ -44,9 +44,6 @@ class App extends React.Component<Props, State> {
     this.props.initialFetchPostsAndCategories();
   }
 
-  closeFoodModal = () => {
-    console.warn('closeFoodModal');
-  }
   updateInput = (i: string) => {
     this.setState((prevState) => ({
       input: i,

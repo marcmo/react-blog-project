@@ -6,13 +6,14 @@ import {
   Columns,
 } from '../types';
 import * as actions from '../actions';
+import * as ReactModal from 'react-modal';
 import { postTemplate } from '../components/Util';
+import CreatePostForm from '../components/CreatePostForm';
 import ConnectedPostItem from './PostItem';
 import './styles/PostList.css';
 
 interface Props {
-  createNewPost: (args: actions.NewPostArgs, category: string) => void;
-  removePost: (id: string) => void;
+  removePost: (id: string) => actions.RemovePost;
   posts: PostType[];
 }
 
@@ -56,32 +57,67 @@ const StoriesHeader = ({ columns }: any) => (
     )}
   </div>
 );
-const AllPostList = ({ posts, createNewPost, removePost }: Props) => (
-  <div className="stories">
-    <StoriesHeader columns={COLUMNS} />
-    <div>
-      {posts.filter((p: PostType) => !p.deleted).map((post: PostType) => <ConnectedPostItem
-        key={post.id}
-        postId={post.id}
-        columns={COLUMNS}
-      />)}
-    </div>
-    <button
-      className="button"
-      onClick={(e) => createNewPost({ title: 'new stuff', author: 'Chuck' }, 'none')}
-    >
-      Add Post
-    </button>
-  </div>
-);
-
-export function mapDispatchToProps(dispatch: Dispatch<actions.PostListAction>) {
-  return {
-    createNewPost: (args: actions.NewPostArgs, category: string) => dispatch(
-      actions.addPost(postTemplate(args.title, args.author, category))),
-    removePost: (id: string) => dispatch(actions.removePost(id)),
-  };
+interface State {
+  modalIsOpen: boolean;
 }
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+class AllPostList extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      modalIsOpen: false,
+    };
+  }
+  openModal = () => {
+    this.setState({ modalIsOpen: true });
+  }
+
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
+  }
+  render() {
+    return (
+      <div className="stories">
+        <StoriesHeader columns={COLUMNS} />
+        <div>
+          {this.props.posts.filter((p: PostType) => !p.deleted).map((post: PostType) => <ConnectedPostItem
+            key={post.id}
+            postId={post.id}
+            columns={COLUMNS}
+          />)}
+        </div>
+        <button
+          className="button"
+          onClick={(e) => this.openModal()}
+        >
+          Add Post
+        </button>
+        <ReactModal
+          isOpen={this.state.modalIsOpen}
+          onRequestClose={this.closeModal}
+          style={customStyles}
+          contentLabel="New Post Modal"
+        >
+          <CreatePostForm onCloseModal={this.closeModal}/>
+        </ReactModal>
+      </div>
+    );
+  }
+}
+
+const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({
+  removePost: (id: string) => dispatch(actions.removePost(id)),
+});
 
 // selectors
 function getPosts(state: RootState): PostType[] {

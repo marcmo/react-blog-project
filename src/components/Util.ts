@@ -7,12 +7,12 @@ export const formatTimestamp = (unixtime: number): string => {
   return `${fns.format(d, 'MM/DD/YY')} (${fns.distanceInWordsToNow(d)})`;
 };
 
-export const postTemplate = (t: string, author: string, category: string): PostType => {
+export const postTemplate = (t: string, author: string, category: string, postBody?: string): PostType => {
   const newPost = {
     id: uuid(),
     timestamp: Date.now(),
     title: t,
-    body: '',
+    body: (postBody != null) ? postBody : '',
     author,
     category,
     voteScore: 1,
