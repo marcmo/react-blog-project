@@ -31,6 +31,13 @@ export function* handleFetchPostComments(action: actions.FetchPostComments) {
     yield put(actions.fetchError(error));
   }
 }
+export function* handleDeleteComment(action: actions.DeleteCommment) {
+  try {
+    yield call(Api.deleteComment, action.commentId);
+  } catch (error) {
+    yield put(actions.fetchError(error));
+  }
+}
 function* handleDeletePost(action: actions.RemovePost) {
   try {
     yield call(Api.deletePost, action.postId);

@@ -24,6 +24,7 @@ function* watchAll() {
     takeEvery(UpdatePostListActionType.REMOVE_POST, handleDeletePost),
     takeEvery(UpdatePostListActionType.ADD_POST, handleCreatePost),
     takeEvery(UpdatePostListActionType.ADD_COMMENT, P.handleCreateComment),
+    takeEvery(UpdatePostListActionType.DELETE_COMMENT, P.handleDeleteComment),
     takeEvery(UpdatePostListActionType.EDIT_POST, handleEditPost),
   ]);
 }
