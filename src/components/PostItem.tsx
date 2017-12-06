@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { PostType, RootState, Columns } from '../types';
+import * as T from '../types';
+import * as R from 'ramda';
 import { Link } from 'react-router-dom';
 import * as FA from 'react-icons/lib/fa';
 import { formatTimestamp } from './Util';
@@ -9,14 +10,15 @@ import './styles/PostItem.css';
 
 export interface Props {
   key: string;
-  post: PostType;
+  post: T.PostType;
   incrementVote: (id: string) => any;
   decrementVote: (id: string) => any;
   selectedPost: (selectedId: string) => any;
   deletePost: (selectedId: string) => any;
-  columns: Columns;
+  columns: T.Columns;
+  commentsCount: number;
 }
-const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, deletePost }: Props) => {
+const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, deletePost, commentsCount }: Props) => {
   const { title, id, author, comments, voteScore } = post;
   const onSubmitDelete = () => {
     deletePost(id);
@@ -33,7 +35,7 @@ const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, d
           {author}
         </div>
         <div className={columns.comments.className}>
-          {comments.length}
+          {commentsCount}
         </div>
         <div className={columns.date.className}>
           {formatTimestamp(post.timestamp * 1000)}
@@ -64,11 +66,18 @@ const PostItem = ({ columns, post, incrementVote, decrementVote, selectedPost, d
 
 interface OwnProps {
   postId: string;
-  columns: Columns;
+  columns: T.Columns;
 }
-const mapStateToProps = (state: RootState, props: OwnProps) => ({
+const matchPostId = (postId: string) => ((comment: T.CommentType) => {
+  return comment.parentId === postId;
+});
+function getCommentCount(state: T.RootState, postId: string): number {
+  return R.filter(matchPostId(postId), state.postState.comments).length;
+}
+const mapStateToProps = (state: T.RootState, props: OwnProps) => ({
   post: state.postState.entities[props.postId],
   columns: props.columns,
+  commentsCount: getCommentCount(state, props.postId),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<actions.PostListAction>) => ({

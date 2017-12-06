@@ -1,14 +1,21 @@
-import { call, put } from 'redux-saga/effects';
+import { call, put, all } from 'redux-saga/effects';
 import * as actions from '../actions';
 import { PostType, Category, CommentType } from '../types';
 import { BlogPost } from '../types/BlogPost';
 import * as Api from '../api';
+import * as R from 'ramda';
 import { log } from '../lib/Logging';
 
 function* handleFetchPosts(action: actions.FetchPosts) {
   try {
     const result = yield call(Api.fetchPosts);
     const posts: Array<PostType> = result.map(BlogPost.fromJSON);
+    const commentResult: Array<PostType> = yield all(posts.map((post: PostType) => {
+      return call(Api.fetchPostComments, post.id);
+    }));
+    const allComments = R.reduce(R.concat, [], commentResult);
+    const comments: Array<any> = allComments.map(BlogPost.fromJSON);
+    yield put(actions.createUpdateLocalCommentsAction(comments));
     yield put(actions.addFetchedPosts(posts));
   } catch (error) {
     yield put(actions.fetchError(error));

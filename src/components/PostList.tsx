@@ -7,6 +7,7 @@ import {
 } from '../types';
 import * as actions from '../actions';
 import { postTemplate } from '../components/Util';
+import { log } from '../lib/Logging';
 import ConnectedPostItem from './PostItem';
 import * as ReactModal from 'react-modal';
 import CreatePostForm from '../components/CreatePostForm';
@@ -14,8 +15,10 @@ import './styles/PostList.css';
 
 interface Props {
   removePost: (id: string) => actions.RemovePost;
+  selectCategory: (category: string) => any;
   posts: PostType[];
   currentCategory: string;
+  match: any;
 }
 
 const COLUMNS: Columns = {
@@ -79,6 +82,10 @@ class PostList extends React.Component<Props, State> {
       modalIsOpen: false,
     };
   }
+  componentWillMount() {
+    log.d(`will mount at ${this.props.match.params.category}`);
+    this.props.selectCategory(this.props.match.params.category);
+  }
   openModal = () => {
     this.setState({ modalIsOpen: true });
   }
@@ -120,6 +127,7 @@ class PostList extends React.Component<Props, State> {
 export function mapDispatchToProps(dispatch: Dispatch<actions.PostListAction>) {
   return {
     removePost: (id: string) => dispatch(actions.removePost(id)),
+    selectCategory: (category: string) => dispatch(actions.applyFilter(category)),
   };
 }
 
